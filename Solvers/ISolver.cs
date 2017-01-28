@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace simTest
+namespace Solvers
 {
 	public interface ISolver<ValueType>
 	{

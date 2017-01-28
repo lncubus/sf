@@ -1,9 +1,9 @@
-﻿using ValueType = System.Numerics.Complex;
+﻿using ValueType = System.Double;
 
 using System;
 using System.Collections.Generic;
 
-namespace simTest
+namespace Solvers
 {
 	public class AdamsBashforth : ISolver<ValueType>
 	{
@@ -38,7 +38,7 @@ namespace simTest
 		/// </summary>
 		private void Start()
 		{
-			RungeKutta rk = new RungeKutta
+			RungeKuttaDouble rk = new RungeKuttaDouble
 			{
 				F = this.F,
 				t = this.t,

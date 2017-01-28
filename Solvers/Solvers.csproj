@@ -2,14 +2,14 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{19818EE0-F7C9-4E27-80A2-E39DA982AFC0}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>simTest</RootNamespace>
-    <AssemblyName>simTest</AssemblyName>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0F973619-6A14-470C-9C14-08637D881367}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Solvers</RootNamespace>
+    <AssemblyName>Solvers</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -17,34 +17,32 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
-    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Serialization" />
-    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xml.cs" />
+    <Compile Include="AdamsBashforth.cs" />
+    <Compile Include="ISolver.cs" />
+    <Compile Include="RungeKuttaVector.cs" />
+    <Compile Include="RungeKuttaDouble.cs" />
+    <Compile Include="RungeKuttaArray.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Vectors\Vectors.csproj">
       <Project>{43345D2D-5AD7-4489-B720-994DF9A9F361}</Project>
       <Name>Vectors</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Solvers\Solvers.csproj">
-      <Project>{0F973619-6A14-470C-9C14-08637D881367}</Project>
-      <Name>Solvers</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
