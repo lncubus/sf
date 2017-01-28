@@ -1,11 +1,11 @@
-using ValueType = System.Numerics.Complex;
+using ValueType = System.Double;
 
 using System;
 using System.Collections.Generic;
 
-namespace simTest
+namespace Solvers
 {
-	public class RungeKutta : ISolver<ValueType>
+	public class RungeKuttaDouble : ISolver<ValueType>
 	{
 		// call X' = F(t, X)
 		public Func<double, ValueType, ValueType> F { get; set; }
