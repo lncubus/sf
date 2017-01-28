@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Solvers
 {
-	public class RungeKuttaDouble : ISolver<double[]>
+	public class RungeKuttaArray : ISolver<double[]>
 	{
 		// call X' = F(t, X)
 		public Func<double, double[], double[]> F { get; set; }
@@ -24,14 +23,14 @@ namespace Solvers
 		public void Step()
 		{
 			int N = X.Length;
-			Ensure(dX1, N);
-			Ensure(dX2, N);
-			Ensure(dX3, N);
-			Ensure(dX4, N);
-			Ensure(X1, N);
-			Ensure(X2, N);
-			Ensure(X3, N);
-			Ensure(X4, N);
+			Ensure(ref dX1, N);
+			Ensure(ref dX2, N);
+			Ensure(ref dX3, N);
+			Ensure(ref dX4, N);
+			Ensure(ref X1, N);
+			Ensure(ref X2, N);
+			Ensure(ref X3, N);
+			Ensure(ref X4, N);
 
 			dXdt = F(t, X);
 			for (int i = 0; i < N; i++)
@@ -50,14 +49,13 @@ namespace Solvers
 			var dXdt_3 = F(t + dt/2.0, X2);
 			for (int i = 0; i < N; i++)
 			{
-				double dxi = dt * dXdt_2[i];
-				dX2[i] = dxi;
-				X2[i] = X[i] + dxi/2;
+				double dxi = dt * dXdt_3[i];
+				dX3[i] = dxi;
+				X3[i] = X[i] + dxi/2;
 			}
-			var dX3 = dt*F(t + dt/2.0, X + dX2/2.0);
-			var dX4 = dt*F(t + dt, X + dX3);
+            var dX4dt_4 = F(t + dt, X3);
 			t += dt;
-			X += (dX1 + 2.0 * (dX2 + dX3) + dX4)/6.0;
+			//X += (dX1 + 2.0 * (dX2 + dX3) + dX4)/6.0;
 		}
 
 
