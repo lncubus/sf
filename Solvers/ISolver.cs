@@ -5,7 +5,7 @@ namespace Solvers
 {
 	public interface ISolver<ValueType>
 	{
-		Func<double, ValueType, ValueType> F { get; }
+		// Func<double, ValueType, ValueType> F { get; }
 		double t { get; }
 		double dt { get; }
 		ValueType X { get; }
