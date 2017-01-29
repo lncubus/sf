@@ -15,7 +15,7 @@ namespace Solvers
 		public double[] X { get; set; }
 		public double[] dXdt { get { return dXdt_1; } }
 
-		private void Ensure(ref double[] a, int n)
+		private static void Ensure(ref double[] a, int n)
 		{
 			if (a == null || a.Length != n)
 				a = new double[n];
