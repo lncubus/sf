@@ -144,9 +144,9 @@ namespace simTest
 			}
 		}
 
-		static readonly int[] Ms = { 1, 2, 4, 8, 16, 32, 64, 128, 256 };
+		static readonly int[] Ms = { 1, 2, 4, 8, 16, 32, 64 };
 
-		void Run()
+		void RunPlus()
 		{
 			const int N = 1000000;
 			Complex sumC = 0;
@@ -247,7 +247,7 @@ namespace simTest
 		public static void Main (string[] args)
 		{
 			var app = new MainClass();
-			app.Run();
+			app.RunPlus();
 			//app.RunSolvers();
 			// System.Numerics.Quaternion q;
 
