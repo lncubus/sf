@@ -2,6 +2,7 @@
 using Complex = System.Numerics.Complex;
 
 using System;
+using System.Linq;
 
 using Solvers;
 using Vectors;
@@ -244,10 +245,115 @@ namespace simTest
 			}
 		}
 
+		double Energy(double[] GM, double[] X)
+		{
+			double K = 0.0, U = 0.0;
+			int n = GM.Length;
+			for (int i = 0; i < n; i++)
+			{
+				var mi = GM[i] / GM[0];
+				var vi = Particles.GetR(X, i + n);
+				var ri = Particles.GetR(X, i);
+				K += mi * vi.LengthSquared();
+				for (int j = 0; j < GM.Length; j++)
+				{
+					if (i == j)
+						continue;
+					// -GM m / R
+					var rj = Particles.GetR(X, j);
+					var rji = (rj - ri).Length();
+					U -= mi * GM[j] / rji;
+				}
+			}
+			K /= 2;
+			Console.WriteLine("Ek = {0} Eg = {1} E = {2}", K, U, K + U);
+			return K + U;
+		}
+
+		void RunSolarSystem(int N)
+		{
+			var s = new Particles
+			{
+				GM = new []
+				{
+					0.295912208285591100E-03,
+					0.491248045036476000E-10,
+					0.724345233264412000E-09,
+					0.888769244512563400E-09 + 0.109318945074237400E-10,
+					0.954954869555077000E-10,
+					0.282534584083387000E-06,
+					0.845970607324503000E-07,
+					0.129202482578296000E-07,
+					0.152435734788511000E-07,
+					0.217844105197418000E-11
+				}
+			};
+			var X0 = new []
+			{
+				// R
+				0.00450250878464055477,  0.00076707642709100705, 0.00026605791776697764,
+				0.36176271656028195477, -0.09078197215676599295,-0.08571497256275117236,
+				0.61275194083507215477, -0.34836536903362219295,-0.19527828667594382236,
+				0.12051741410138465477, -0.92583847476914859295,-0.40154022645315222236,
+				-0.11018607714879824523, -1.32759945030298299295,-0.60588914048429142236,
+				-5.37970676855393644523, -0.83048132656339789295,-0.22482887442656542236,
+				7.89439068290953155477,  4.59647805517127300705, 1.55869584283189997764,
+				-18.26540225387235944523, -1.16195541867586999295,-0.25010605772133802236,
+				-16.05503578023336944523,-23.94219155985470899295,-9.40015796880239402236,
+				-30.48331376718383944523, -0.87240555684104999295, 8.91157617249954997764,
+				// V
+				-0.00000035174953607552,  0.00000517762640983341, 0.00000222910217891203,
+				0.00336749397200575848,  0.02489452055768343341, 0.01294630040970409203,
+				0.01095206842352823448,  0.01561768426786768341, 0.00633110570297786403,
+				0.01681126830978379448,  0.00174830923073434441, 0.00075820289738312913,
+				0.01448165305704756448,  0.00024246307683646861,-0.00028152072792433877,
+				0.00109201259423733748, -0.00651811661280738459,-0.00282078276229867897,
+				-0.00321755651650091552,  0.00433581034174662541, 0.00192864631686015503,
+				0.00022119039101561468, -0.00376247500810884459,-0.00165101502742994997,
+				0.00264276984798005548, -0.00149831255054097759,-0.00067904196080291327,
+				0.00032220737349778078, -0.00314357639364532859,-0.00107794975959731297
+			};
+
+			//const int N = 1000;
+			const double years = 1;
+			const double year = 365.25;
+
+			var rka = new RungeKuttaArray
+			{
+				t = 0,
+				dt = year/N,
+				X = X0,
+				F = s.FA
+			};
+			Console.WriteLine(N);
+			for (int i = 0; i < 5 /*s.GM.Length*/; i++)
+				Console.WriteLine("{0:G} {1:G} {2:G}", X0[3 * i], X0[3 * i + 1], X0[3 * i + 2]);
+			var E0 = Energy(s.GM, rka.X);
+			rka.Step();
+			Energy(s.GM, rka.X);
+			var sw = new System.Diagnostics.Stopwatch();
+			sw.Start();
+			var last = rka.Evaluate(N).Last();
+			sw.Stop();
+			var E1 = Energy(s.GM, rka.X);
+			Console.WriteLine("{0} steps total {1} ms ave {2} mus",
+				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
+			var X = last.Item2;
+			for (int i = 0; i < 5 /*s.GM.Length*/; i++)
+				Console.WriteLine("{0:G} {1:G} {2:G}", X[3 * i], X[3 * i + 1], X[3 * i + 2]);
+			Console.WriteLine("dE,% = {0}", 100 * (E1 - E0) / E0);
+		}
+
 		public static void Main (string[] args)
 		{
 			var app = new MainClass();
-			app.RunPlus();
+			//app.RunPlus();
+			app.RunSolarSystem(10);
+			app.RunSolarSystem(25);
+			app.RunSolarSystem(100);
+			app.RunSolarSystem(300);
+			app.RunSolarSystem(1000);
+			app.RunSolarSystem(2000);
 			//app.RunSolvers();
 			// System.Numerics.Quaternion q;
 

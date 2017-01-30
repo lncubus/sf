@@ -6,7 +6,7 @@ namespace simTest
 {
 	public class Particles
 	{
-		public readonly double[] GM;
+		public double[] GM;
 
 		private static void Ensure(ref double[] a, int n)
 		{
@@ -14,19 +14,14 @@ namespace simTest
 				a = new double[n];
 		}
 
-		private static Vectors.Vector3 GetR(double[] a, int i)
+		public static Vectors.Vector3 GetR(double[] a, int i)
 		{
 			return new Vectors.Vector3(a[3 * i], a[3 * i + 1], a[3 * i + 2]);
 		}
 
-		private static Vectors.Vector3 GetR(Vectors.Vector a, int i)
+		public static Vectors.Vector3 GetR(Vectors.Vector a, int i)
 		{
 			return new Vectors.Vector3(a[3 * i], a[3 * i + 1], a[3 * i + 2]);
-		}
-
-		public Particles (int N)
-		{
-			GM = new double[N];
 		}
 
 		public void FA(double t, double[] sv, double[] va)
