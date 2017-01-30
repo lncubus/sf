@@ -245,15 +245,17 @@ namespace simTest
 			}
 		}
 
-		double Energy(double[] GM, double[] X)
+		void Energy(double[] GM, double[] X, out double Energy, out Vector3 Impulse)
 		{
 			double K = 0.0, U = 0.0;
+			Vector3 impulse = new Vector3();
 			int n = GM.Length;
 			for (int i = 0; i < n; i++)
 			{
 				var mi = GM[i] / GM[0];
 				var vi = Particles.GetR(X, i + n);
 				var ri = Particles.GetR(X, i);
+				impulse += mi*vi;
 				K += mi * vi.LengthSquared();
 				for (int j = 0; j < GM.Length; j++)
 				{
@@ -267,7 +269,8 @@ namespace simTest
 			}
 			K /= 2;
 			//Console.WriteLine("Ek = {0} Eg = {1} E = {2}", K, U, K + U);
-			return K + U;
+			Energy = K + U;
+			Impulse = impulse;
 		}
 
 		void RunSolarSystem(int N)
@@ -328,9 +331,11 @@ namespace simTest
 			Console.WriteLine(N);
 //			for (int i = 0; i < 5 /*s.GM.Length*/; i++)
 //				Console.WriteLine("{0:G} {1:G} {2:G}", X0[3 * i], X0[3 * i + 1], X0[3 * i + 2]);
-			var E0 = Energy(s.GM, rka.X);
+			double E0, E1, En;
+			Vector3 p0, p1, pn;
+			Energy(s.GM, rka.X, out E0, out p0);
 			rka.Step();
-			var Es = Energy(s.GM, rka.X);
+			Energy(s.GM, rka.X, out E1, out p1);
 			var sw = new System.Diagnostics.Stopwatch();
 			sw.Start();
 			var last = rka.Evaluate(N).Last();
@@ -338,11 +343,19 @@ namespace simTest
 			Console.WriteLine("{0} steps total {1} ms ave {2} mus",
 				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
 			var X = last.Item2;
-			var E1 = Energy(s.GM, X);
+			Energy(s.GM, X, out En, out pn);
 //			for (int i = 0; i < 5 /*s.GM.Length*/; i++)
 //				Console.WriteLine("{0:G} {1:G} {2:G}", X[3 * i], X[3 * i + 1], X[3 * i + 2]);
-			Console.WriteLine("dE1,% = {0}", 100 * (Es - E0) / E0);
-			Console.WriteLine("dEn,% = {0}", 100 * (E1 - E0) / E0);
+//			Console.WriteLine("{0:G} {1:G} {2:G}", E0, E1, En);
+//			Console.WriteLine(p0);
+//			Console.WriteLine(p1);
+//			Console.WriteLine(pn);
+			double dp1 = 2*(p0-p1).Length()/(p0+p1).Length();
+			double dpn = 2*(p0-pn).Length()/(p0+pn).Length();
+			Console.WriteLine("dE1,% = {0}", 100 * (E1 - E0) / E0);
+			Console.WriteLine("dp1,% = {0}", 100 * dp1);
+			Console.WriteLine("dEn,% = {0}", 100 * (En - E0) / E0);
+			Console.WriteLine("dpn,% = {0}", 100 * dpn);
 		}
 
 		public static void Main (string[] args)
@@ -359,12 +372,12 @@ namespace simTest
 			app.RunSolarSystem(325);
 			app.RunSolarSystem(350);
 			app.RunSolarSystem(375);
-//			app.RunSolarSystem(400);
-//			app.RunSolarSystem(500);
+			app.RunSolarSystem(400);
+			app.RunSolarSystem(500);
 //			app.RunSolarSystem(750);
-//			app.RunSolarSystem(1000);
-//			app.RunSolarSystem(2000);
-//			app.RunSolarSystem(3000);
+			app.RunSolarSystem(1000);
+			app.RunSolarSystem(2000);
+			app.RunSolarSystem(3000);
 //			app.RunSolarSystem(5000);
 			//app.RunSolvers();
 			// System.Numerics.Quaternion q;
