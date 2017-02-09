@@ -163,6 +163,29 @@ namespace Vectors
 			return new Vector(values);
 		}
 
+		/// <summary>
+		/// L = a x + y
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public static Vector L(double a, Vector x, Vector y)
+		{
+			return new Vector(x.Z.Zip(y.Z, (l, r) => a*l + r));
+		}
+
+		/// <summary>
+		/// L = a x + b y
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="x"></param>
+		/// <param name="b"></param>
+		/// <param name="y"></param>
+		public static Vector L(double a, Vector x, double b, Vector y)
+		{
+			return new Vector(x.Z.Zip(y.Z, (l, r) => a*l + b*r));
+		}
+
         #region Public static operators
         /// <summary>
         /// Adds two vectors together.
