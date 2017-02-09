@@ -38,33 +38,48 @@ namespace Solvers
 			Ensure(ref X4, N);
 
 			F(t, X, dXdt_1);
+			dXdt_1.DebugPrint("dXdt");
 			for (int i = 0; i < N; i++)
 			{
-				double dxi = dt * dXdt[i];
+				double dxi = dt * dXdt_1[i];
 				dX1[i] = dxi;
 				X1[i] = X[i] + dxi/2;
 			}
+			//X1.DebugPrint("X1");
+			dX1.DebugPrint("dX1");
+
 			F(t + dt/2.0, X1, dXdt_2);
+			//dXdt_2.DebugPrint("dXdt_2");
 			for (int i = 0; i < N; i++)
 			{
 				double dxi = dt * dXdt_2[i];
 				dX2[i] = dxi;
 				X2[i] = X[i] + dxi/2;
 			}
+			//X2.DebugPrint("X2");
+			dX2.DebugPrint("dX2");
+
 			F(t + dt/2.0, X2, dXdt_3);
+			//dXdt_3.DebugPrint("dXdt_3");
 			for (int i = 0; i < N; i++)
 			{
 				double dxi = dt * dXdt_3[i];
 				dX3[i] = dxi;
 				X3[i] = X[i] + dxi/2;
 			}
+			//X3.DebugPrint("X3");
+			dX3.DebugPrint("dX3");
+
 			F(t + dt, X3, dXdt_4);
+			//dXdt_4.DebugPrint("dXdt_4");
 			for (int i = 0; i < N; i++)
 			{
 				double dxi = dt * dXdt_4[i];
 				dX4[i] = dxi;
 				X[i] += (dX1[i] + 2.0 * (dX2[i] + dX3[i]) + dX4[i])/6.0;
 			}
+			dX4.DebugPrint("dX4");
+			X.DebugPrint("X");
 			t += dt;
 		}
 	}
