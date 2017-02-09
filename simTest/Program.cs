@@ -294,11 +294,11 @@ namespace simTest
 			var X0 = new []
 			{
 				// R
-				0.00450250878464055477,  0.00076707642709100705, 0.00026605791776697764,
-				0.36176271656028195477, -0.09078197215676599295,-0.08571497256275117236,
-				0.61275194083507215477, -0.34836536903362219295,-0.19527828667594382236,
-				0.12051741410138465477, -0.92583847476914859295,-0.40154022645315222236,
-				-0.11018607714879824523, -1.32759945030298299295,-0.60588914048429142236,
+				0.00450250878464055477,  0.00076707642709100705, 0.00026605791776697764, // Sun
+				0.36176271656028195477, -0.09078197215676599295,-0.08571497256275117236, // Mercury
+				0.61275194083507215477, -0.34836536903362219295,-0.19527828667594382236, // Venus
+				0.12051741410138465477, -0.92583847476914859295,-0.40154022645315222236, // Earth+Moon
+				-0.11018607714879824523, -1.32759945030298299295,-0.60588914048429142236, // Mars
 				-5.37970676855393644523, -0.83048132656339789295,-0.22482887442656542236,
 				7.89439068290953155477,  4.59647805517127300705, 1.55869584283189997764,
 				-18.26540225387235944523, -1.16195541867586999295,-0.25010605772133802236,
@@ -335,33 +335,37 @@ namespace simTest
 				X = new Vector(X0),
 				F = s.FV,
 			};
-			var rkvl = new RungeKuttaVectorL
-			{
-				t = 0,
-				dt = year / N,
-				X = new Vector(X0),
-				F = s.FV,
-			};
 			Console.WriteLine(N);
+			Console.WriteLine("X0 = \n{0}", rkv.X);
 //			for (int i = 0; i < 5 /*s.GM.Length*/; i++)
 //				Console.WriteLine("{0:G} {1:G} {2:G}", X0[3 * i], X0[3 * i + 1], X0[3 * i + 2]);
-			double E0, E1, En, Ev, Evl;
-			Vector3 p0, p1, pn, pv, pvl;
+			double E0, E1, En, Ev;
+			Vector3 p0, p1, pn, pv;
 			Energy(s.GM, rka.X, out E0, out p0);
+			SolverExtensions.Debug = true;
+			Console.WriteLine("Array");
 			rka.Step();
+			Console.WriteLine("Vector");
 			rkv.Step();
-			rkvl.Step();
+			Console.WriteLine("End");
+			SolverExtensions.Debug = false;
+
+			if (!rka.X.SequenceEqual(rkv.X))
+			{
+				Console.WriteLine("!Vectors are different after 1 step!");
+				var err = new Vector(rka.X);
+				Console.WriteLine("{0}\n{1}", rkv.X, err);
+				err = rkv.X - err;
+				Console.WriteLine("{0}\n abs.error = {1}", err, err.Max(Math.Abs));
+			}
+
 			Energy(s.GM, rka.X, out E1, out p1);
 			Energy(s.GM, rkv.X.ToArray(), out Ev, out pv);
-			Energy(s.GM, rkvl.X.ToArray(), out Evl, out pvl);
+
 			if (E1 != Ev)
 				Console.WriteLine("E1 = {0}, E1v = {1}, diff = {2}", E1, Ev, E1 - Ev);
-			if (Evl != Ev)
-				Console.WriteLine("Error! E1v = {0}, E1vl = {1}, diff = {2}", Ev, Evl, Evl - Ev);
 			if (p1 != pv)
 				Console.WriteLine("p1 = {0}, p1v = {1}, diff = {2}", p1, pv, p1 - pv);
-			if (pvl != pv)
-				Console.WriteLine("Error! p1v = {0}, p1vl = {1}, diff = {2}", pv, pvl, pv - pvl);
 			var sw = new System.Diagnostics.Stopwatch();
 			sw.Start();
 			var last = rka.Evaluate(N).Last();
@@ -387,18 +391,13 @@ namespace simTest
 				Console.WriteLine("En = {0}, Env = {1}, diff = {2}", En, Ev, En - Ev);
 			if (pn != pv)
 				Console.WriteLine("pn = {0}, pnv = {1}, diff = {2}", pn, pv, pn - pv);
-			sw.Restart();
-			vlast = rkvl.Evaluate(N).Last();
-			sw.Stop();
-			Console.WriteLine("vector linear {0} steps total {1} ms ave {2} mus",
-				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
-			if (!X.SequenceEqual(vX))
+			if (!rka.X.SequenceEqual(rkv.X))
 			{
-				Console.WriteLine("!Vectors are different!");
-			}
-			if (!X.SequenceEqual(vlast.Item2))
-			{
-				Console.WriteLine("!Vectors are different!");
+				Console.WriteLine("!Vectors are different after 1 year!");
+				var err = new Vector(rka.X);
+				Console.WriteLine("{0}\n{1}", rkv.X, err);
+				err = rkv.X - err;
+				Console.WriteLine("{0}\n abs.error = {1}", err, err.Max(Math.Abs));
 			}
 		}
 

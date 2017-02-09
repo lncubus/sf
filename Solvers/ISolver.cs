@@ -16,6 +16,17 @@ namespace Solvers
 
 	public static class SolverExtensions
 	{
+		public static bool Debug = false;
+		public static void DebugPrint(this IEnumerable<double> Z, string name)
+		{
+			if (!Debug)
+				return;
+			Console.Write(name);
+			Console.WriteLine(" =");
+			foreach(double z in Z)
+				Console.WriteLine(z.ToString("R"));
+		}
+
 		public static IEnumerable<Tuple<double, ValueType>> Evaluate<ValueType>(this ISolver<ValueType> that, int n)
 		{
 			for (int i = 0; i < n; i++)

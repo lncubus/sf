@@ -2,12 +2,11 @@
 
 namespace Solvers
 {
+	/// <summary>
+	/// https://en.wikipedia.org/wiki/Symplectic_integrator#Examples
+	/// </summary>
 	public class ForestRuthIntegrator
 	{
-		//private double[] X1, X2, X3, X4;
-		//private double[] dXdt_1, dXdt_2, dXdt_3, dXdt_4;
-		//private double[] dX1, dX2, dX3, dX4;
-
 		private int N;
 		private double[] _A;
 
@@ -19,8 +18,19 @@ namespace Solvers
 		public double[] V { get; set; }
 		public double[] A { get { return _A; } }
 
-		public static readonly double[] C = {};
-		public static readonly double[] D = {};
+		/// <summary>
+		/// Verlet method
+		/// </summary>
+		private static readonly double[] C = {0, 1};
+		private static readonly double[] D = {0.5, 0.5};
+		private static readonly int n;
+
+		static ForestRuthIntegrator()
+		{
+			if (C.Length != D.Length)
+				throw new InvalidOperationException("C and D length are inconsistent");
+			n = C.Length;
+		}
 
 		private static void Ensure(ref double[] a, int n)
 		{
@@ -30,6 +40,8 @@ namespace Solvers
 
 		private void StepC(double c)
 		{
+			if (c == 0)
+				return;
 			double c_dt = c*dt;
 			for (int i = 0; i < N; i++)
 				X[i] += V[i]*c_dt;
@@ -37,6 +49,8 @@ namespace Solvers
 
 		private void StepD(double d)
 		{
+			if (d == 0)
+				return;
 			F(t, X, V, A);
 			double d_dt = d*dt;
 			for (int i = 0; i < N; i++)
@@ -49,7 +63,12 @@ namespace Solvers
 				throw new InvalidOperationException("X and V length are inconsistent");
 			N = X.Length;
 			Ensure(ref _A, N);
-
+			for (int i = 0; i < n; i++)
+			{
+				StepC(C[i]);
+				StepD(D[i]);
+			}
+			t += dt;
 		}
 	}
 }
