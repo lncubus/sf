@@ -328,34 +328,78 @@ namespace simTest
 				X = X0,
 				F = s.FA
 			};
+			var rkv = new RungeKuttaVector
+			{
+				t = 0,
+				dt = year / N,
+				X = new Vector(X0),
+				F = s.FV,
+			};
+			var rkvl = new RungeKuttaVectorL
+			{
+				t = 0,
+				dt = year / N,
+				X = new Vector(X0),
+				F = s.FV,
+			};
 			Console.WriteLine(N);
 //			for (int i = 0; i < 5 /*s.GM.Length*/; i++)
 //				Console.WriteLine("{0:G} {1:G} {2:G}", X0[3 * i], X0[3 * i + 1], X0[3 * i + 2]);
-			double E0, E1, En;
-			Vector3 p0, p1, pn;
+			double E0, E1, En, Ev, Evl;
+			Vector3 p0, p1, pn, pv, pvl;
 			Energy(s.GM, rka.X, out E0, out p0);
 			rka.Step();
+			rkv.Step();
+			rkvl.Step();
 			Energy(s.GM, rka.X, out E1, out p1);
+			Energy(s.GM, rkv.X.ToArray(), out Ev, out pv);
+			Energy(s.GM, rkvl.X.ToArray(), out Evl, out pvl);
+			if (E1 != Ev)
+				Console.WriteLine("E1 = {0}, E1v = {1}, diff = {2}", E1, Ev, E1 - Ev);
+			if (Evl != Ev)
+				Console.WriteLine("Error! E1v = {0}, E1vl = {1}, diff = {2}", Ev, Evl, Evl - Ev);
+			if (p1 != pv)
+				Console.WriteLine("p1 = {0}, p1v = {1}, diff = {2}", p1, pv, p1 - pv);
+			if (pvl != pv)
+				Console.WriteLine("Error! p1v = {0}, p1vl = {1}, diff = {2}", pv, pvl, pv - pvl);
 			var sw = new System.Diagnostics.Stopwatch();
 			sw.Start();
 			var last = rka.Evaluate(N).Last();
 			sw.Stop();
-			Console.WriteLine("{0} steps total {1} ms ave {2} mus",
+			Console.WriteLine("array {0} steps total {1} ms ave {2} mus",
 				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
 			var X = last.Item2;
 			Energy(s.GM, X, out En, out pn);
-//			for (int i = 0; i < 5 /*s.GM.Length*/; i++)
-//				Console.WriteLine("{0:G} {1:G} {2:G}", X[3 * i], X[3 * i + 1], X[3 * i + 2]);
-//			Console.WriteLine("{0:G} {1:G} {2:G}", E0, E1, En);
-//			Console.WriteLine(p0);
-//			Console.WriteLine(p1);
-//			Console.WriteLine(pn);
 			double dp1 = 2*(p0-p1).Length()/(p0+p1).Length();
 			double dpn = 2*(p0-pn).Length()/(p0+pn).Length();
-			Console.WriteLine("dE1,% = {0}", 100 * (E1 - E0) / E0);
-			Console.WriteLine("dp1,% = {0}", 100 * dp1);
-			Console.WriteLine("dEn,% = {0}", 100 * (En - E0) / E0);
-			Console.WriteLine("dpn,% = {0}", 100 * dpn);
+			Console.WriteLine("dE1/E = {0}", (E1 - E0) / E0);
+			Console.WriteLine("dp1/p = {0}", dp1);
+			Console.WriteLine("dEn/E = {0}", (En - E0) / E0);
+			Console.WriteLine("dpn/p = {0}", dpn);
+			sw.Restart();
+			var vlast = rkv.Evaluate(N).Last();
+			sw.Stop();
+			Console.WriteLine("vector {0} steps total {1} ms ave {2} mus",
+				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
+			var vX = vlast.Item2;
+			Energy(s.GM, vX.ToArray(), out Ev, out pv);
+			if (En != Ev)
+				Console.WriteLine("En = {0}, Env = {1}, diff = {2}", En, Ev, En - Ev);
+			if (pn != pv)
+				Console.WriteLine("pn = {0}, pnv = {1}, diff = {2}", pn, pv, pn - pv);
+			sw.Restart();
+			vlast = rkvl.Evaluate(N).Last();
+			sw.Stop();
+			Console.WriteLine("vector linear {0} steps total {1} ms ave {2} mus",
+				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
+			if (!X.SequenceEqual(vX))
+			{
+				Console.WriteLine("!Vectors are different!");
+			}
+			if (!X.SequenceEqual(vlast.Item2))
+			{
+				Console.WriteLine("!Vectors are different!");
+			}
 		}
 
 		public static void Main (string[] args)
@@ -374,10 +418,7 @@ namespace simTest
 			app.RunSolarSystem(375);
 			app.RunSolarSystem(400);
 			app.RunSolarSystem(500);
-//			app.RunSolarSystem(750);
 			app.RunSolarSystem(1000);
-			app.RunSolarSystem(2000);
-			app.RunSolarSystem(3000);
 //			app.RunSolarSystem(5000);
 			//app.RunSolvers();
 			// System.Numerics.Quaternion q;

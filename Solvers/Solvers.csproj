@@ -37,6 +37,8 @@
     <Compile Include="RungeKuttaVector.cs" />
     <Compile Include="RungeKuttaDouble.cs" />
     <Compile Include="RungeKuttaArray.cs" />
+    <Compile Include="RungeKuttaVectorL.cs" />
+    <Compile Include="ForestRuthIntegrator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
