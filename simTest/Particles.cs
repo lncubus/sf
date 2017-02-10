@@ -97,6 +97,12 @@ namespace simTest
 			}
 			return new Vectors.Vector(v.Concat(a));
 		}
+		// public Action<double, double[], double[], double[]> F
+		// F(t, X, V) -> A
+		public void FVX(double t, double[] X, double[] V, double[] A)
+		{
+			
+		}
 	}
 }
 
