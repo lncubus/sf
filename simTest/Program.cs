@@ -319,7 +319,7 @@ namespace simTest
 
 			//const int N = 1000;
 			const double years = 1;
-			const double year = 365.25;
+			const double year = 365.2564;//365.25;365,2564
 
 			var rka = new RungeKuttaArray
 			{
@@ -336,7 +336,8 @@ namespace simTest
 				F = s.FV,
 			};
 			Console.WriteLine(N);
-			Console.WriteLine("X0 = \n{0:R}", rkv.X);
+			Vector3 Earth0 = new Vector3(X0[9], X0[10], X0[11]);
+			//Console.WriteLine("X0 = \n{0:R}", rkv.X);
 //			for (int i = 0; i < 5 /*s.GM.Length*/; i++)
 //				Console.WriteLine("{0:G} {1:G} {2:G}", X0[3 * i], X0[3 * i + 1], X0[3 * i + 2]);
 			double E0, E1, En, Ev;
@@ -347,6 +348,8 @@ namespace simTest
 			rka.Step();
 			//Console.WriteLine("Vector");
 			rkv.Step();
+			Console.WriteLine("dt = {0} dX/dt max = {1}, min = {2}, len = {3}",
+				rkv.dt, rkv.dXdt.Max(Math.Abs), rkv.dXdt.Min(Math.Abs), Math.Sqrt(rkv.dXdt.Sum(z => z * z)));
 			//Console.WriteLine("End");
 			//SolverExtensions.Debug = false;
 
@@ -364,7 +367,7 @@ namespace simTest
 			Console.WriteLine("array {0} steps total {1} ms ave {2} mus",
 				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
 			var X = last.Item2;
-			Console.WriteLine("Xn = \n{0:R}", new Vector(X));
+			//Console.WriteLine("Xn = \n{0:R}", new Vector(X));
 			Energy(s.GM, X, out En, out pn);
 			//double dp1 = 2*(p0-p1).Length()/(p0+p1).Length();
 			//double dpn = 2*(p0-pn).Length()/(p0+pn).Length();
@@ -372,6 +375,8 @@ namespace simTest
 			//Console.WriteLine("dp1/p = {0}", dp1);
 			Console.WriteLine("dEn/E = {0}", (En - E0) / E0);
 			//Console.WriteLine("dpn/p = {0}", dpn);
+			Vector3 EarthN = new Vector3(X[9], X[10], X[11]);
+			Console.WriteLine("{0} - {1} ->\n {2}", Earth0, EarthN, (Earth0 - EarthN).Length());  
 			if (!vectors)
 				return;
 			sw.Restart();
@@ -406,7 +411,9 @@ namespace simTest
 			app.RunSolarSystem(1000, false);
 			app.RunSolarSystem(5000, false);
 			app.RunSolarSystem(10000, false);
-			app.RunSolarSystem(50000, false);
+			app.RunSolarSystem(30000, false);
+			app.RunSolarSystem(100000, false);
+			app.RunSolarSystem(300000, false);
 			//app.RunSolvers();
 			// System.Numerics.Quaternion q;
 
