@@ -273,7 +273,7 @@ namespace simTest
 			Impulse = impulse;
 		}
 
-		void RunSolarSystem(int N)
+		void RunSolarSystem(int N, bool vectors = true)
 		{
 			var s = new Particles
 			{
@@ -336,7 +336,7 @@ namespace simTest
 				F = s.FV,
 			};
 			Console.WriteLine(N);
-			Console.WriteLine("X0 = \n{0}", rkv.X);
+			Console.WriteLine("X0 = \n{0:R}", rkv.X);
 //			for (int i = 0; i < 5 /*s.GM.Length*/; i++)
 //				Console.WriteLine("{0:G} {1:G} {2:G}", X0[3 * i], X0[3 * i + 1], X0[3 * i + 2]);
 			double E0, E1, En, Ev;
@@ -348,7 +348,7 @@ namespace simTest
 			//Console.WriteLine("Vector");
 			rkv.Step();
 			//Console.WriteLine("End");
-			SolverExtensions.Debug = false;
+			//SolverExtensions.Debug = false;
 
 			Energy(s.GM, rka.X, out E1, out p1);
 			Energy(s.GM, rkv.X.ToArray(), out Ev, out pv);
@@ -364,13 +364,16 @@ namespace simTest
 			Console.WriteLine("array {0} steps total {1} ms ave {2} mus",
 				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
 			var X = last.Item2;
+			Console.WriteLine("Xn = \n{0:R}", new Vector(X));
 			Energy(s.GM, X, out En, out pn);
-			double dp1 = 2*(p0-p1).Length()/(p0+p1).Length();
-			double dpn = 2*(p0-pn).Length()/(p0+pn).Length();
+			//double dp1 = 2*(p0-p1).Length()/(p0+p1).Length();
+			//double dpn = 2*(p0-pn).Length()/(p0+pn).Length();
 			Console.WriteLine("dE1/E = {0}", (E1 - E0) / E0);
-			Console.WriteLine("dp1/p = {0}", dp1);
+			//Console.WriteLine("dp1/p = {0}", dp1);
 			Console.WriteLine("dEn/E = {0}", (En - E0) / E0);
-			Console.WriteLine("dpn/p = {0}", dpn);
+			//Console.WriteLine("dpn/p = {0}", dpn);
+			if (!vectors)
+				return;
 			sw.Restart();
 			var vlast = rkv.Evaluate(N).Last();
 			sw.Stop();
@@ -393,15 +396,17 @@ namespace simTest
 			app.RunSolarSystem(50);
 			app.RunSolarSystem(100);
 			app.RunSolarSystem(200);
-			app.RunSolarSystem(250);
+//			app.RunSolarSystem(250);
 			app.RunSolarSystem(300);
-			app.RunSolarSystem(325);
-			app.RunSolarSystem(350);
-			app.RunSolarSystem(375);
-			app.RunSolarSystem(400);
+//			app.RunSolarSystem(325);
+//			app.RunSolarSystem(350);
+//			app.RunSolarSystem(375);
+//			app.RunSolarSystem(400);
 			app.RunSolarSystem(500);
-			app.RunSolarSystem(1000);
-			app.RunSolarSystem(5000);
+			app.RunSolarSystem(1000, false);
+			app.RunSolarSystem(5000, false);
+			app.RunSolarSystem(10000, false);
+			app.RunSolarSystem(50000, false);
 			//app.RunSolvers();
 			// System.Numerics.Quaternion q;
 
