@@ -342,22 +342,13 @@ namespace simTest
 			double E0, E1, En, Ev;
 			Vector3 p0, p1, pn, pv;
 			Energy(s.GM, rka.X, out E0, out p0);
-			SolverExtensions.Debug = true;
-			Console.WriteLine("Array");
+			//SolverExtensions.Debug = true;
+			//Console.WriteLine("Array");
 			rka.Step();
-			Console.WriteLine("Vector");
+			//Console.WriteLine("Vector");
 			rkv.Step();
-			Console.WriteLine("End");
+			//Console.WriteLine("End");
 			SolverExtensions.Debug = false;
-
-			if (!rka.X.SequenceEqual(rkv.X))
-			{
-				Console.WriteLine("!Vectors are different after 1 step!");
-				var err = new Vector(rka.X);
-				Console.WriteLine("{0}\n{1}", rkv.X, err);
-				err = rkv.X - err;
-				Console.WriteLine("{0}\n abs.error = {1}", err, err.Max(Math.Abs));
-			}
 
 			Energy(s.GM, rka.X, out E1, out p1);
 			Energy(s.GM, rkv.X.ToArray(), out Ev, out pv);
@@ -391,14 +382,6 @@ namespace simTest
 				Console.WriteLine("En = {0}, Env = {1}, diff = {2}", En, Ev, En - Ev);
 			if (pn != pv)
 				Console.WriteLine("pn = {0}, pnv = {1}, diff = {2}", pn, pv, pn - pv);
-			if (!rka.X.SequenceEqual(rkv.X))
-			{
-				Console.WriteLine("!Vectors are different after 1 year!");
-				var err = new Vector(rka.X);
-				Console.WriteLine("{0}\n{1}", rkv.X, err);
-				err = rkv.X - err;
-				Console.WriteLine("{0}\n abs.error = {1}", err, err.Max(Math.Abs));
-			}
 		}
 
 		public static void Main (string[] args)
