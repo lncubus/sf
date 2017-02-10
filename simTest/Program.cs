@@ -335,31 +335,44 @@ namespace simTest
 				X = new Vector(X0),
 				F = s.FV,
 			};
+			var fr = new ForestRuthIntegrator
+			{
+				t = 0,
+				dt = year / N,
+				F = s.FVX,
+				X = X0.Take(X0.Length/2).ToArray(),
+				V = X0.Skip(X0.Length/2).ToArray(),
+			};
 			Console.WriteLine(N);
-			Vector3 Earth0 = new Vector3(X0[9], X0[10], X0[11]);
 			//Console.WriteLine("X0 = \n{0:R}", rkv.X);
 //			for (int i = 0; i < 5 /*s.GM.Length*/; i++)
 //				Console.WriteLine("{0:G} {1:G} {2:G}", X0[3 * i], X0[3 * i + 1], X0[3 * i + 2]);
-			double E0, E1, En, Ev;
-			Vector3 p0, p1, pn, pv;
+			double E0, E1, En, Ev, Efr;
+			Vector3 p0, p1, pn, pv, pfr;
 			Energy(s.GM, rka.X, out E0, out p0);
+			Energy(s.GM, fr.X.Concat(fr.V).ToArray(), out Efr, out pfr);
+
 			//SolverExtensions.Debug = true;
 			//Console.WriteLine("Array");
 			rka.Step();
 			//Console.WriteLine("Vector");
 			rkv.Step();
-			Console.WriteLine("dt = {0} dX/dt max = {1}, min = {2}, len = {3}",
-				rkv.dt, rkv.dXdt.Max(Math.Abs), rkv.dXdt.Min(Math.Abs), Math.Sqrt(rkv.dXdt.Sum(z => z * z)));
+			fr.Step();
+//			Console.WriteLine("dt = {0} {4:F}s dX/dt max = {1}, min = {2}, len = {3}",
+//				rkv.dt, rkv.dXdt.Max(Math.Abs), rkv.dXdt.Min(Math.Abs), Math.Sqrt(rkv.dXdt.Sum(z => z * z)),
+//				rkv.dt*86400);
 			//Console.WriteLine("End");
 			//SolverExtensions.Debug = false;
 
+			Vector3 Earth1 = new Vector3(rka.X[9], rka.X[10], rka.X[11]);
+
 			Energy(s.GM, rka.X, out E1, out p1);
 			Energy(s.GM, rkv.X.ToArray(), out Ev, out pv);
+			Energy(s.GM, fr.X.Concat(fr.V).ToArray(), out Efr, out pfr);
 
-			if (E1 != Ev)
-				Console.WriteLine("E1 = {0}, E1v = {1}, diff = {2}", E1, Ev, E1 - Ev);
-			if (p1 != pv)
-				Console.WriteLine("p1 = {0}, p1v = {1}, diff = {2}", p1, pv, p1 - pv);
+			Console.WriteLine("E0 = {0} E1a = {1} E1v = {2} E1fr = {3}", E0, E1, Ev, Efr);
+			//if (p1 != pv)
+			//	Console.WriteLine("p1 = {0}, p1v = {1}, diff = {2}", p1, pv, p1 - pv);
 			var sw = new System.Diagnostics.Stopwatch();
 			sw.Start();
 			var last = rka.Evaluate(N).Last();
@@ -376,7 +389,7 @@ namespace simTest
 			Console.WriteLine("dEn/E = {0}", (En - E0) / E0);
 			//Console.WriteLine("dpn/p = {0}", dpn);
 			Vector3 EarthN = new Vector3(X[9], X[10], X[11]);
-			Console.WriteLine("{0} - {1} ->\n {2}", Earth0, EarthN, (Earth0 - EarthN).Length());  
+			Console.WriteLine("{0} - {1} ->\n {2}", Earth1, EarthN, (Earth1 - EarthN).Length());  
 			if (!vectors)
 				return;
 			sw.Restart();
@@ -410,10 +423,12 @@ namespace simTest
 			app.RunSolarSystem(500);
 			app.RunSolarSystem(1000, false);
 			app.RunSolarSystem(5000, false);
-			app.RunSolarSystem(10000, false);
-			app.RunSolarSystem(30000, false);
-			app.RunSolarSystem(100000, false);
-			app.RunSolarSystem(300000, false);
+//			app.RunSolarSystem(10000, false);
+//			app.RunSolarSystem(30000, false);
+//			app.RunSolarSystem(100000, false);
+//			app.RunSolarSystem(300000, false);
+//			app.RunSolarSystem(1000000, false);
+//			app.RunSolarSystem(3000000, false);
 			//app.RunSolvers();
 			// System.Numerics.Quaternion q;
 
