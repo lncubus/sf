@@ -388,9 +388,9 @@ namespace simTest
 		{
 			var app = new MainClass();
 			//app.RunPlus();
-//			app.RunSolarSystem(10);
-//			app.RunSolarSystem(25);
-//			app.RunSolarSystem(50);
+			app.RunSolarSystem(10);
+			app.RunSolarSystem(25);
+			app.RunSolarSystem(50);
 			app.RunSolarSystem(100);
 			app.RunSolarSystem(200);
 			app.RunSolarSystem(250);
@@ -401,7 +401,7 @@ namespace simTest
 			app.RunSolarSystem(400);
 			app.RunSolarSystem(500);
 			app.RunSolarSystem(1000);
-//			app.RunSolarSystem(5000);
+			app.RunSolarSystem(5000);
 			//app.RunSolvers();
 			// System.Numerics.Quaternion q;
 
