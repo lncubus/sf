@@ -21,11 +21,11 @@ namespace Solvers
 		/// <summary>
 		/// Verlet method
 		/// </summary>
-		private static readonly double[] C = {0, 1};
-		private static readonly double[] D = {0.5, 0.5};
-		private static readonly int n;
+		private readonly double[] C = {0, 1};
+		private readonly double[] D = {0.5, 0.5};
+		private readonly int n;
 
-		static ForestRuthIntegrator()
+		public ForestRuthIntegrator()
 		{
 			if (C.Length != D.Length)
 				throw new InvalidOperationException("C and D length are inconsistent");
