@@ -65,7 +65,7 @@ namespace Solvers
 			{
 				double dxi = dt * dXdt_3[i];
 				dX3[i] = dxi;
-				X3[i] = X[i] + dxi/2;
+				X3[i] = X[i] + dxi;
 			}
 			//X3.DebugPrint("X3");
 			dX3.DebugPrint("dX3");
