@@ -70,6 +70,12 @@ namespace Solvers
 			}
 			t += dt;
 		}
+
+		public void Evaluate(int n)
+		{
+			for (int i = 0; i < n; i++)
+				Step();
+		}
 	}
 }
 
