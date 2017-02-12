@@ -325,7 +325,7 @@ namespace simTest
 			{
 				t = 0,
 				dt = year/N,
-				X = X0,
+				X = X0.ToArray(),
 				F = s.FA
 			};
 			var rkv = new RungeKuttaVector
@@ -380,16 +380,22 @@ namespace simTest
 			Console.WriteLine("array {0} steps total {1} ms ave {2} mus",
 				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
 			var X = last.Item2;
-			//Console.WriteLine("Xn = \n{0:R}", new Vector(X));
 			Energy(s.GM, X, out En, out pn);
-			//double dp1 = 2*(p0-p1).Length()/(p0+p1).Length();
-			//double dpn = 2*(p0-pn).Length()/(p0+pn).Length();
 			Console.WriteLine("dE1/E = {0}", (E1 - E0) / E0);
-			//Console.WriteLine("dp1/p = {0}", dp1);
 			Console.WriteLine("dEn/E = {0}", (En - E0) / E0);
-			//Console.WriteLine("dpn/p = {0}", dpn);
 			Vector3 EarthN = new Vector3(X[9], X[10], X[11]);
-			Console.WriteLine("{0} - {1} ->\n {2}", Earth1, EarthN, (Earth1 - EarthN).Length());  
+			Console.WriteLine("RK4 Earth drift: {0} - {1} ->\n {2}", Earth1, EarthN, (Earth1 - EarthN).Length());  
+
+			Earth1 = new Vector3(fr.X[9], fr.X[10], fr.X[11]);
+			sw.Start();
+			fr.Evaluate(N);
+			sw.Stop();
+			EarthN = new Vector3(fr.X[9], fr.X[10], fr.X[11]);
+			Console.WriteLine("Verlet {0} steps total {1} ms ave {2} mus",
+				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
+			Energy(s.GM, fr.X.Concat(fr.V).ToArray(), out Efr, out pfr);
+			Console.WriteLine("Verlet dEn/E = {0}", (Efr - E0) / E0);
+			Console.WriteLine("Verlet Earth drift: {0} - {1} ->\n {2}", Earth1, EarthN, (Earth1 - EarthN).Length());  
 			if (!vectors)
 				return;
 			sw.Restart();
