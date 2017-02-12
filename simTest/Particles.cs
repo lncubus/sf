@@ -19,6 +19,13 @@ namespace simTest
 			return new Vectors.Vector3(a[3 * i], a[3 * i + 1], a[3 * i + 2]);
 		}
 
+		public static void SetR(double[] a, int i, Vectors.Vector3 v)
+		{
+			a[3 * i] = v.X;
+			a[3 * i + 1] = v.Y;
+			a[3 * i + 2] = v.Z;
+		}
+
 		public static Vectors.Vector3 GetR(Vectors.Vector a, int i)
 		{
 			return new Vectors.Vector3(a[3 * i], a[3 * i + 1], a[3 * i + 2]);
@@ -32,22 +39,6 @@ namespace simTest
 			for (int i = 0; i < half; i++)
 				va[i] = sv[half + i];
 			// V' = A = ...
-/*
-    for i in range(0, n):
-        ai = [0.0]*D3
-        ri = x[D3*2*i:D3*(2*i+1)]
-        for j in range(n-1, -1, -1):
-            if i == j:
-                continue
-            rj = x[D3*2*j:D3*(2*j+1)]
-            vect = rj - ri
-            radius = numpy.linalg.norm(vect)
-            vect /= radius
-            power = GM[j]/(radius*radius)
-#            print(i, j, power)
-            ai += power*vect
-        result[D3*(2*i+1):D3*2*(i+1)] = ai
-*/
 			for (int i = 0; i < n; i++)
 			{
 				var ai = new Vectors.Vector3();
@@ -97,11 +88,29 @@ namespace simTest
 			}
 			return new Vectors.Vector(v.Concat(a));
 		}
+
 		// public Action<double, double[], double[], double[]> F
 		// F(t, X, V) -> A
 		public void FVX(double t, double[] X, double[] V, double[] A)
 		{
-			
+			int n = GM.Length;
+			for (int i = 0; i < n; i++)
+			{
+				var ai = new Vectors.Vector3();
+				var ri = GetR(X, i);
+				for (int j = n - 1; j >= 0; j--)
+				{
+					if (i == j)
+						continue;
+					var rj = GetR(X, j);
+					var vect = rj - ri;
+					var square_radius = vect.LengthSquared();
+					vect /= Math.Sqrt(square_radius);
+					var power = GM[j] / square_radius;
+					ai += vect * power;
+				}
+				SetR(A, i, ai);
+			}
 		}
 	}
 }
