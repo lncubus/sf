@@ -7,6 +7,9 @@ namespace Solvers
 	/// </summary>
 	public class ForestRuthIntegrator
 	{
+		public static readonly double[] Verlet_C = {0, 1.0};
+		public static readonly double[] Verlet_D = {0.5, 0.5};
+
 		private int N;
 		private double[] _A;
 
@@ -21,12 +24,14 @@ namespace Solvers
 		/// <summary>
 		/// Verlet method
 		/// </summary>
-		private readonly double[] C = {0, 1};
-		private readonly double[] D = {0.5, 0.5};
+		private readonly double[] C;
+		private readonly double[] D;
 		private readonly int n;
 
-		public ForestRuthIntegrator()
+		public ForestRuthIntegrator(double[] c, double[] d)
 		{
+			C = c;
+			D = d;
 			if (C.Length != D.Length)
 				throw new InvalidOperationException("C and D length are inconsistent");
 			n = C.Length;

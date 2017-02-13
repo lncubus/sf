@@ -335,7 +335,7 @@ namespace simTest
 				X = new Vector(X0),
 				F = s.FV,
 			};
-			var fr = new ForestRuthIntegrator
+			var verlet = new ForestRuthIntegrator(ForestRuthIntegrator.Verlet_C, ForestRuthIntegrator.Verlet_D)
 			{
 				t = 0,
 				dt = year / N,
@@ -350,14 +350,14 @@ namespace simTest
 			double E0, E1, En, Ev, Efr;
 			Vector3 p0, p1, pn, pv, pfr;
 			Energy(s.GM, rka.X, out E0, out p0);
-			Energy(s.GM, fr.X.Concat(fr.V).ToArray(), out Efr, out pfr);
+			Energy(s.GM, verlet.X.Concat(verlet.V).ToArray(), out Efr, out pfr);
 
 			//SolverExtensions.Debug = true;
 			//Console.WriteLine("Array");
 			rka.Step();
 			//Console.WriteLine("Vector");
 			rkv.Step();
-			fr.Step();
+			verlet.Step();
 //			Console.WriteLine("dt = {0} {4:F}s dX/dt max = {1}, min = {2}, len = {3}",
 //				rkv.dt, rkv.dXdt.Max(Math.Abs), rkv.dXdt.Min(Math.Abs), Math.Sqrt(rkv.dXdt.Sum(z => z * z)),
 //				rkv.dt*86400);
@@ -368,7 +368,7 @@ namespace simTest
 
 			Energy(s.GM, rka.X, out E1, out p1);
 			Energy(s.GM, rkv.X.ToArray(), out Ev, out pv);
-			Energy(s.GM, fr.X.Concat(fr.V).ToArray(), out Efr, out pfr);
+			Energy(s.GM, verlet.X.Concat(verlet.V).ToArray(), out Efr, out pfr);
 
 			Console.WriteLine("E0 = {0} E1a = {1} E1v = {2} E1fr = {3}", E0, E1, Ev, Efr);
 			//if (p1 != pv)
@@ -386,14 +386,14 @@ namespace simTest
 			Vector3 EarthN = new Vector3(X[9], X[10], X[11]);
 			Console.WriteLine("RK4 Earth drift: {0} - {1} ->\n {2}", Earth1, EarthN, (Earth1 - EarthN).Length());  
 
-			Earth1 = new Vector3(fr.X[9], fr.X[10], fr.X[11]);
+			Earth1 = new Vector3(verlet.X[9], verlet.X[10], verlet.X[11]);
 			sw.Restart();
-			fr.Evaluate(N);
+			verlet.Evaluate(N);
 			sw.Stop();
-			EarthN = new Vector3(fr.X[9], fr.X[10], fr.X[11]);
+			EarthN = new Vector3(verlet.X[9], verlet.X[10], verlet.X[11]);
 			Console.WriteLine("Verlet {0} steps total {1} ms ave {2} mus",
 				N, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds*1000.0/N);
-			Energy(s.GM, fr.X.Concat(fr.V).ToArray(), out Efr, out pfr);
+			Energy(s.GM, verlet.X.Concat(verlet.V).ToArray(), out Efr, out pfr);
 			Console.WriteLine("Verlet dEn/E = {0}", (Efr - E0) / E0);
 			Console.WriteLine("Verlet Earth drift: {0} - {1} ->\n {2}", Earth1, EarthN, (Earth1 - EarthN).Length());  
 			if (!vectors)
