@@ -273,7 +273,7 @@ namespace simTest
 			Impulse = impulse;
 		}
 
-		void RunSolarSystem(int N, bool vectors = true)
+		void RunSolarSystem(int N, bool vectors = false)
 		{
 			var s = new Particles
 			{
@@ -387,7 +387,7 @@ namespace simTest
 			Console.WriteLine("RK4 Earth drift: {0} - {1} ->\n {2}", Earth1, EarthN, (Earth1 - EarthN).Length());  
 
 			Earth1 = new Vector3(fr.X[9], fr.X[10], fr.X[11]);
-			sw.Start();
+			sw.Restart();
 			fr.Evaluate(N);
 			sw.Stop();
 			EarthN = new Vector3(fr.X[9], fr.X[10], fr.X[11]);
