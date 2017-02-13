@@ -7,6 +7,9 @@ namespace Solvers
 	/// </summary>
 	public class ForestRuthIntegrator
 	{
+		/// <summary>
+		/// Verlet method
+		/// </summary>
 		public static readonly double[] Verlet_C = {0, 1.0};
 		public static readonly double[] Verlet_D = {0.5, 0.5};
 
@@ -30,9 +33,7 @@ namespace Solvers
 		public double[] V { get; set; }
 		public double[] A { get { return _A; } }
 
-		/// <summary>
-		/// Verlet method
-		/// </summary>
+
 		private readonly double[] C;
 		private readonly double[] D;
 		private readonly int n;
