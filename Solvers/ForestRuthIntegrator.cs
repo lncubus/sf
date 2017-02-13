@@ -10,6 +10,15 @@ namespace Solvers
 		public static readonly double[] Verlet_C = {0, 1.0};
 		public static readonly double[] Verlet_D = {0.5, 0.5};
 
+		/// <summary>
+		/// c_{1}&=1,&c_{2}&=-{\tfrac {2}{3}},&c_{3}&={\tfrac {2}{3}},
+		/// </summary>
+		public static readonly double[] Ruth_C = {1.0, -2.0/3.0, 2.0/3.0};
+		/// <summary>
+		/// d_{1}&=-{\tfrac {1}{24}},&d_{2}&={\tfrac {3}{4}},&d_{3}&={\tfrac {7}{24}}.
+		/// </summary>
+		public static readonly double[] Ruth_D = {-1.0/24.0, 3.0/4.0, 7.0/24.0};
+
 		private int N;
 		private double[] _A;
 
