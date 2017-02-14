@@ -22,6 +22,31 @@ namespace Solvers
 		/// </summary>
 		public static readonly double[] Ruth_D = {-1.0/24.0, 3.0/4.0, 7.0/24.0};
 
+		/// <summary>
+		/// Ruth-Forest
+		/// </summary>
+		public static readonly double[] RuthForest_C = new double[4];
+		public static readonly double[] RuthForest_D = new double[4];
+
+		static ForestRuthIntegrator()
+		{
+			double curt2 = Math.Pow(2.0, 1.0 / 3.0);
+			double f2_curt2 = 2.0 - curt2;
+			double c1_4 = 1 / (2.0 * f2_curt2);
+			double c2_3 = (1.0 - curt2) / (2.0 * f2_curt2);
+			double d1_3 = 1.0 / f2_curt2;
+			double d2 = -curt2 / f2_curt2;
+			RuthForest_C[0] = c1_4;
+			RuthForest_C[1] = c2_3;
+			RuthForest_C[2] = c2_3;
+			RuthForest_C[3] = c1_4;
+			RuthForest_D[0] = d1_3;
+			RuthForest_D[1] = d2;
+			RuthForest_D[2] = d1_3;
+			RuthForest_D[3] = 0;
+
+		}
+
 		private int N;
 		private double[] _A;
 
