@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<project name="Views" default="Debug" basedir=".">	
+	<property name="project.root" value="..\bin"/>
+	<target name="Debug">
+		<nant buildfile="Pvax.UI\nant.build" target="Debug"/>
+		<nant buildfile="Pvax.UI.Tests\nant.build" target="Debug"/>
+		<nant buildfile="TestBench\nant.build" target="Debug"/>
+		<nant buildfile="StringBox\nant.build" target="Debug"/>
+	</target>
+	<target name="Release">
+		<nant buildfile="Pvax.UI\nant.build" target="Release"/>
+		<nant buildfile="Pvax.UI.Tests\nant.build" target="Release"/>
+		<nant buildfile="TestBench\nant.build" target="Release"/>
+		<nant buildfile="StringBox\nant.build" target="Release"/>
+	</target>
+	<target name="Doc">
+		<nant buildfile="Pvax.UI\nant.build" target="Doc"/>
+	</target>
+	<target name="Clean">
+		<delete dir="bin" failonerror="false"/>
+	</target>
+</project>
