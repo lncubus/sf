@@ -627,16 +627,16 @@ namespace Pvax.UI
 					format.LineAlignment = StringAlignment.Center;
 					break;
 				case ContentAlignment.TopCenter:
-					format.Alignment = StringAlignment.Near;
-					format.LineAlignment = StringAlignment.Center;
+                    format.Alignment = StringAlignment.Center;
+					format.LineAlignment = StringAlignment.Near;
 					break;
 				case ContentAlignment.TopLeft:
 					format.Alignment = StringAlignment.Near;
 					format.LineAlignment = StringAlignment.Near;
 					break;
 				case ContentAlignment.TopRight:
-					format.Alignment = StringAlignment.Near;
-					format.LineAlignment = StringAlignment.Far;
+					format.Alignment = StringAlignment.Far;
+                    format.LineAlignment = StringAlignment.Near;
 					break;
 			}
 		}
