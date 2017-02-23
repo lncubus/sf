@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+
             this.viewContainer1 = new Pvax.UI.Views.ViewContainer();
             this.SuspendLayout();
             // 
