@@ -43,23 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="QControl.Designer.cs">
-      <DependentUpon>QControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="QScreen.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="QScreen.Designer.cs">
-      <DependentUpon>QScreen.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="QScreen.resx">
-      <DependentUpon>QScreen.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

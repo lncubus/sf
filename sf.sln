@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectors", "Vectors\Vectors.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solvers", "Solvers\Solvers.csproj", "{0F973619-6A14-470C-9C14-08637D881367}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "Controls\Controls.csproj", "{F27F7680-1AAC-48A5-87C2-062F457C1732}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlsTest", "ControlsTest\ControlsTest.csproj", "{2E8AB3E7-9279-4081-B71F-2F7F8BB79FC4}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{0F973619-6A14-470C-9C14-08637D881367}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F973619-6A14-470C-9C14-08637D881367}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F973619-6A14-470C-9C14-08637D881367}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F27F7680-1AAC-48A5-87C2-062F457C1732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F27F7680-1AAC-48A5-87C2-062F457C1732}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F27F7680-1AAC-48A5-87C2-062F457C1732}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F27F7680-1AAC-48A5-87C2-062F457C1732}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E8AB3E7-9279-4081-B71F-2F7F8BB79FC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E8AB3E7-9279-4081-B71F-2F7F8BB79FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E8AB3E7-9279-4081-B71F-2F7F8BB79FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
