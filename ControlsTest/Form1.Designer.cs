@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.qScreen1 = new Controls.QScreen();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
@@ -83,17 +82,6 @@
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(940, 22);
             this.statusStrip1.TabIndex = 2;
-            // 
-            // qScreen1
-            // 
-            this.qScreen1.BackColor = System.Drawing.Color.Black;
-            this.qScreen1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.qScreen1.ForeColor = System.Drawing.Color.White;
-            this.qScreen1.Location = new System.Drawing.Point(0, 25);
-            this.qScreen1.Name = "qScreen1";
-            this.qScreen1.Size = new System.Drawing.Size(940, 503);
-            this.qScreen1.TabIndex = 3;
-            this.qScreen1.Text = "qScreen1";
             // 
             // toolStripButton1
             // 
@@ -239,7 +227,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(940, 550);
-            this.Controls.Add(this.qScreen1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.ForeColor = System.Drawing.Color.White;
@@ -257,7 +244,6 @@
         #endregion
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private Controls.QScreen qScreen1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
