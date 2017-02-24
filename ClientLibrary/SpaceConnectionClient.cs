@@ -24,33 +24,25 @@ namespace ClientLibrary
 
         public string Connect ()
         {
-            Debug.Write("(Connect...");
-            var result = Channel.Connect();
-            Debug.WriteLine("...)");
-            return result;
+            Debug.WriteLine("Connect");
+            return Channel.Connect();
         }
 
         public bool Login(string response)
         {
- //           Debug.Write("(Login...");
-            var result = Channel.Login(response);
-   //         Debug.WriteLine("...)");
-            return result;
+            Debug.WriteLine("Login");
+            return Channel.Login(response);
         }
 
         public void Logout()
         {
-     //       Debug.Write("(Logout...");
+            Debug.WriteLine("Logout");
             Channel.Logout();
-       //     Debug.WriteLine("...)");
         }
 
         public int Ping()
         {
-         //   Debug.Write("(Ping...");
-            var result = Channel.Ping();
-           // Debug.WriteLine("...)");
-            return result;
+            return Channel.Ping();
         }
     }
 }

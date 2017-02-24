@@ -9,8 +9,6 @@ namespace ClientTest
 {
     class MainClass
     {
-        const int N = 10;
-
         public static void Main(string[] args)
         {
             using(var listener = new ConsoleTraceListener())
@@ -42,60 +40,48 @@ namespace ClientTest
                     ListenBacklog = 50,
                 };
             var address = new EndpointAddress ("net.tcp://localhost:8090");
-            var clients = new List<SpaceConnectionClient>();
             var random = new Random();
+            SpaceConnectionClient client = null;
 
-            int i = 0;
             while (true)
             {
-                int n = clients.Count;
-                int die = random.Next(N) + random.Next(N);
-                if (die >= n)
+                if (client == null || client.State != CommunicationState.Opened)
                 {
                     try
                     {
-                        var client = new SpaceConnectionClient(binding, address);
+                        client = new SpaceConnectionClient(binding, address);
                         string nonce = client.Connect();
                         byte[] answer = new byte[16];
                         random.NextBytes(answer);
                         string response = BitConverter.ToString(answer);
                         client.Login(response);
-                        clients.Add(client);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine("\nError:\n" + ex.ToString());
                     }
                 }
-                else if (die < n)
+                try
                 {
-                    try
-                    {
-                        var client = clients[die];
-                        clients.RemoveAt(die);
-                        client.Logout();
-                        client.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("\nError:\n" + ex.ToString());
-                    }
+                    Console.WriteLine("{0} {1}", client.State, client.Ping());
                 }
-                foreach (var client in clients)
+                catch (Exception ex)
                 {
-                    Console.Write(client.State);
-                    Console.Write(" ");
-                    if (random.Next(n) >= 2)
-                        continue;
-                    try
-                    {
-                        Console.Write(client.Ping());
-                        Console.Write(" ");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("\nError:\n" + ex.ToString());
-                    }
+                    Console.WriteLine("\nError:\n" + ex.ToString());
+                }
+                if (random.Next(1000) == 0)
+                try
+                {
+                    client.Logout();
+                    client.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("\nError:\n" + ex.ToString());
+                }
+                finally
+                {
+                    client = null;
                 }
             }
         }
