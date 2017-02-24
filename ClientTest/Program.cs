@@ -69,7 +69,7 @@ namespace ClientTest
                 {
                     Console.WriteLine("\nError:\n" + ex.ToString());
                 }
-                if (random.Next(1000) == 0)
+                if (random.Next(100) == 0)
                 try
                 {
                     client.Logout();
