@@ -101,13 +101,13 @@ namespace Sample
 
 			public Color HoverColor = Color.Empty;
 
-			public string Text;
+//			public string Text;
 
 			public void Draw(Graphics g, Font font, float scaleX, float scaleY, bool hovering)
 			{
 				Color color = hovering && HoverColor != Color.Empty ? HoverColor : FillColor;
 				Brush brush = DrawHelper.Instance.CreateSolidBrush(color);
-				Pen pen = DrawHelper.Instance.CreateColorPen(EdgeColor, 2);
+				Pen pen = DrawHelper.Instance.CreateColorPen(EdgeColor, 1.5F);
                 float x = scaleX * (X - W/2);
                 float y = scaleY * (Y - H/2);
                 float w = scaleX * W;
@@ -151,7 +151,11 @@ namespace Sample
                     brush = DrawHelper.Instance.CreateSolidBrush(TextColor);
                     StringFormat format =
                         DrawHelper.Instance.CreateTypographicStringFormat(ContentAlignment.TopCenter);
-                    g.DrawString(Text, font, brush, x + w * 0.5F, y + h + scaleY/12, format);
+                    int tx = (int)(x + w / 2);
+                    int ty = (int)(y + h + scaleY / 12);
+                    tx -= tx % 4;
+                    ty -= ty % 4;
+                    g.DrawString(Text, font, brush, tx, ty, format);
                 }
 			}
 		}
