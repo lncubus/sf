@@ -146,17 +146,6 @@ namespace Sample
                         g.DrawPath(pen, flower);
                         break;
 				}
-                if (!string.IsNullOrEmpty(Text))
-                {
-                    brush = DrawHelper.Instance.CreateSolidBrush(TextColor);
-                    StringFormat format =
-                        DrawHelper.Instance.CreateTypographicStringFormat(ContentAlignment.TopCenter);
-                    int tx = (int)(x + w / 2);
-                    int ty = (int)(y + h + scaleY / 12);
-                    tx -= tx % 4;
-                    ty -= ty % 4;
-                    g.DrawString(Text, font, brush, tx, ty, format);
-                }
 			}
 		}
 	}

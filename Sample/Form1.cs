@@ -28,7 +28,7 @@ namespace Sample
         {
             InitializeComponent();
 
-			//Font = new Font(Font.FontFamily, Font.Size * 1.5F);
+        //    Font = new Font(Font.FontFamily, Font.Size * 1.5F);
 
 		//	imageView1 = new Pvax.UI.Views.ImageView()
 		//	{
@@ -39,6 +39,7 @@ namespace Sample
 
             spaceView = new SpaceView(0, 0, 1200, 700);
             var icons = spaceView.Icons;
+            Color textColor = Color.FromArgb(192, Color.White);
             icons.AddRange(new []
                 {
                     new SpaceView.Icon
@@ -46,26 +47,26 @@ namespace Sample
                         EdgeColor = Color.White,
                         FillColor = Color.FromArgb(128, Color.White),
                         HoverColor = Color.White,
-                        TextColor = Color.White,
+                        TextColor = textColor,
                         Symbol = SpaceView.Symbol.Ellipse,
                         X = 1,
                         Y = 1,
                         W = 0.35355F,
                         H = 0.35355F,
-                        Text = "Планета",
+                        //Text = "Планета",
                     },
                     new SpaceView.Icon
                     {
                         EdgeColor = Color.White,
                         FillColor = Color.FromArgb(128, Color.Aqua),
                         HoverColor = Color.White,
-                        TextColor = Color.White,
+                        TextColor = textColor,
                         Symbol = SpaceView.Symbol.Cross,
                         X = 2,
                         Y = 2,
                         W = 0.35355F,
                         H = 0.35355F,
-                        Text = "Ambulance",
+                        //Text = "Ambulance",
                     },
                     new SpaceView.Icon
                     {
@@ -73,38 +74,38 @@ namespace Sample
                         FillColor = Color.FromArgb(185, 0, 100, 176),
                         HoverColor = Color.FromArgb(0, 100, 176),
                         Symbol = SpaceView.Symbol.Rectangle,
-                        TextColor = Color.White,
+                        TextColor = textColor,
                         X = 1F,
                         Y = 1F,
                         W = 0.5F,
                         H = 0.278F,
-                        Text = "Друг",
+                        //Text = "Друг",
                     },
                     new SpaceView.Icon
                     {
                         EdgeColor = Color.FromArgb(0, 255, 0),
                         FillColor = Color.FromArgb(174, 0, 255, 0),
                         HoverColor = Color.FromArgb(0, 255, 0),
-                        TextColor = Color.White,
+                        TextColor = textColor,
                         Symbol = SpaceView.Symbol.Rectangle,
                         X = 1,
                         Y = 1,
                         W = 0.35355F,
                         H = 0.35355F,
-                        Text = "Сосед",
+                        //Text = "Сосед",
                     },
                     new SpaceView.Icon
                     {
                         EdgeColor = Color.FromArgb(170, 170, 0),
                         FillColor = Color.FromArgb(177, 170, 170, 0),
                         HoverColor = Color.FromArgb(170, 170, 0),
-                        TextColor = Color.White,
+                        TextColor = textColor,
                         Symbol = SpaceView.Symbol.Quatrefoil,
                         X = 1,
                         Y = 1,
                         W = 0.5F,
                         H = 0.5F,
-                        Text = "Хер с горы",
+                        //Text = "Хер с горы",
                     },
                     new SpaceView.Icon
                     {
@@ -112,12 +113,12 @@ namespace Sample
                         FillColor = Color.FromArgb(180, 255, 0, 0),
                         HoverColor = Color.FromArgb(255, 0, 0),
                         Symbol = SpaceView.Symbol.Diamond,
-                        TextColor = Color.White,
+                        TextColor = textColor,
                         X = 1F,
                         Y = 1F,
                         W = 0.5F,
                         H = 0.5F,
-                        Text = "Враг",
+                        //Text = "Враг",
                     },
                 });
 
