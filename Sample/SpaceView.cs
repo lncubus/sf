@@ -108,10 +108,10 @@ namespace Sample
 				Color color = hovering && HoverColor != Color.Empty ? HoverColor : FillColor;
 				Brush brush = DrawHelper.Instance.CreateSolidBrush(color);
 				Pen pen = DrawHelper.Instance.CreateColorPen(EdgeColor, 2);
-                float x = scaleX * X;
-                float y = scaleY * Y;
-                float w = scaleX * W - 1;
-                float h = scaleY * H - 1;
+                float x = scaleX * (X - W/2);
+                float y = scaleY * (Y - H/2);
+                float w = scaleX * W;
+                float h = scaleY * H;
                 switch (Symbol)
 				{
                     case Symbol.Rectangle:

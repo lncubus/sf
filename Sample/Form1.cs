@@ -50,8 +50,8 @@ namespace Sample
                         Symbol = SpaceView.Symbol.Ellipse,
                         X = 1,
                         Y = 1,
-                        W = 0.666F,
-                        H = 0.666F,
+                        W = 0.35355F,
+                        H = 0.35355F,
                         Text = "Планета",
                     },
                     new SpaceView.Icon
@@ -63,8 +63,8 @@ namespace Sample
                         Symbol = SpaceView.Symbol.Cross,
                         X = 2,
                         Y = 2,
-                        W = 0.666F,
-                        H = 0.666F,
+                        W = 0.35355F,
+                        H = 0.35355F,
                         Text = "Ambulance",
                     },
                     new SpaceView.Icon
