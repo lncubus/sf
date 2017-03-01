@@ -1,0 +1,43 @@
+<Project name="Pvax.UI" standardNamespace="Pvax.UI" description="" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
+  <Contents>
+    <File name=".\AssemblyInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\ViewContainer.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\CompositeView.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\IView.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\View.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\ViewCollection.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\ButtonView.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\ImageView.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\LabelView.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\IControlService.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views" subtype="Directory" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\NullControlService.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\AbstractView.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\ViewContainerDesigner.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\strings.resources" subtype="Code" buildaction="EmbedAsResource" dependson="" data="" />
+    <File name=".\RD.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\nant.build" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\Views\NamespaceDoc.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\DrawHelper.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Views\PanelView.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+  </Contents>
+  <References />
+  <DeploymentInformation target="" script="" strategy="File" />
+  <Configuration runwithwarnings="True" name="Debug">
+    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="NET11;DEBUG;TRACE;TEST" generatexmldocumentation="True" win32Icon="" noconfig="False" nostdlib="False" />
+    <Execution commandlineparameters="" consolepause="False" />
+    <Output directory="..\bin\Debug" assembly="Pvax.UI" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+  </Configuration>
+  <Configurations active="Debug">
+    <Configuration runwithwarnings="True" name="Debug">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="NET11;DEBUG;TRACE;TEST" generatexmldocumentation="True" win32Icon="" noconfig="False" nostdlib="False" />
+      <Execution commandlineparameters="" consolepause="False" />
+      <Output directory="..\bin\Debug" assembly="Pvax.UI" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+    </Configuration>
+    <Configuration runwithwarnings="True" name="Release">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="NET11;NDEBUG;TRACE" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
+      <Execution commandlineparameters="" consolepause="False" />
+      <Output directory="..\bin\Release" assembly="Pvax.UI" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+    </Configuration>
+  </Configurations>
+</Project>

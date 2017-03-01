@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<project name="Pvax.UI.Tests" default="Debug" basedir=".">
+	<description>Unit tests.</description>
+	<property name="project.root" value="bin" unless="${property::exists('project.root')}"/>
+	<target name="Debug">
+		<description>Build the debug version of the project.</description>
+		<property name="target.dir" value="${project.root}\Debug"/>
+		<property name="target.optimize" value="false"/>
+		<property name="target.checked" value="true"/>
+		<property name="target.debug" value="true"/>
+		<property name="target.define" value="NET11;DEBUG;TRACE"/>
+		<call target="build"/>
+	</target>
+	<target name="Release">
+		<description>Build the release version of the project.</description>
+		<property name="target.dir" value="${project.root}\Release"/>
+		<property name="target.optimize" value="true"/>
+		<property name="target.checked" value="false"/>
+		<property name="target.debug" value="false"/>
+		<property name="target.define" value="NET11;TRACE"/>
+		<call target="build"/>
+	</target>
+	<target name="build" description="Default build target">
+		<description>Build the project.</description>
+		<mkdir dir="${target.dir}"/>
+		<copy file="config.xml" tofile="${target.dir}\Pvax.UI.Tests.dll.config"/>
+		<csc output="${target.dir}\Pvax.UI.Tests.dll" target="library"
+		     optimize="${target.optimize}"
+		     checked="${target.checked}"
+		     debug="${target.debug}"
+		     define="${target.define}">
+			<sources>
+				<include name="*.cs"/>
+			</sources>
+			<resources>
+				<include name="*.resources"/>
+			</resources>
+			<references>
+				<include name="${nant::get-base-directory()}lib\net\1.1\nunit.core.dll"/>
+				<include name="${nant::get-base-directory()}lib\net\1.1\nunit.framework.dll"/>
+				<include name="${target.dir}\Pvax.UI.dll"/>
+			</references>
+		</csc>
+		<nunit2>
+			<formatter type="Plain"/>
+			<test assemblyname="${target.dir}\Pvax.UI.Tests.dll" appconfig="${target.dir}\Pvax.UI.Tests.dll.config"/>
+		</nunit2>
+	</target>
+</project>

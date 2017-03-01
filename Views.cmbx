@@ -1,0 +1,28 @@
+<Combine fileversion="1.0" name="Views" description="">
+  <StartMode startupentry="TestBench" single="True">
+    <Execute entry="Pvax.UI" type="None" />
+    <Execute entry="StringBox" type="None" />
+    <Execute entry="Pvax.UI.Tests" type="None" />
+    <Execute entry="TestBench" type="None" />
+  </StartMode>
+  <Entries>
+    <Entry filename=".\Pvax.UI\Pvax.UI.prjx" />
+    <Entry filename=".\StringBox\StringBox.prjx" />
+    <Entry filename=".\Pvax.UI.Tests\Pvax.UI.Tests.prjx" />
+    <Entry filename=".\TestBench\TestBench.prjx" />
+  </Entries>
+  <Configurations active="Release">
+    <Configuration name="Release">
+      <Entry name="Pvax.UI" configurationname="Debug" build="False" />
+      <Entry name="StringBox" configurationname="Debug" build="False" />
+      <Entry name="Pvax.UI.Tests" configurationname="Debug" build="False" />
+      <Entry name="TestBench" configurationname="Debug" build="False" />
+    </Configuration>
+    <Configuration name="Debug">
+      <Entry name="Pvax.UI" configurationname="Debug" build="False" />
+      <Entry name="StringBox" configurationname="Debug" build="False" />
+      <Entry name="Pvax.UI.Tests" configurationname="Debug" build="False" />
+      <Entry name="TestBench" configurationname="Debug" build="False" />
+    </Configuration>
+  </Configurations>
+</Combine>

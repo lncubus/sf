@@ -1,0 +1,16 @@
+<Combine fileversion="1.0" name="Pvax.UI" description="">
+  <StartMode startupentry="Pvax.UI" single="True">
+    <Execute entry="Pvax.UI" type="None" />
+  </StartMode>
+  <Entries>
+    <Entry filename=".\Pvax.UI.prjx" />
+  </Entries>
+  <Configurations active="Debug">
+    <Configuration name="Release">
+      <Entry name="Pvax.UI" configurationname="Debug" build="False" />
+    </Configuration>
+    <Configuration name="Debug">
+      <Entry name="Pvax.UI" configurationname="Debug" build="False" />
+    </Configuration>
+  </Configurations>
+</Combine>

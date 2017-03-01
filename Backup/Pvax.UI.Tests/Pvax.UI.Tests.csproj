@@ -1,0 +1,76 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" xmlns:Conversion="urn:Conversion">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{458340DD-270A-4998-88D0-54B244571817}</ProjectGuid>
+    <RootNamespace>Pvax.UI.Tests</RootNamespace>
+    <AssemblyName>Tests</AssemblyName>
+    <OutputType>Library</OutputType>
+    <ApplicationIcon />
+    <WarningLevel>4</WarningLevel>
+    <NoWarn />
+    <StartupObject />
+    <NoStdLib>False</NoStdLib>
+    <NoConfig>False</NoConfig>
+    <RunPostBuildEvent>OnSuccessfulBuild</RunPostBuildEvent>
+    <PreBuildEvent />
+    <PostBuildEvent />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <Optimize>False</Optimize>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>NET11;DEBUG;TRACE;TEST</DefineConstants>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>False</DebugSymbols>
+    <Optimize>True</Optimize>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>NET11;NDEBUG;TRACE</DefineConstants>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="nunit.util">
+      <HintPath>C:\Program Files\SharpDevelop\1.1\bin\nunit.util.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.core">
+      <HintPath>C:\Program Files\SharpDevelop\1.1\bin\nunit.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>C:\Program Files\SharpDevelop\1.1\bin\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="TestViewCollection.cs" />
+    <Compile Include="MockView.cs" />
+    <Compile Include="TestView.cs" />
+    <Compile Include="ViewCollectionTestBase.cs" />
+    <Compile Include="TestViewCollectionInViewContainer.cs" />
+    <Compile Include="TestViewCollectionInCompositeView.cs" />
+    <None Include="nant.build" />
+    <None Include="config.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Pvax.UI\Pvax.UI.csproj">
+      <Project>{4F57E76A-35F1-43E6-B4A9-20A95ABD7C72}</Project>
+      <Name>Pvax.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
