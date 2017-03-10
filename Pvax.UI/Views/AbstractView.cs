@@ -122,7 +122,7 @@ namespace Pvax.UI.Views
 		/// Gets or sets the horizontal coordinate of the view relative to it's
 		/// parent object.
 		/// </summary>
-		public abstract int X
+		public abstract int Left
 		{
 			get;
 			set;
@@ -132,7 +132,7 @@ namespace Pvax.UI.Views
 		/// Gets or sets the vertical coordinate of the view relative to it's
 		/// parent object.
 		/// </summary>
-		public abstract int Y
+		public abstract int Top
 		{
 			get;
 			set;
@@ -431,7 +431,7 @@ namespace Pvax.UI.Views
 		{
 			get
 			{
-				return new Point(X, Y);
+				return new Point(Left, Top);
 			}
 		}
 
@@ -484,7 +484,7 @@ namespace Pvax.UI.Views
 		{
 			if((null == Parent.Control) || !Parent.Control.Created)
 				return;
-			Parent.InvalidateRectangle(x + X, y + Y, width, height);
+			Parent.InvalidateRectangle(x + Left, y + Top, width, height);
 		}
 
 		/// <summary>
@@ -590,7 +590,7 @@ namespace Pvax.UI.Views
 		/// <param name="posY">The y-coordinate of the mouse.</param>
 		protected virtual bool HitTest(int posX, int posY)
 		{
-			if((X <= posX) && (X + Width > posX) && (Y <= posY) && (Y + Height > posY))
+			if((Left <= posX) && (Left + Width > posX) && (Top <= posY) && (Top + Height > posY))
 				return true;
 			return false;
 		}

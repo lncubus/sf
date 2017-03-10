@@ -256,8 +256,8 @@ namespace Pvax.UI.Views
 			{
 				if(view.Visible)
 				{
-					size.Width = Math.Max(size.Width, view.X + view.Width);
-					size.Height = Math.Max(size.Height, view.Y + view.Height);
+					size.Width = Math.Max(size.Width, view.Left + view.Width);
+					size.Height = Math.Max(size.Height, view.Top + view.Height);
 				}
 			}
 			AutoScrollMinSize = size;
@@ -313,7 +313,7 @@ namespace Pvax.UI.Views
 		{
 			if(null == view)
 				return false;
-			Rectangle viewBounds = new Rectangle(view.X, view.Y, view.Width, view.Height);
+			Rectangle viewBounds = new Rectangle(view.Left, view.Top, view.Width, view.Height);
 			Rectangle client = ClientRectangle;
 			return client.IntersectsWith(viewBounds);
 		}
@@ -346,15 +346,15 @@ namespace Pvax.UI.Views
 			{
 				if(view.Visible)
 				{
-					bounds.X = view.X;
-					bounds.Y = view.Y;
+					bounds.X = view.Left;
+					bounds.Y = view.Top;
 					bounds.Width = view.Width;
 					bounds.Height = view.Height;
 					if(clipRect.IntersectsWith(bounds))
 					{
-						g.TranslateTransform(view.X + AutoScrollPosition.X, view.Y + AutoScrollPosition.Y);
+						g.TranslateTransform(view.Left + AutoScrollPosition.X, view.Top + AutoScrollPosition.Y);
 						view.Draw(g);
-						g.TranslateTransform(-view.X - AutoScrollPosition.X, -view.Y - AutoScrollPosition.Y);
+						g.TranslateTransform(-view.Left - AutoScrollPosition.X, -view.Top - AutoScrollPosition.Y);
 					}
 				}
 			}
@@ -383,7 +383,7 @@ namespace Pvax.UI.Views
 			{
 				capturingView = view;
 				Capture = true;
-				view.OnMouseDown(x - view.X, y - view.Y, e.Button);
+				view.OnMouseDown(x - view.Left, y - view.Top, e.Button);
 			}
 		}
 		
@@ -408,7 +408,7 @@ namespace Pvax.UI.Views
 			int x = e.X - AutoScrollPosition.X;
 			int y = e.Y - AutoScrollPosition.Y;
 			if(view.Enabled)
-				view.OnMouseUp(x - view.X, y - view.Y, e.Button);
+				view.OnMouseUp(x - view.Left, y - view.Top, e.Button);
 			capturingView = null;
 			Capture = false;
 		}
@@ -434,22 +434,16 @@ namespace Pvax.UI.Views
 			if(view == currentTrackingView)
 			{
 				if(null != view)
-					view.OnMouseHover(x - view.X, y - view.Y);
+					view.OnMouseHover(x - view.Left, y - view.Top);
 				return;
 			}
-			if(null != currentTrackingView)
+			if(null != currentTrackingView && currentTrackingView.Enabled)
 			{
-				if(currentTrackingView.Enabled)
-				{
-					currentTrackingView.OnMouseLeave(x - currentTrackingView.X, y - currentTrackingView.Y);
-				}
+				currentTrackingView.OnMouseLeave(x - currentTrackingView.Left, y - currentTrackingView.Top);
 			}
-			if(null != view)
+			if(null != view && view.Enabled)
 			{
-				if(view.Enabled)
-				{
-					view.OnMouseEnter(x - view.X, y - view.Y);
-				}
+				view.OnMouseEnter(x - view.Left, y - view.Top);
 			}
 			currentTrackingView = view;
 		}

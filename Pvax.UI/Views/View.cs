@@ -80,7 +80,7 @@ namespace Pvax.UI.Views
 		/// Gets or sets the horizontal coordinate of the view relative to it's
 		/// parent object.
 		/// </summary>
-		public override int X
+		public override int Left
 		{
 			get
 			{
@@ -102,7 +102,7 @@ namespace Pvax.UI.Views
 		/// Gets or sets the vertical coordinate of the view relative to it's
 		/// parent object.
 		/// </summary>
-		public override int Y
+		public override int Top
 		{
 			get
 			{

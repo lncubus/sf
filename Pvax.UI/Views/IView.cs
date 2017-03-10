@@ -57,7 +57,7 @@ namespace Pvax.UI.Views
 		/// Gets or sets the horizontal coordinate of the view relative to it's
 		/// parent object.
 		/// </summary>
-		int X
+		int Left
 		{
 			get;
 			set;
@@ -67,7 +67,7 @@ namespace Pvax.UI.Views
 		/// Gets or sets the vertical coordinate of the view relative to it's
 		/// parent object.
 		/// </summary>
-		int Y
+		int Top
 		{
 			get;
 			set;

@@ -45,7 +45,7 @@ namespace Pvax.App.StringBox
 				}
 			}
 
-			public override int X
+			public override int Left
 			{
 				get
 				{
@@ -56,7 +56,7 @@ namespace Pvax.App.StringBox
 				{}
 			}
 
-			public override int Y
+			public override int Top
 			{
 				get
 				{
@@ -134,10 +134,10 @@ namespace Pvax.App.StringBox
 		{
 			StringView sv = new StringView(this, text);
 			sv.Height = this.Font.Height + 2;
-			sv.Y = 0;
+			sv.Top = 0;
 			int index = base.Views.Count - 1;
 			if(index >= 0)
-				sv.Y += base.Views[index].Y + base.Views[index].Height;
+				sv.Top += base.Views[index].Top + base.Views[index].Height;
 			Views.Add(sv);
 		}
 

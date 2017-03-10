@@ -44,7 +44,7 @@ namespace Sample
             bool result;
             using (GraphicsPath path = new GraphicsPath())
             {
-                path.AddEllipse(X, Y, Width - 1, Height - 1);
+                path.AddEllipse(Left, Top, Width - 1, Height - 1);
                 result = path.IsVisible(posX, posY);
             }
             return result;

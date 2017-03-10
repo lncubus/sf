@@ -147,7 +147,7 @@ namespace Pvax.UI.Views
 		{
 //			rectangle.Offset(X, Y);
 //			Parent.InvalidateRectangle(rectangle);
-			Parent.InvalidateRectangle(x + X, y + Y, width, height);
+			Parent.InvalidateRectangle(x + Left, y + Top, width, height);
 		}
 		#endregion
 
@@ -201,9 +201,9 @@ namespace Pvax.UI.Views
 			{
 				if(view.Visible)
 				{
-					graphics.TranslateTransform(view.X, view.Y);
+					graphics.TranslateTransform(view.Left, view.Top);
 					view.Draw(graphics);
-					graphics.TranslateTransform(-view.X, -view.Y);
+					graphics.TranslateTransform(-view.Left, -view.Top);
 				}
 			}
 		}
@@ -227,7 +227,7 @@ namespace Pvax.UI.Views
 			if((null != view) && view.Enabled)
 			{
 				capturingView = view;
-				view.OnMouseDown(posX - X, posY - Y, buttons);
+				view.OnMouseDown(posX - Left, posY - Top, buttons);
 			}
 		}
 
@@ -252,7 +252,7 @@ namespace Pvax.UI.Views
 			if((null != view) && view.Enabled)
 			{
 				capturingView = null;
-				view.OnMouseUp(posX - X, posY - Y, buttons);
+				view.OnMouseUp(posX - Left, posY - Top, buttons);
 			}
 		}
 
@@ -267,14 +267,14 @@ namespace Pvax.UI.Views
 			if(view == currentTrackingView)
 			{
 				if(null != view)
-					view.OnMouseHover(posX - view.X, posY - view.Y);
+					view.OnMouseHover(posX - view.Left, posY - view.Top);
 				return;
 			}
 			if(null != currentTrackingView)
 			{
 				if(currentTrackingView.Enabled)
 				{
-					currentTrackingView.OnMouseLeave(posX - currentTrackingView.X, posY - currentTrackingView.Y);
+					currentTrackingView.OnMouseLeave(posX - currentTrackingView.Left, posY - currentTrackingView.Top);
 					currentTrackingView.Invalidate(0, 0, currentTrackingView.Width, currentTrackingView.Height);
 				}
 			}
@@ -282,7 +282,7 @@ namespace Pvax.UI.Views
 			{
 				if(view.Enabled)
 				{
-					view.OnMouseEnter(posX - view.X, posY - view.Y);
+					view.OnMouseEnter(posX - view.Left, posY - view.Top);
 					view.Invalidate(0, 0, view.Width, view.Height);
 				}
 			}
@@ -300,7 +300,7 @@ namespace Pvax.UI.Views
 			{
 				if(currentTrackingView.Enabled)
 				{
-					currentTrackingView.OnMouseLeave(posX - currentTrackingView.X, posY - currentTrackingView.Y);
+					currentTrackingView.OnMouseLeave(posX - currentTrackingView.Left, posY - currentTrackingView.Top);
 					currentTrackingView.Invalidate(0, 0, currentTrackingView.Width, currentTrackingView.Height);
 				}
 				currentTrackingView = null;
