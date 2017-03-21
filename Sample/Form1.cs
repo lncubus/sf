@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Sample
 {
@@ -17,16 +18,64 @@ namespace Sample
 	//	private Pvax.UI.Views.ImageView imageView1;
 	//	private Pvax.UI.Views.IView panelView1;
 
-	//	private EllipticButtonView ellipticButtonView1;
+		private EllipticButtonView ellipticButtonView1;
         private SpaceView spaceView;
       //  private TextBox textBox1;
         private Timer timer;
         private Random random = new Random();
-        Dictionary<SpaceView.Icon, PointF> velocity = new Dictionary<SpaceView.Icon, PointF>();
+        Dictionary<IconView, PointF> velocity = new Dictionary<IconView, PointF>();
+        List<IconView> icons;
+
+        void MoveShips(float w = 0)
+        {
+            {
+              //  spaceView.BeginUpdate();
+                foreach (IconView icon in icons)
+                {
+                    PointF v = velocity[icon];
+                    v.X += (float)(random.NextDouble() - 0.5)*0.01F;
+                    v.Y += (float)(random.NextDouble() - 0.5)*0.01F;
+                    if (icon.Left < 0)
+                        v.X = Math.Abs(v.X);
+                    if (icon.Top < 0)
+                        v.Y = Math.Abs(v.Y);
+                    if (icon.Left + icon.Width > spaceView.ClientSize.Width)
+                        v.X = -Math.Abs(v.X);
+                    if (icon.Top + icon.Height > spaceView.ClientSize.Height)
+                        v.Y = -Math.Abs(v.Y);
+                    if (Math.Abs(w) > 0.1)
+                    {
+                        v = new PointF(v.X * w, v.Y * w);
+                    }
+
+                    velocity[icon] = v;
+                    icon.X += v.X;
+                    icon.Y += v.Y;
+                }
+                //spaceView.EndUpdate();
+            };
+
+        }
 
         public Form1()
         {
             InitializeComponent();
+
+            // 
+            // viewContainer1
+            // 
+            this.spaceView = new SpaceView()
+            {
+                BackColor = System.Drawing.Color.DarkBlue,
+                BorderStyle = System.Windows.Forms.BorderStyle.None,
+                Dock = System.Windows.Forms.DockStyle.Fill,
+                ForeColor = System.Drawing.Color.White,
+                Location = new System.Drawing.Point(0, 0),
+                Name = "space",
+                Size = new System.Drawing.Size(292, 272),
+                TabIndex = 0,
+            };
+            this.Controls.Add(spaceView);
 
         //    Font = new Font(Font.FontFamily, Font.Size * 1.5F);
 
@@ -37,92 +86,100 @@ namespace Sample
 		//	};
 		//	viewContainer1.Views.Add(imageView1);
 
-            spaceView = new SpaceView(0, 0, 1200, 700);
-            var icons = spaceView.Icons;
+//            spaceView = new SpaceView(0, 0, 1200, 700);
             Color textColor = Color.FromArgb(192, Color.White);
-            icons.AddRange(new []
-                {
-                    new SpaceView.Icon
-                    {
-                        EdgeColor = Color.White,
-                        FillColor = Color.FromArgb(128, Color.White),
-                        HoverColor = Color.White,
-                        TextColor = textColor,
-                        Symbol = SpaceView.Symbol.Ellipse,
-                        X = 1,
-                        Y = 1,
-                        W = 0.35355F,
-                        H = 0.35355F,
-                        //Text = "Планета",
-                    },
-                    new SpaceView.Icon
-                    {
-                        EdgeColor = Color.White,
-                        FillColor = Color.FromArgb(128, Color.Aqua),
-                        HoverColor = Color.White,
-                        TextColor = textColor,
-                        Symbol = SpaceView.Symbol.Cross,
-                        X = 2,
-                        Y = 2,
-                        W = 0.35355F,
-                        H = 0.35355F,
-                        //Text = "Ambulance",
-                    },
-                    new SpaceView.Icon
-                    {
-                        EdgeColor = Color.FromArgb(0, 100, 176),
-                        FillColor = Color.FromArgb(185, 0, 100, 176),
-                        HoverColor = Color.FromArgb(0, 100, 176),
-                        Symbol = SpaceView.Symbol.Rectangle,
-                        TextColor = textColor,
-                        X = 1F,
-                        Y = 1F,
-                        W = 0.5F,
-                        H = 0.278F,
-                        //Text = "Друг",
-                    },
-                    new SpaceView.Icon
-                    {
-                        EdgeColor = Color.FromArgb(0, 255, 0),
-                        FillColor = Color.FromArgb(174, 0, 255, 0),
-                        HoverColor = Color.FromArgb(0, 255, 0),
-                        TextColor = textColor,
-                        Symbol = SpaceView.Symbol.Rectangle,
-                        X = 1,
-                        Y = 1,
-                        W = 0.35355F,
-                        H = 0.35355F,
-                        //Text = "Сосед",
-                    },
-                    new SpaceView.Icon
-                    {
-                        EdgeColor = Color.FromArgb(170, 170, 0),
-                        FillColor = Color.FromArgb(177, 170, 170, 0),
-                        HoverColor = Color.FromArgb(170, 170, 0),
-                        TextColor = textColor,
-                        Symbol = SpaceView.Symbol.Quatrefoil,
-                        X = 1,
-                        Y = 1,
-                        W = 0.5F,
-                        H = 0.5F,
-                        //Text = "Хер с горы",
-                    },
-                    new SpaceView.Icon
-                    {
-                        EdgeColor = Color.FromArgb(255, 0, 0),
-                        FillColor = Color.FromArgb(180, 255, 0, 0),
-                        HoverColor = Color.FromArgb(255, 0, 0),
-                        Symbol = SpaceView.Symbol.Diamond,
-                        TextColor = textColor,
-                        X = 1F,
-                        Y = 1F,
-                        W = 0.5F,
-                        H = 0.5F,
-                        //Text = "Враг",
-                    },
-                });
 
-            viewContainer1.Views.Add(spaceView);
+            icons = new List<IconView>()
+            {
+                new IconView
+                {
+                    EdgeColor = Color.White,
+                    BackColor = Color.FromArgb(128, Color.White),
+                    HoverColor = Color.White,
+                    ForeColor = textColor,
+                    Symbol = Symbol.Ellipse,
+                    X = (float)(random.NextDouble() - 0.5),
+                    Y = (float)(random.NextDouble() - 0.5),
+                    W = 0.35355F,
+                    H = 0.35355F,
+                    //Text = "Планета",
+                },
+                new IconView
+                {
+                    EdgeColor = Color.White,
+                    BackColor = Color.FromArgb(128, Color.Aqua),
+                    HoverColor = Color.White,
+                    ForeColor = textColor,
+                    Symbol = Symbol.Cross,
+                    X = (float)(random.NextDouble() - 0.5),
+                    Y = (float)(random.NextDouble() - 0.5),
+                    W = 0.35355F,
+                    H = 0.35355F,
+                    //Text = "Ambulance",
+                },
+                new IconView
+                {
+                    EdgeColor = Color.FromArgb(0, 100, 176),
+                    BackColor = Color.FromArgb(185, 0, 100, 176),
+                    HoverColor = Color.FromArgb(0, 100, 176),
+                    Symbol = Symbol.Rectangle,
+                    ForeColor = textColor,
+                    X = (float)(random.NextDouble() - 0.5),
+                    Y = (float)(random.NextDouble() - 0.5),
+                    W = 0.5F,
+                    H = 0.278F,
+                    //Text = "Друг",
+                },
+                new IconView
+                {
+                    EdgeColor = Color.FromArgb(0, 255, 0),
+                    BackColor = Color.FromArgb(174, 0, 255, 0),
+                    HoverColor = Color.FromArgb(0, 255, 0),
+                    ForeColor = textColor,
+                    Symbol = Symbol.Rectangle,
+                    X = (float)(random.NextDouble() - 0.5),
+                    Y = (float)(random.NextDouble() - 0.5),
+                    W = 0.35355F,
+                    H = 0.35355F,
+                    //Text = "Сосед",
+                },
+                new IconView
+                {
+                    EdgeColor = Color.FromArgb(170, 170, 0),
+                    BackColor = Color.FromArgb(177, 170, 170, 0),
+                    HoverColor = Color.FromArgb(170, 170, 0),
+                    ForeColor = textColor,
+                    Symbol = Symbol.Quatrefoil,
+                    X = (float)(random.NextDouble() - 0.5),
+                    Y = (float)(random.NextDouble() - 0.5),
+                    W = 0.5F,
+                    H = 0.5F,
+                    //Text = "Хер с горы",
+                },
+                new IconView
+                {
+                    EdgeColor = Color.FromArgb(255, 0, 0),
+                    BackColor = Color.FromArgb(180, 255, 0, 0),
+                    HoverColor = Color.FromArgb(255, 0, 0),
+                    Symbol = Symbol.Diamond,
+                    ForeColor = textColor,
+                    X = (float)(random.NextDouble() - 0.5),
+                    Y = (float)(random.NextDouble() - 0.5),
+                    W = 0.5F,
+                    H = 0.5F,
+                    //Text = "Враг",
+                },
+            };
+
+            foreach (IconView icon in icons)
+            {
+                velocity.Add(icon, new PointF
+                    {
+                        X = (float)(random.NextDouble() - 0.5) * 0.01F,
+                        Y = (float)(random.NextDouble() - 0.5) * 0.01F,
+                    });
+                icon.Name = icon.Symbol.ToString();
+            }
 
             timer = new Timer(this.components)
             {
@@ -130,40 +187,8 @@ namespace Sample
                 Enabled = true,
             };
 
-            timer.Tick += (object sender, EventArgs e) => 
-                {
-                    foreach (SpaceView.Icon icon in spaceView.Icons)
-                    {
-                        PointF v;
-                        if (!velocity.TryGetValue(icon, out v))
-                        {
-                            v = new PointF
-                                {
-                                    X = (float)(random.NextDouble() - 0.5)*0.01F,
-                                    Y = (float)(random.NextDouble() - 0.5)*0.01F,
-                                };
-                        }
-                        else
-                        {
-                            v.X += (float)(random.NextDouble() - 0.5)*0.01F;
-                            v.Y += (float)(random.NextDouble() - 0.5)*0.01F;
-                        }
-                        if (icon.X < 0)
-                            v.X = Math.Abs(v.X);
-                        if (icon.Y < 0)
-                            v.Y = Math.Abs(v.Y);
-                        if (icon.X > spaceView.Width/96)
-                            v.X = -Math.Abs(v.X);
-                        if (icon.Y > spaceView.Height/96)
-                            v.Y = -Math.Abs(v.Y);
-                        velocity[icon] = v;
-                            
-                        icon.X += v.X;
-                        icon.Y += v.Y;
-                    }
-                    spaceView.Invalidate();
-                };
-            
+            timer.Tick += (object sender, EventArgs e) => MoveShips();
+
 //			panelView1 = new Pvax.UI.Views.PanelView /*ButtonView*/(80, 20, 100, 150)
 //			{
 //				//OwnerDraw = true,
@@ -172,14 +197,14 @@ namespace Sample
 //				ForeColor = Color.FromArgb(128, Color.Fuchsia),
 //			};
 
-//            ellipticButtonView1 = new EllipticButtonView(155, 15, 150, 50)
-//            {
-//                Text = "ОГОНЬ",
-//                ForeColor = Color.LightYellow,
-//                BackColor = Color.Firebrick,
-//                HoverColor = Color.Red,
-//            };
-
+            ellipticButtonView1 = new EllipticButtonView(155, 15, 150, 50)
+            {
+                Text = "ОГОНЬ",
+                ForeColor = Color.LightYellow,
+                BackColor = Color.Firebrick,
+                HoverColor = Color.Red,
+            };
+            ellipticButtonView1.Click += (object sender, EventArgs e) => MoveShips(-4);
             // 
             // buttonView1
             // 
@@ -199,9 +224,19 @@ namespace Sample
 //            //this.buttonView1.Click = "Test button";
 //            this.viewContainer1.Views.Add(this.buttonView2);
 //
-//            viewContainer1.Views.Add(ellipticButtonView1);
+            spaceView.Views.AddRange(icons);
+            spaceView.Views.Add(ellipticButtonView1);
 
-			this.viewContainer1.BackColor = Color.Black;
+            spaceView.SizeChanged += (object sender, EventArgs e) =>
+                {
+                    spaceView.WorldOrigin = new PointF
+                    {
+                        X = spaceView.ClientSize.Width/2,
+                        Y = spaceView.ClientSize.Height/2
+                    };
+                };
+
+			//this.viewContainer1.BackColor = Color.Black;
 
 //			textBox1 = new TextBox
 //			{
@@ -216,7 +251,7 @@ namespace Sample
 //
 //			buttonView2.Click += 
 //				(s, e) => textBox1.BorderStyle = (BorderStyle)(3 - textBox1.BorderStyle);
-            this.WindowState = FormWindowState.Maximized;
+           this.WindowState = FormWindowState.Maximized;
         }
     }
 }
