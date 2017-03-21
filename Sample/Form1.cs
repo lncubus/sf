@@ -66,7 +66,7 @@ namespace Sample
             // 
             this.spaceView = new SpaceView()
             {
-                BackColor = System.Drawing.Color.DarkBlue,
+                BackColor = System.Drawing.Color.Black,
                 BorderStyle = System.Windows.Forms.BorderStyle.None,
                 Dock = System.Windows.Forms.DockStyle.Fill,
                 ForeColor = System.Drawing.Color.White,
