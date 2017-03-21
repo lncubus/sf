@@ -38,7 +38,8 @@ namespace Sample
             set
             {
                 origin = value;
-                Invalidate();
+                foreach (IconView icon in Views.OfType<IconView>())
+                    icon.UpdateLayout();
             }
         }
 
@@ -51,7 +52,8 @@ namespace Sample
             set
             {
                 scale = value;
-                Invalidate();
+                foreach (IconView icon in Views.OfType<IconView>())
+                    icon.UpdateLayout();
             }
         }
 

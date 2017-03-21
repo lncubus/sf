@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 
 using Pvax.UI;
 using System.Drawing.Drawing2D;
-using System.Diagnostics;
 
 namespace Sample
 {
@@ -82,7 +80,7 @@ namespace Sample
                 if (base.Parent != value)
                 {
                     base.Parent = value;
-                    Recalculate();
+                    UpdateLayout();
                 }
             }
         }
@@ -137,7 +135,7 @@ namespace Sample
             set
             {
                 x = value;
-                Recalculate();
+                UpdateLayout();
             }
         }
 
@@ -150,7 +148,7 @@ namespace Sample
             set
             {
                 y = value;
-                Recalculate();
+                UpdateLayout();
             }
         }
 
@@ -163,7 +161,7 @@ namespace Sample
             set
             {
                 w = value;
-                Recalculate();
+                UpdateLayout();
             }
         }
 
@@ -176,11 +174,11 @@ namespace Sample
             set
             {
                 h = value;
-                Recalculate();
+                UpdateLayout();
             }
         }
 
-        protected virtual void Recalculate()
+        public virtual void UpdateLayout()
         {
             PointF origin;
             PointF scale;
