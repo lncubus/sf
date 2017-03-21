@@ -246,7 +246,7 @@ namespace Pvax.UI.Views
 		/// </summary>
 		protected virtual void CalcExtent()
 		{
-			if(Updating)
+            if(Updating || !AutoScroll)
 				return;
 			Point scrollPoint = AutoScrollPosition;
 			scrollPoint.X = -scrollPoint.X;

@@ -26,6 +26,9 @@
     IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+using System.Diagnostics;
+
+
 #endregion
 
 using System;
@@ -102,7 +105,7 @@ namespace Pvax.UI.Views
 		/// Gets or sets a parent object that provides support for
 		/// <see cref="IControlService"/>.
 		/// </summary>
-		public IControlService Parent
+		public virtual IControlService Parent
 		{
 			get
 			{
@@ -599,5 +602,7 @@ namespace Pvax.UI.Views
 		{
 			return this.HitTest(posX, posY);
 		}
+
+        public string Name { get; set; }
 	}
 }

@@ -205,5 +205,11 @@ namespace Pvax.UI.Views
 		/// This method is for views that are non-rectangular.
 		/// </remarks>
 		bool HitTest(int posX, int posY);
+
+        /// <summary>
+        /// Gets or sets the name of the view.
+        /// </summary>
+        /// <value>The name.</value>
+        string Name { get; set; }
 	}
 }

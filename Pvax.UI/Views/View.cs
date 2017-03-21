@@ -43,9 +43,9 @@ namespace Pvax.UI.Views
 	[Serializable]
 	public abstract class View: AbstractView
 	{
-		private int x;
+        private int left;
 
-		private int y;
+        private int top;
 
 		private int width;
 
@@ -55,16 +55,16 @@ namespace Pvax.UI.Views
 		/// Initializes a new instance of the <see cref="View"/> class with it's
 		/// desired size and location.
 		/// </summary>
-		/// <param name="x">The horizontal coordinate of the view relative to
+		/// <param name="left">The horizontal coordinate of the view relative to
 		/// it's parent object.</param>
-		/// <param name="y">The vertical coordinate of the view relative to
+		/// <param name="top">The vertical coordinate of the view relative to
 		/// it's parent object.</param>
 		/// <param name="width">The width of the view.</param>
 		/// <param name="height">The height of the view.</param>
-		protected View(int x, int y, int width, int height)
+		protected View(int left, int top, int width, int height)
 		{
-			this.x = x;
-			this.y = y;
+			this.left = left;
+			this.top = top;
 			this.height = height;
 			this.width = width;
 		}
@@ -84,15 +84,15 @@ namespace Pvax.UI.Views
 		{
 			get
 			{
-				return x;
+				return left;
 			}
 
 			set
 			{
-				if(x != value)
+				if(left != value)
 				{
 					Invalidate();
-					x = value;
+					left = value;
 					Invalidate();
 				}
 			}
@@ -106,15 +106,15 @@ namespace Pvax.UI.Views
 		{
 			get
 			{
-				return y;
+				return top;
 			}
 
 			set
 			{
-				if(y != value)
+				if(top != value)
 				{
 					Invalidate();
-					y = value;
+					top = value;
 					Invalidate();
 				}
 			}
