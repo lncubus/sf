@@ -12,6 +12,30 @@ namespace Sample
 {
     public class IconView : Pvax.UI.Views.View
     {
+        public struct ArcF
+        {
+            public float X { get; set; }
+            public float Y { get; set; }
+            public float Width { get; set; }
+            public float Height { get; set; }
+            public float StartAngle { get; set; }
+            public float SweepAngle { get; set; }
+        };
+
+        protected static readonly IDictionary<Symbol, IEnumerable<ArcF>> flowers =
+            new Dictionary<Symbol, IEnumerable<ArcF>>()
+        {
+                {
+                    Symbol.Quatrefoil, new []
+                    {
+                        new ArcF { X = 0.25F, Y =    0F, Width = 0.5F, Height = 0.5F, StartAngle = 180, SweepAngle = 180},
+                        new ArcF { X =  0.5F, Y = 0.25F, Width = 0.5F, Height = 0.5F, StartAngle = 270, SweepAngle = 180},
+                        new ArcF { X = 0.25F, Y =  0.5F, Width = 0.5F, Height = 0.5F, StartAngle =   0, SweepAngle = 180},
+                        new ArcF { X =    0F, Y = 0.25F, Width = 0.5F, Height = 0.5F, StartAngle =  90, SweepAngle = 180},
+                    }
+                }
+        };
+
         protected static readonly IDictionary<Symbol, IEnumerable<PointF>> polygons =
             new Dictionary<Symbol, IEnumerable<PointF>>()
         {
@@ -190,17 +214,17 @@ namespace Sample
             Color color = Tracking ? HoverColor : BackColor;
             Brush brush = DrawHelper.Instance.CreateSolidBrush(color);
             Pen pen = DrawHelper.Instance.CreateColorPen(EdgeColor, 1.2F);
-            int w = Width - 1;
-            int h = Height - 1;
+            Rectangle layout = Bounds;
+            layout.Inflate(-1, -1);
             switch (Symbol)
             {
                 case Symbol.Rectangle:
-                    g.FillRectangle(brush, 0, 0, w, h);
-                    g.DrawRectangle(pen, 0, 0, w, h);
+                    g.FillRectangle(brush, layout);
+                    g.DrawRectangle(pen, layout);
                     break;
                 case Symbol.Ellipse:
-                    g.FillEllipse(brush,  0, 0, w, h);
-                    g.DrawEllipse(pen,  0, 0, w, h);
+                    g.FillEllipse(brush, layout);
+                    g.DrawEllipse(pen, layout);
                     break;
                 case Symbol.Diamond:
                 case Symbol.Cross:
@@ -208,8 +232,8 @@ namespace Sample
                     for (int i = 0; i < points.Length; i++)
                     {
                         PointF p = points[i];
-                        p.X = p.X * w;
-                        p.Y = p.Y * h;
+                        p.X = layout.Left + p.X * layout.Width;
+                        p.Y = layout.Top + p.Y * layout.Height;
                         points[i] = p;
                     }
                     g.FillPolygon(brush, points);
@@ -217,10 +241,16 @@ namespace Sample
                     break;
                 case Symbol.Quatrefoil:
                     GraphicsPath flower = new GraphicsPath();
-                    flower.AddArc(w/4F, 0,    w/2F, h/2F, 180, 180);
-                    flower.AddArc(w/2F, h/4F, w/2F, h/2F, 270, 180);
-                    flower.AddArc(w/4F, h/2F, w/2F, h/2F, 0, 180);
-                    flower.AddArc(0,    h/4F, w/2F, h/2F, 90, 180);
+                    ArcF[] arcs = flowers[Symbol].ToArray();
+                    for (int i = 0; i < arcs.Length; i++)
+                    {
+                        ArcF a = arcs[i];
+                        a.X = layout.Left + a.X * layout.Width;
+                        a.Y = layout.Top + a.Y * layout.Height;
+                        a.Width *= layout.Width;
+                        a.Height *= layout.Height;
+                        flower.AddArc(a.X, a.Y, a.Width, a.Height, a.StartAngle, a.SweepAngle);
+                    }
                     g.FillPath(brush, flower);
                     g.DrawPath(pen, flower);
                     break;
