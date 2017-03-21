@@ -227,14 +227,6 @@ namespace Sample
                 default :
                     throw new NotImplementedException(Symbol.ToString());
             }
-            if (!string.IsNullOrEmpty(Name))
-            {
-                brush = DrawHelper.Instance.CreateSolidBrush(ForeColor);
-                StringFormat format = DrawHelper.Instance.CreateTypographicStringFormat(ContentAlignment.MiddleCenter);
-                string label = Name;
-                RectangleF layout = new RectangleF(0, 0, Width - 1, Height - 1);
-                g.DrawString(label, Parent.Control.Font, brush, layout, format);
-            }
         }
     }
 
