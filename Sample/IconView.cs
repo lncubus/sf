@@ -10,61 +10,6 @@ namespace Sample
 {
     public class IconView : Pvax.UI.Views.View
     {
-        public struct ArcF
-        {
-            public float X { get; set; }
-            public float Y { get; set; }
-            public float Width { get; set; }
-            public float Height { get; set; }
-            public float StartAngle { get; set; }
-            public float SweepAngle { get; set; }
-        };
-
-        protected static readonly IDictionary<Symbol, IEnumerable<ArcF>> flowers =
-            new Dictionary<Symbol, IEnumerable<ArcF>>()
-        {
-                {
-                    Symbol.Quatrefoil, new []
-                    {
-                        new ArcF { X = 0.25F, Y =    0F, Width = 0.5F, Height = 0.5F, StartAngle = 180, SweepAngle = 180},
-                        new ArcF { X =  0.5F, Y = 0.25F, Width = 0.5F, Height = 0.5F, StartAngle = 270, SweepAngle = 180},
-                        new ArcF { X = 0.25F, Y =  0.5F, Width = 0.5F, Height = 0.5F, StartAngle =   0, SweepAngle = 180},
-                        new ArcF { X =    0F, Y = 0.25F, Width = 0.5F, Height = 0.5F, StartAngle =  90, SweepAngle = 180},
-                    }
-                }
-        };
-
-        protected static readonly IDictionary<Symbol, IEnumerable<PointF>> polygons =
-            new Dictionary<Symbol, IEnumerable<PointF>>()
-        {
-            {
-                Symbol.Diamond, new []
-                {
-                    new PointF(0.5F, 0),
-                    new PointF(1, 0.5F),
-                    new PointF(0.5F, 1),
-                    new PointF(0, 0.5F),
-                }
-            },
-            {
-                Symbol.Cross, new []
-                {
-                    new PointF(0.35F, 0),
-                    new PointF(0.65F, 0),
-                    new PointF(0.65F, 0.35F),
-                    new PointF(1, 0.35F),
-                    new PointF(1, 0.65F),
-                    new PointF(0.65F, 0.65F),
-                    new PointF(0.65F, 1),
-                    new PointF(0.35F, 1),
-                    new PointF(0.35F, 0.65F),
-                    new PointF(0, 0.65F),
-                    new PointF(0, 0.35F),
-                    new PointF(0.35F, 0.35F),
-                }
-            }
-        };
-
         public IconView() : base()
         {
         }
@@ -213,7 +158,7 @@ namespace Sample
             Brush brush = DrawHelper.Instance.CreateSolidBrush(color);
             Pen pen = DrawHelper.Instance.CreateColorPen(EdgeColor, 1.2F);
             Rectangle layout = Bounds;
-            layout.Inflate(-1, -1);
+            layout.Inflate(-2, -2);
             switch (Symbol)
             {
                 case Symbol.Rectangle:
@@ -224,9 +169,27 @@ namespace Sample
                     g.FillEllipse(brush, layout);
                     g.DrawEllipse(pen, layout);
                     break;
-                case Symbol.Diamond:
-                case Symbol.Cross:
-                    PointF[] points = polygons[Symbol].ToArray();
+                case Symbol.Quatrefoil:
+                    ArcF[] arcs = SymbolHelper.Flowers[Symbol].ToArray();
+                    using (GraphicsPath flower = new GraphicsPath())
+                    {
+                        for (int i = 0; i < arcs.Length; i++)
+                        {
+                            ArcF a = arcs[i];
+                            a.X = layout.Left + a.X * layout.Width;
+                            a.Y = layout.Top + a.Y * layout.Height;
+                            a.Width *= layout.Width;
+                            a.Height *= layout.Height;
+                            flower.AddArc(a.X, a.Y, a.Width, a.Height, a.StartAngle, a.SweepAngle);
+                        }
+                        g.FillPath(brush, flower);
+                        g.DrawPath(pen, flower);
+                    }
+                    break;
+                default :
+                    if (!SymbolHelper.Polygons.ContainsKey(Symbol))
+                        throw new NotImplementedException(Symbol.ToString());
+                    PointF[] points = SymbolHelper.Polygons[Symbol].ToArray();
                     for (int i = 0; i < points.Length; i++)
                     {
                         PointF p = points[i];
@@ -234,43 +197,11 @@ namespace Sample
                         p.Y = layout.Top + p.Y * layout.Height;
                         points[i] = p;
                     }
-                    g.FillPolygon(brush, points);
+                    g.FillPolygon(brush, points, FillMode.Winding);
                     g.DrawPolygon(pen, points);
                     break;
-                case Symbol.Quatrefoil:
-                    GraphicsPath flower = new GraphicsPath();
-                    ArcF[] arcs = flowers[Symbol].ToArray();
-                    for (int i = 0; i < arcs.Length; i++)
-                    {
-                        ArcF a = arcs[i];
-                        a.X = layout.Left + a.X * layout.Width;
-                        a.Y = layout.Top + a.Y * layout.Height;
-                        a.Width *= layout.Width;
-                        a.Height *= layout.Height;
-                        flower.AddArc(a.X, a.Y, a.Width, a.Height, a.StartAngle, a.SweepAngle);
-                    }
-                    g.FillPath(brush, flower);
-                    g.DrawPath(pen, flower);
-                    break;
-                default :
-                    throw new NotImplementedException(Symbol.ToString());
             }
         }
     }
-
-    public enum Symbol
-    {
-        Rectangle,
-        Ellipse,
-        Diamond,
-        Cross,
-        //Asterisk,
-        Quatrefoil,
-        //Up,
-        //Down,
-        //Left,
-        //Right,
-    };
-
 }
 

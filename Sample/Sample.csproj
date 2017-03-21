@@ -79,6 +79,7 @@
     <Compile Include="PowerIndicatorView.cs" />
     <Compile Include="SpaceView.cs" />
     <Compile Include="IconView.cs" />
+    <Compile Include="Symbol.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
