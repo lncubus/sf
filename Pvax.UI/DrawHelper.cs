@@ -56,10 +56,16 @@ namespace Pvax.UI
 		#endregion
 
 		#region Resource cleanup
+
+        DateTime last = DateTime.Now;
+
 		void Cleanup()
 		{
 			if(0 == disposer.Count)
 				return;
+            if ((DateTime.Now - last).TotalMinutes < 1)
+                return;
+            last = DateTime.Now;
 			foreach(IDisposable disposable in disposer)
 				disposable.Dispose();
 			disposer.Clear();
