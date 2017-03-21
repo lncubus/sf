@@ -18,7 +18,7 @@ namespace Sample
 	//	private Pvax.UI.Views.ImageView imageView1;
 	//	private Pvax.UI.Views.IView panelView1;
 
-		private EllipticButtonView ellipticButtonView1;
+        private Pvax.UI.Views.ButtonView ellipticButtonView1;
         private SpaceView spaceView;
       //  private TextBox textBox1;
         private Timer timer;
@@ -97,12 +97,51 @@ namespace Sample
                     BackColor = Color.FromArgb(128, Color.White),
                     HoverColor = Color.White,
                     ForeColor = textColor,
+                    Symbol = Symbol.Pentagram,
+                    X = (float)(random.NextDouble() - 0.5)*4F,
+                    Y = (float)(random.NextDouble() - 0.5)*4F,
+                    W = 1,
+                    H = 1,
+                    Name = "Я",
+                },
+                new IconView
+                {
+                    EdgeColor = Color.White,
+                    BackColor = Color.FromArgb(128, Color.White),
+                    HoverColor = Color.White,
+                    ForeColor = textColor,
+                    Symbol = Symbol.Star,
+                    X = (float)(random.NextDouble() - 0.5)*4F,
+                    Y = (float)(random.NextDouble() - 0.5)*4F,
+                    W = 1,
+                    H = 1,
+                    Name = "Я",
+                },
+                new IconView
+                {
+                    EdgeColor = Color.Gold,
+                    BackColor = Color.FromArgb(128, Color.Gold),
+                    HoverColor = Color.Gold,
+                    ForeColor = textColor,
+                    Symbol = Symbol.Asterisk,
+                    X = (float)(random.NextDouble() - 0.5)*4F,
+                    Y = (float)(random.NextDouble() - 0.5)*4F,
+                    W = 1,
+                    H = 1,
+                    Name = "Шериф",
+                },               
+                new IconView
+                {
+                    EdgeColor = Color.White,
+                    BackColor = Color.FromArgb(128, Color.White),
+                    HoverColor = Color.White,
+                    ForeColor = textColor,
                     Symbol = Symbol.Ellipse,
                     X = (float)(random.NextDouble() - 0.5),
                     Y = (float)(random.NextDouble() - 0.5),
                     W = 0.35355F,
                     H = 0.35355F,
-                    //Text = "Планета",
+                    Name = "Планета",
                 },
                 new IconView
                 {
@@ -115,7 +154,7 @@ namespace Sample
                     Y = (float)(random.NextDouble() - 0.5),
                     W = 0.35355F,
                     H = 0.35355F,
-                    //Text = "Ambulance",
+                    Name = "Ambulance",
                 },
                 new IconView
                 {
@@ -128,7 +167,7 @@ namespace Sample
                     Y = (float)(random.NextDouble() - 0.5),
                     W = 0.5F,
                     H = 0.278F,
-                    //Text = "Друг",
+                    Name = "Друг",
                 },
                 new IconView
                 {
@@ -141,7 +180,7 @@ namespace Sample
                     Y = (float)(random.NextDouble() - 0.5),
                     W = 0.35355F,
                     H = 0.35355F,
-                    //Text = "Сосед",
+                    Name = "Сосед",
                 },
                 new IconView
                 {
@@ -154,7 +193,7 @@ namespace Sample
                     Y = (float)(random.NextDouble() - 0.5),
                     W = 0.5F,
                     H = 0.5F,
-                    //Text = "Хер с горы",
+                    Name = "Хер с горы",
                 },
                 new IconView
                 {
@@ -167,7 +206,7 @@ namespace Sample
                     Y = (float)(random.NextDouble() - 0.5),
                     W = 0.5F,
                     H = 0.5F,
-                    //Text = "Враг",
+                    Name = "Враг",
                 },
             };
 
@@ -189,22 +228,15 @@ namespace Sample
 
             timer.Tick += (object sender, EventArgs e) => MoveShips();
 
-//			panelView1 = new Pvax.UI.Views.PanelView /*ButtonView*/(80, 20, 100, 150)
-//			{
-//				//OwnerDraw = true,
-//				BorderStyle = BorderStyle.Fixed3D,
-//				BackColor = Color.FromArgb(128, Color.DarkSeaGreen),
-//				ForeColor = Color.FromArgb(128, Color.Fuchsia),
-//			};
 
-            ellipticButtonView1 = new EllipticButtonView(155, 15, 150, 50)
+            ellipticButtonView1 = new Pvax.UI.Views.ButtonView(155, 15, 150, 50)
             {
                 Text = "ОГОНЬ",
                 ForeColor = Color.LightYellow,
                 BackColor = Color.Firebrick,
                 HoverColor = Color.Red,
             };
-            ellipticButtonView1.Click += (object sender, EventArgs e) => MoveShips(-4);
+            ellipticButtonView1.Click += (object sender, EventArgs e) => MoveShips(-1.25F);
             // 
             // buttonView1
             // 
