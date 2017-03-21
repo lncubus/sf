@@ -121,6 +121,16 @@ namespace Pvax.UI.Views
 			}
 		}
 
+        public virtual Font Font
+        {
+            get
+            {
+                if (Parent == null || Parent.Control == null)// || Parent.Control.
+                    return null;
+                return Parent.Control.Font;
+            }
+        }
+
 		/// <summary>
 		/// Gets or sets the horizontal coordinate of the view relative to it's
 		/// parent object.

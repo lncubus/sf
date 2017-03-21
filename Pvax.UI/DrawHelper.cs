@@ -662,6 +662,7 @@ namespace Pvax.UI
 			{
 				result = (StringFormat)StringFormat.GenericDefault.Clone();
 				Alignment(result, alignment);
+                result.FormatFlags &= ~StringFormatFlags.NoClip;
 				stringFormat1.Add(key, result);
 				disposer.Add(result);
 			}
@@ -685,6 +686,7 @@ namespace Pvax.UI
 			{
 				result = (StringFormat)StringFormat.GenericTypographic.Clone();
 				Alignment(result, alignment);
+                result.FormatFlags &= ~StringFormatFlags.NoClip;
 				stringFormat2.Add(key, result);
 				disposer.Add(result);
 			}
