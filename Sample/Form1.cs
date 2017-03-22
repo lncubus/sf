@@ -208,7 +208,51 @@ namespace Sample
                     H = 0.5F,
                     Name = "Враг",
                 },
+                new IconView
+                {
+                        EdgeColor = Color.ForestGreen,
+                        BackColor = Color.LimeGreen,
+                        HoverColor = Color.DarkGreen,
+                        Symbol = Symbol.Custom,
+                        ForeColor = textColor,
+                    X = (float)(random.NextDouble() - 0.5),
+                    Y = (float)(random.NextDouble() - 0.5),
+                    W = 0.75F,
+                    H = 0.75F,
+                        Name = "☕",
+               },
+                    new IconView
+                    {
+                        EdgeColor = Color.Red,
+                        BackColor = Color.Red,
+                        HoverColor = Color.DarkRed,
+                        Symbol = Symbol.Custom,
+                        ForeColor = textColor,
+                        X = (float)(random.NextDouble() - 0.5),
+                        Y = (float)(random.NextDouble() - 0.5),
+                        W = 0.75F,
+                        H = 0.25F,
+                        Name = "BANG!",
+                    }
             };
+
+            foreach (Char c in "☠☣♚♛♜♝♞♟")
+            {
+                IconView i = new IconView
+                {
+                        EdgeColor = Color.White,
+                        BackColor = Color.Gold,
+                        HoverColor = Color.Chocolate,
+                        Symbol = Symbol.Custom,
+                        ForeColor = textColor,
+                        X = (float)(random.NextDouble() - 0.5)*4F,
+                        Y = (float)(random.NextDouble() - 0.5)*4F,
+                        W = 0.5F,
+                        H = 0.5F,
+                        Name = new string(c, 1),
+                };
+                icons.Add(i);
+            }
 
             foreach (IconView icon in icons)
             {
@@ -217,7 +261,6 @@ namespace Sample
                         X = (float)(random.NextDouble() - 0.5) * 0.01F,
                         Y = (float)(random.NextDouble() - 0.5) * 0.01F,
                     });
-                icon.Name = icon.Symbol.ToString();
             }
 
             timer = new Timer(this.components)
