@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace Sample
         void MoveShips(float w = 0)
         {
             {
-              //  spaceView.BeginUpdate();
+                spaceView.BeginUpdate();
                 foreach (IconView icon in icons)
                 {
                     PointF v = velocity[icon];
@@ -52,7 +53,7 @@ namespace Sample
                     icon.X += v.X;
                     icon.Y += v.Y;
                 }
-                //spaceView.EndUpdate();
+                spaceView.EndUpdate();
             };
 
         }
@@ -88,7 +89,7 @@ namespace Sample
 
 //            spaceView = new SpaceView(0, 0, 1200, 700);
             Color textColor = Color.FromArgb(192, Color.White);
-
+            GraphicsPath teapot = new GraphicsPath();
             icons = new List<IconView>()
             {
                 new IconView
@@ -233,14 +234,30 @@ namespace Sample
                         W = 0.75F,
                         H = 0.25F,
                         Name = "BANG!",
-                    }
+                    },
+                    new IconView
+                    {
+                        EdgeColor = Color.Blue,
+                        BackColor = Color.SeaGreen,
+                        HoverColor = Color.LightSeaGreen,
+                        Symbol = Symbol.Custom,
+                        ForeColor = Color.White,
+                        X = (float)(random.NextDouble() - 0.5)*4F,
+                        Y = (float)(random.NextDouble() - 0.5)*4F,
+                        CustomSymbol = teapot,
+                        W = 1F,
+                        H = 1F,
+                    },
             };
 
-            foreach (Char c in "☠☣♚♛♜♝♞♟")
+            teapot.AddEllipse(new RectangleF(0, 0, 1F, 1F));
+            teapot.AddBezier(-0.5F, 0, 0, 0, 0, 1, 0, 0.5F);
+
+            foreach (char c in "☠☣♚♛♜♝♞♟")
             {
                 IconView i = new IconView
                 {
-                        EdgeColor = Color.White,
+                        EdgeColor = Color.Chocolate,
                         BackColor = Color.Gold,
                         HoverColor = Color.Chocolate,
                         Symbol = Symbol.Custom,
