@@ -533,45 +533,5 @@ namespace Pvax.UI.Views
 		{
 			return 10 * GetLineSize(extent);
 		}
-		
-		/// <summary>
-		/// Processes arrow keys for the <see cref="ViewContainer"/>.
-		/// </summary>
-		/// <param name="keyData">
-		/// One of the <see cref="Keys"/> values that represents
-		/// the key to process.
-		/// </param>
-		/// <returns>
-		/// <c>true</c> for arrow keys; otherwise, <c>false</c>.
-		/// </returns>
-		protected override bool ProcessDialogKey(Keys keyData)
-		{
-			Keys key = keyData & (~Keys.Modifiers);
-			bool control = (Keys.Control == (keyData & Keys.Control));
-			int dx = 0, dy = 0;
-			Size sz = AutoScrollMinSize;
-			switch(key)
-			{
-				case Keys.Left:
-					dx -= control ? GetPageSize(sz.Width) : GetLineSize(sz.Width);
-					break;
-				case Keys.Right:
-					dx += control ? GetPageSize(sz.Width) : GetLineSize(sz.Width);
-					break;
-				case Keys.Up:
-					dy -= control ? GetPageSize(sz.Height) : GetLineSize(sz.Height);
-					break;
-				case Keys.Down:
-					dy += control ? GetPageSize(sz.Height) : GetLineSize(sz.Height);
-					break;
-				default:
-					return base.ProcessDialogKey(keyData);
-			}
-			Point pt = AutoScrollPosition;
-			pt.X = dx - pt.X;
-			pt.Y = dy - pt.Y;
-			AutoScrollPosition = pt;
-			return true;
-		}
 	}
 }
