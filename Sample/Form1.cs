@@ -101,8 +101,8 @@ namespace Sample
                     Symbol = Symbol.Pentagram,
                     X = (float)(random.NextDouble() - 0.5)*4F,
                     Y = (float)(random.NextDouble() - 0.5)*4F,
-                    W = 1,
-                    H = 1,
+                    W = 0.5F,
+                    H = 0.5F,
                     Name = "Я",
                 },
                 new IconView
@@ -114,8 +114,8 @@ namespace Sample
                     Symbol = Symbol.Star,
                     X = (float)(random.NextDouble() - 0.5)*4F,
                     Y = (float)(random.NextDouble() - 0.5)*4F,
-                    W = 1,
-                    H = 1,
+                    W = 0.5F,
+                    H = 0.5F,
                     Name = "Я",
                 },
                 new IconView
@@ -127,8 +127,8 @@ namespace Sample
                     Symbol = Symbol.Asterisk,
                     X = (float)(random.NextDouble() - 0.5)*4F,
                     Y = (float)(random.NextDouble() - 0.5)*4F,
-                    W = 1,
-                    H = 1,
+                    W = 0.5F,
+                    H = 0.5F,
                     Name = "Шериф",
                 },               
                 new IconView
@@ -315,7 +315,7 @@ namespace Sample
 
             teapot.AddBeziers(teapot_points);
 
-            foreach (char c in "☠☣♚♛♜♝♞♟")
+            foreach (char c in "♛")
             {
                 IconView i = new IconView
                 {
