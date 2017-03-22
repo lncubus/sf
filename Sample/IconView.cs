@@ -54,7 +54,7 @@ namespace Sample
         }
 
         private Symbol symbol;
-        public Symbol Symbol
+        public virtual Symbol Symbol
         {
             get
             {
@@ -66,6 +66,27 @@ namespace Sample
                 {
                     symbol = value;
                 }
+            }
+        }
+
+        private GraphicsPath customSymbol;
+        private GraphicsPath cachedCustomSymbol;
+
+        public virtual GraphicsPath CustomSymbol
+        {
+            get
+            {
+                return customSymbol; 
+            }
+            set
+            {
+                if (ReferenceEquals(customSymbol, value))
+                    return;
+                customSymbol = value;
+                if (cachedCustomSymbol != null)
+                    cachedCustomSymbol.Dispose();
+                cachedCustomSymbol = null;
+                Invalidate();
             }
         }
 
@@ -140,11 +161,47 @@ namespace Sample
             float left = origin.X + (X - Math.Abs(W)/2F)*scale.X;
             float top = origin.Y + (Y - Math.Abs(H)/2F)*scale.Y;
 
-            //Location = 
+            Size oldSize = this.Size;
             Width = (int)(Math.Ceiling(W*scale.X));
             Height = (int)(Math.Ceiling(H*scale.Y));
             Left = (int)(Math.Round(left));
             Top = (int)(Math.Round(top));
+
+            if (Size != oldSize && cachedCustomSymbol != null)
+            {
+                cachedCustomSymbol.Dispose();
+                cachedCustomSymbol = null;
+            }
+        }
+
+        private void BuildCustomSymbol()
+        {
+            if (customSymbol == null)
+            {
+                cachedCustomSymbol = new GraphicsPath();
+                cachedCustomSymbol.AddString(Name, Font.FontFamily, 0, 72,
+                    Point.Empty, StringFormat.GenericTypographic);
+            }
+            else
+            {
+                cachedCustomSymbol = (GraphicsPath)customSymbol.Clone();
+            }
+            RectangleF customBounds = cachedCustomSymbol.GetBounds();
+            RectangleF viewBounds = Bounds;
+            viewBounds.Inflate(-2, -2);
+            PointF topRight = new PointF
+            {
+                X = viewBounds.Right,
+                Y = viewBounds.Top,
+            };
+            PointF bottomLeft = new PointF
+            {
+                X = viewBounds.Left,
+                Y = viewBounds.Bottom,
+            };
+            Matrix transform = new Matrix(customBounds,
+                new[] { viewBounds.Location, topRight, bottomLeft});
+            cachedCustomSymbol.Transform(transform);
         }
 
         /// <summary>
@@ -168,6 +225,13 @@ namespace Sample
                 case Symbol.Ellipse:
                     g.FillEllipse(brush, layout);
                     g.DrawEllipse(pen, layout);
+                    break;
+                case Symbol.Custom:
+                    g.DrawRectangle(pen, layout);
+                    if (cachedCustomSymbol == null)
+                        BuildCustomSymbol();
+                    g.FillPath(brush, cachedCustomSymbol);
+                    //g.DrawPath(pen, cachedCustomSymbol);
                     break;
                 case Symbol.Quatrefoil:
                     ArcF[] arcs = SymbolHelper.Flowers[Symbol].ToArray();
