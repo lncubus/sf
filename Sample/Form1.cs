@@ -245,8 +245,8 @@ namespace Sample
                         X = (float)(random.NextDouble() - 0.5)*4F,
                         Y = (float)(random.NextDouble() - 0.5)*4F,
                         CustomSymbol = teapot,
-                        W = 1.6F,
-                        H = 1F,
+                        W = 0.8F,
+                        H = 0.5F,
                     },
             };
 
@@ -314,47 +314,6 @@ namespace Sample
                   
 
             teapot.AddBeziers(teapot_points);
-//            teapot.AddCurve(new []
-//                {
-//                    new Point(1, 36),
-//                    new Point(39,42),
-//                    new Point(61,56),
-//                    new Point(91,34),
-//                });
-//            teapot.AddCurve(new []
-//                {
-//                    new Point(91,34),
-//                    new Point(88,27),
-//                    new Point(127,16),
-//                    new Point(148,16),
-//                    new Point(190,30),
-//                    new Point(185,35),
-//                });
-//            teapot.AddCurve(new []
-//                {
-//                    new Point(185,35),
-//                    new Point(198,40),
-//                    new Point(205,49),
-//                    new Point(218,73),
-//                    new Point(222,93),
-//                    new Point(217,116),
-//                    new Point(205,145),
-//                    new Point(194,155),
-//                });
-//            teapot.AddCurve(new []
-//                {
-//                    new Point(194,155),
-//                    new Point(85, 154),
-//                    new Point(68, 139),
-//                    new Point(58, 116),
-//                });
-//            teapot.AddCurve(new []
-//                {
-//                    new Point(58, 116),
-//                    new Point(40, 101),
-//                    new Point(12, 43),
-//                    new Point(1, 36),
-//                });
 
             foreach (char c in "☠☣♚♛♜♝♞♟")
             {
