@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 
 namespace Sample
@@ -63,6 +64,27 @@ namespace Sample
                 double x = (1 + k*Math.Sin(a))/2;
                 double y = (1 - k*Math.Cos(a))/2;
                 yield return new PointF((float)x, (float)y);
+            }
+        }
+
+        public static void AddBeziers(this GraphicsPath that, float[][] curves)
+        {
+            foreach (float[] points in curves)
+            {
+                int n = points.Length / 6 - 1;
+                for (int i = 0; i < n; i++)
+                {
+                    float x1 = points[6 * i];
+                    float y1 = points[6 * i + 1];
+                    float x2 = points[6 * i + 2];
+                    float y2 = points[6 * i + 3];
+                    float x3 = points[6 * i + 4];
+                    float y3 = points[6 * i + 5];
+                    float x4 = points[6 * i + 6];
+                    float y4 = points[6 * i + 7];
+                    that.AddBezier(x1, y1, x2, y2, x3, y3, x4, y4);
+                }
+                that.CloseFigure();
             }
         }
 
