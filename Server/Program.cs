@@ -46,24 +46,19 @@ namespace Server
 
         public static void Main(string[] args)
         {
-            using (var listener = new ConsoleTraceListener())
+            try
             {
-                Debug.Listeners.Add(listener);
-                try
-                {
-                    Console.WriteLine("Starting...");
-                    ServiceHost host = CreateHost();
-                    host.Open();
-                    Console.WriteLine("Started.");
-                    Pause();
-                    Console.WriteLine("Stopping.");
-                    host.Close();
-                    Console.WriteLine("Stopped.");
-                }
-                finally
-                {
-                    Debug.Listeners.Remove(listener);
-                }
+                Trace.WriteLine("Starting...");
+                ServiceHost host = CreateHost();
+                host.Open();
+                Trace.WriteLine("Started.");
+                Pause();
+                Trace.WriteLine("Stopping.");
+                host.Close();
+                Trace.WriteLine("Stopped.");
+            }
+            catch (Exception ex)
+            {
             }
         }
     }
