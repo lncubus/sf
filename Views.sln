@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBench", "TestBench\Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{1B4F8F7D-034C-4924-9246-8022CAC36FA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectors", "Vectors\Vectors.csproj", "{43345D2D-5AD7-4489-B720-994DF9A9F361}"
+EndProject
 Global
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
@@ -36,6 +38,10 @@ Global
 		{1B4F8F7D-034C-4924-9246-8022CAC36FA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B4F8F7D-034C-4924-9246-8022CAC36FA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B4F8F7D-034C-4924-9246-8022CAC36FA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43345D2D-5AD7-4489-B720-994DF9A9F361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43345D2D-5AD7-4489-B720-994DF9A9F361}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43345D2D-5AD7-4489-B720-994DF9A9F361}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43345D2D-5AD7-4489-B720-994DF9A9F361}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

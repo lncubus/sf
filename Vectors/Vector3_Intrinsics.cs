@@ -12,7 +12,7 @@ namespace Vectors
     // Some methods declared here are not strictly intrinsic, but delegate to an intrinsic method. For example, only one overload of CopyTo()
     // is actually recognized by the JIT, but both are here for simplicity.
 
-    public partial struct Vector3
+    public partial struct Vector3 : IEquatable<Vector3>
     {
         /// <summary>
         /// The X component of the vector.
