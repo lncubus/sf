@@ -24,8 +24,18 @@ namespace Sample
       //  private TextBox textBox1;
         private Timer timer;
         private Random random = new Random();
-        Dictionary<IconView, PointF> velocity = new Dictionary<IconView, PointF>();
+        Dictionary<IconView, Vectors.Vector3> velocity = new Dictionary<IconView, Vectors.Vector3>();
         List<IconView> icons;
+
+        Vectors.Vector3 RandomVector(double a = 1)
+        {
+            return new Vectors.Vector3
+            {
+                X = a * (random.NextDouble() - 0.5),
+                Y = a * (random.NextDouble() - 0.5),
+                Z = a * (random.NextDouble() - 0.5),
+            };
+        }
 
         void MoveShips(float w = 0)
         {
@@ -33,9 +43,8 @@ namespace Sample
                 spaceView.BeginUpdate();
                 foreach (IconView icon in icons)
                 {
-                    PointF v = velocity[icon];
-                    v.X += (float)(random.NextDouble() - 0.5)*0.01F;
-                    v.Y += (float)(random.NextDouble() - 0.5)*0.01F;
+                    Vectors.Vector3 v = velocity[icon];
+                    v += RandomVector(0.01);
                     if (icon.Left < 0)
                         v.X = Math.Abs(v.X);
                     if (icon.Top < 0)
@@ -45,13 +54,9 @@ namespace Sample
                     if (icon.Top + icon.Height > spaceView.ClientSize.Height)
                         v.Y = -Math.Abs(v.Y);
                     if (Math.Abs(w) > 0.1)
-                    {
-                        v = new PointF(v.X * w, v.Y * w);
-                    }
-
+                        v *= w;
                     velocity[icon] = v;
-                    icon.X += v.X;
-                    icon.Y += v.Y;
+                    icon.Vector += v;
                 }
                 spaceView.EndUpdate();
             };
@@ -99,10 +104,9 @@ namespace Sample
                     HoverColor = Color.White,
                     ForeColor = textColor,
                     Symbol = Symbol.Pentagram,
-                    X = (float)(random.NextDouble() - 0.5)*4F,
-                    Y = (float)(random.NextDouble() - 0.5)*4F,
-                    W = 0.5F,
-                    H = 0.5F,
+                    Vector = RandomVector(4),
+                    Width = SpaceView.Dpi.X/2,
+                    Height = SpaceView.Dpi.Y/2,
                     Name = "Я",
                 },
                 new IconView

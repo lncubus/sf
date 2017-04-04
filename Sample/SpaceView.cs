@@ -9,16 +9,16 @@ namespace Sample
         protected PointF origin = new PointF(0, 0);
         protected PointF scale = new PointF(Dpi.X, Dpi.Y);
 
-        public static readonly PointF Dpi;
+        public static readonly Point Dpi;
 
         static SpaceView()
         {
             using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
             {
-                Dpi = new PointF
+                Dpi = new Point
                 {
-                    X = graphics.DpiX,
-                    Y = graphics.DpiY,
+                    X = (int)graphics.DpiX,
+                    Y = (int)graphics.DpiY,
                 };
             }
         }
@@ -38,8 +38,7 @@ namespace Sample
             set
             {
                 origin = value;
-                foreach (IconView icon in Views.OfType<IconView>())
-                    icon.UpdateLayout();
+                InvalidateLayout();
             }
         }
 
@@ -52,8 +51,7 @@ namespace Sample
             set
             {
                 scale = value;
-                foreach (IconView icon in Views.OfType<IconView>())
-                    icon.UpdateLayout();
+                InvalidateLayout();
             }
         }
 
@@ -64,6 +62,19 @@ namespace Sample
             {
                 icon.Tracking = ((Pvax.UI.Views.IView)icon).HitTest(e.Location.X, e.Location.Y);
             }
+        }
+
+        public void InvalidateLayout()
+        {
+            // todo!
+            Invalidate();
+        }
+
+        public void InvalidateLayout(IconView icon)
+        {
+            icon.Invalidate();
+            // todo!
+            icon.Invalidate();
         }
     }
 }

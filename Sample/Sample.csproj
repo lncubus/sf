@@ -89,6 +89,10 @@
       <Project>{4F57E76A-35F1-43E6-B4A9-20A95ABD7C72}</Project>
       <Name>Pvax.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Vectors\Vectors.csproj">
+      <Project>{43345d2d-5ad7-4489-b720-994df9a9f361}</Project>
+      <Name>Vectors</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

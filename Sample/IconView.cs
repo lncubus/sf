@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -10,24 +9,27 @@ namespace Sample
 {
     public class IconView : Pvax.UI.Views.View
     {
-        public IconView() : base()
-        {
-        }
+        protected Vectors.Vector3 _vector;
 
-        public override Pvax.UI.Views.IControlService Parent
+        public Vectors.Vector3 Vector
         {
             get
             {
-                return base.Parent;
+                return _vector;
             }
             set
             {
-                if (base.Parent != value)
-                {
-                    base.Parent = value;
-                    UpdateLayout();
-                }
+                if (_vector.Equals(value))
+                    return;
+                _vector = value;
+                SpaceView parent = Parent.Control as SpaceView;
+                if (parent != null)
+                    parent.InvalidateLayout(this);
             }
+        }
+
+        public IconView() : base()
+        {
         }
 
         private Color edgeColor = Color.Empty;
@@ -65,6 +67,7 @@ namespace Sample
                 if (symbol != value)
                 {
                     symbol = value;
+                    Invalidate();
                 }
             }
         }
@@ -90,60 +93,7 @@ namespace Sample
             }
         }
 
-        private float x, y, w, h;
-
-        public float X
-        {
-            get
-            {
-                return x;
-            }
-            set
-            {
-                x = value;
-                UpdateLayout();
-            }
-        }
-
-        public float Y
-        {
-            get
-            {
-                return y;
-            }
-            set
-            {
-                y = value;
-                UpdateLayout();
-            }
-        }
-
-        public float W
-        {
-            get
-            {
-                return w;
-            }
-            set
-            {
-                w = value;
-                UpdateLayout();
-            }
-        }
-
-        public float H
-        {
-            get
-            {
-                return h;
-            }
-            set
-            {
-                h = value;
-                UpdateLayout();
-            }
-        }
-
+/*
         public virtual void UpdateLayout()
         {
             PointF origin;
@@ -173,6 +123,7 @@ namespace Sample
                 cachedCustomSymbol = null;
             }
         }
+*/
 
         private void BuildCustomSymbol()
         {
