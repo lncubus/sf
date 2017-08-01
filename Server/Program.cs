@@ -21,7 +21,7 @@ namespace Server
 
         public static ServiceHost CreateHost()
         {
-            var binding = new NetTcpBinding(SecurityMode.None, true)
+            var binding = new NetTcpBinding(SecurityMode.Transport, true)
                 {
                     //                    MaxBufferPoolSize = 0x100000 Int32.MaxValue,
                     //                    MaxBufferSize = Int32.MaxValue,
