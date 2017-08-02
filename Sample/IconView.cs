@@ -24,7 +24,7 @@ namespace Sample
                 _vector = value;
                 SpaceView parent = Parent.Control as SpaceView;
                 if (parent != null)
-                    parent.InvalidateLayout(this);
+                    parent.UpdateLayout(this);
             }
         }
 

@@ -35,10 +35,7 @@ namespace Vectors
         /// <summary>
         /// Returns a Quaternion representing no rotation. 
         /// </summary>
-        public static Quaternion Identity
-        {
-            get { return new Quaternion(0, 0, 0, 1); }
-        }
+        public static readonly Quaternion Identity = new Quaternion(0, 0, 0, 1);
 
         /// <summary>
         /// Returns whether the Quaternion is the identity Quaternion.

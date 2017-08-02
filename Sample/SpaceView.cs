@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using Vectors;
 
 namespace Sample
 {
     public class SpaceView : Pvax.UI.Views.ViewContainer
     {
-        protected PointF origin = new PointF(0, 0);
-        protected PointF scale = new PointF(Dpi.X, Dpi.Y);
+        protected PointF deviceScale = new PointF(Dpi.X, Dpi.Y);
+        protected Point deviceOrigin = new Point(0, 0);
+
+        protected Vector3 worldOrigin = Vector3.Zero;
+        protected Quaternion worldRotation = Quaternion.Identity;
 
         public static readonly Point Dpi;
 
@@ -29,30 +33,43 @@ namespace Sample
             AutoScroll = false;
         }
 
-        public PointF WorldOrigin
+        public Point DeviceOrigin
         {
             get
             {
-                return origin;
+                return deviceOrigin;
             }
             set
             {
-                origin = value;
-                InvalidateLayout();
+                deviceOrigin = value;
+                UpdateLayout();
             }
         }
 
-        public PointF WorldScale
+        public PointF DeviceScale
         {
             get
             {
-                return scale;
+                return deviceScale;
             }
             set
             {
-                scale = value;
-                InvalidateLayout();
+                deviceScale = value;
+                UpdateLayout();
             }
+        }
+
+        /// <summary>
+        /// https://en.wikipedia.org/wiki/3D_projection        ///
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        protected virtual Point WorldToDevice(Vector3 v)
+        {
+            // camera transform
+            Vector3 d = worldRotation.Rotate(v - worldOrigin);
+            // Use https://en.wikipedia.org/wiki/Camera_matrix, stupid!!!
+            throw new NotImplementedException();
         }
 
         protected override void OnMouseMove(System.Windows.Forms.MouseEventArgs e)
@@ -64,15 +81,21 @@ namespace Sample
             }
         }
 
-        public void InvalidateLayout()
+        public void UpdateLayout()
         {
+            BeginUpdate();
+            foreach (IconView icon in Views.OfType<IconView>())
+                UpdateLayout(icon);
             // todo!
-            Invalidate();
+            EndUpdate();
         }
 
-        public void InvalidateLayout(IconView icon)
+        public void UpdateLayout(IconView icon)
         {
             icon.Invalidate();
+            Point place = WorldToDevice(icon.Vector);
+            icon.Left = place.X - icon.Width;
+            icon.Top = place.Y - icon.Height;
             // todo!
             icon.Invalidate();
         }

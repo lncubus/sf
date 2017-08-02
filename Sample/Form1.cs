@@ -45,14 +45,14 @@ namespace Sample
                 {
                     Vectors.Vector3 v = velocity[icon];
                     v += RandomVector(0.01);
-                    if (icon.Left < 0)
-                        v.X = Math.Abs(v.X);
-                    if (icon.Top < 0)
-                        v.Y = Math.Abs(v.Y);
-                    if (icon.Left + icon.Width > spaceView.ClientSize.Width)
-                        v.X = -Math.Abs(v.X);
-                    if (icon.Top + icon.Height > spaceView.ClientSize.Height)
-                        v.Y = -Math.Abs(v.Y);
+                    //if (icon.Left < 0)
+                    //    v.X = Math.Abs(v.X);
+                    //if (icon.Top < 0)
+                    //    v.Y = Math.Abs(v.Y);
+                    //if (icon.Left + icon.Width > spaceView.ClientSize.Width)
+                    //    v.X = -Math.Abs(v.X);
+                    //if (icon.Top + icon.Height > spaceView.ClientSize.Height)
+                    //    v.Y = -Math.Abs(v.Y);
                     if (Math.Abs(w) > 0.1)
                         v *= w;
                     velocity[icon] = v;
@@ -339,11 +339,7 @@ namespace Sample
 
             foreach (IconView icon in icons)
             {
-                velocity.Add(icon, new PointF
-                    {
-                        X = (float)(random.NextDouble() - 0.5) * 0.01F,
-                        Y = (float)(random.NextDouble() - 0.5) * 0.01F,
-                    });
+                velocity.Add(icon, RandomVector(0.1));
             }
 
             timer = new Timer(this.components)
@@ -364,7 +360,7 @@ namespace Sample
             };
             ellipticButtonView1.Click += (object sender, EventArgs e) =>
                 {
-                    spaceView.WorldScale = new PointF(spaceView.WorldScale.X*1.03F, spaceView.WorldScale.Y*1.03F);
+                    spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
                 };
             // 
             // buttonView1
@@ -390,7 +386,7 @@ namespace Sample
 
             spaceView.SizeChanged += (object sender, EventArgs e) =>
                 {
-                    spaceView.WorldOrigin = new PointF
+                    spaceView.DeviceOrigin = new Point
                     {
                         X = spaceView.ClientSize.Width/2,
                         Y = spaceView.ClientSize.Height/2
