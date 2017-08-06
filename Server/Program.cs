@@ -59,6 +59,7 @@ namespace Server
             }
             catch (Exception ex)
             {
+				Console.Error.WriteLine (ex);
             }
         }
     }
