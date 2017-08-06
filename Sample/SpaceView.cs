@@ -59,6 +59,32 @@ namespace Sample
             }
         }
 
+        public Vector3 WorldOrigin
+        {
+            get
+            {
+                return worldOrigin;
+            }
+            set
+            {
+                worldOrigin = value;
+                UpdateLayout();
+            }
+        }
+
+        public Quaternion WorldRotation
+        {
+            get
+            {
+                return worldRotation;
+            }
+            set
+            {
+                worldRotation = value;
+                UpdateLayout();
+            }
+        }
+
         /// <summary>
         /// https://en.wikipedia.org/wiki/3D_projection        ///
         /// </summary>
@@ -68,8 +94,8 @@ namespace Sample
         {
             // camera transform
             Vector3 d = worldRotation.Rotate(v - worldOrigin);
-            double x = (d.X + d.Z / 2) * deviceScale.X + deviceOrigin.X;
-            double y = (d.Y + d.Z / 2) * deviceScale.Y + deviceOrigin.Y;
+            double x = (d.X - d.Z / 2) * deviceScale.X + deviceOrigin.X;
+            double y = (-d.Y + d.Z / 2) * deviceScale.Y + deviceOrigin.Y;
             // Use https://en.wikipedia.org/wiki/Camera_matrix, stupid!!!
             Point result = new Point
             {

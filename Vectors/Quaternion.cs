@@ -45,6 +45,14 @@ namespace Vectors
             get { return this == Identity; }
         }
 
+        public Quaternion(Vector3 xyz, double w)
+        {
+            this.X = xyz.X;
+            this.Y = xyz.Y;
+            this.Z = xyz.Z;
+            this.W = w;
+        }
+
         /// <summary>
         /// Constructs a Quaternion from the given components.
         /// </summary>

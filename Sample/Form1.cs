@@ -43,18 +43,20 @@ namespace Sample
                 spaceView.BeginUpdate();
                 foreach (IconView icon in icons)
                 {
-                    Vectors.Vector3 v = velocity[icon];
+                    Vectors.Vector3 v;
+                    if (!velocity.TryGetValue(icon, out v))
+                        continue;
                     v += RandomVector(0.01);
-                    //if (icon.Left < 0)
-                    //    v.X = Math.Abs(v.X);
-                    //if (icon.Top < 0)
-                    //    v.Y = Math.Abs(v.Y);
-                    //if (icon.Left + icon.Width > spaceView.ClientSize.Width)
-                    //    v.X = -Math.Abs(v.X);
-                    //if (icon.Top + icon.Height > spaceView.ClientSize.Height)
-                    //    v.Y = -Math.Abs(v.Y);
+                    int k = 1;
+                    if (icon.Left < 0 || icon.Top < 0 ||
+                        icon.Left + icon.Width > spaceView.ClientSize.Width ||
+                        icon.Top + icon.Height > spaceView.ClientSize.Height)
+                    {
+                        v = -v;
+                        k = 3;
+                    }
                     if (Math.Abs(w) > 0.1)
-                        v *= w;
+                        v *= k*w;
                     velocity[icon] = v;
                     icon.Vector += v;
                 }
@@ -221,28 +223,28 @@ namespace Sample
                     //H = 0.75F,
                     Name = "☕",
                },
-                    new IconView
-                    {
-                        EdgeColor = Color.Red,
-                        BackColor = Color.Red,
-                        HoverColor = Color.DarkRed,
-                        Symbol = Symbol.Custom,
-                        ForeColor = textColor,
-                        Vector = RandomVector(4),
-                        IconSize = new SizeF(1.5F, 0.5F),
-                        Name = "BANG!",
-                    },
-                    new IconView
-                    {
-                        EdgeColor = Color.Blue,
-                        BackColor = Color.SeaGreen,
-                        HoverColor = Color.LightSeaGreen,
-                        Symbol = Symbol.Custom,
-                        ForeColor = Color.White,
-                        CustomSymbol = teapot,
-                        Vector = RandomVector(4),
-                        IconSize = new SizeF(1.6F, 1),
-                    },
+                new IconView
+                {
+                    EdgeColor = Color.Red,
+                    BackColor = Color.Red,
+                    HoverColor = Color.DarkRed,
+                    Symbol = Symbol.Custom,
+                    ForeColor = textColor,
+                    Vector = RandomVector(4),
+                    IconSize = new SizeF(1.5F, 0.5F),
+                    Name = "BANG!",
+                },
+                new IconView
+                {
+                    EdgeColor = Color.Blue,
+                    BackColor = Color.SeaGreen,
+                    HoverColor = Color.LightSeaGreen,
+                    Symbol = Symbol.Custom,
+                    ForeColor = Color.White,
+                    CustomSymbol = teapot,
+                    Vector = RandomVector(4),
+                    IconSize = new SizeF(1.6F, 1),
+                },
             };
 
             //teapot.AddEllipse(new RectangleF(0, 0, 1F, 1F));
@@ -350,7 +352,52 @@ namespace Sample
             ellipticButtonView1.Click += (object sender, EventArgs e) =>
                 {
                     spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
+                    Vectors.Vector3 axis = Vectors.Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
+                    spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
                 };
+            IconView zero = new IconView
+            {
+                Vector = Vectors.Vector3.Zero,
+                EdgeColor = Color.White,
+                BackColor = Color.LightGray,
+                HoverColor = Color.White,
+                Symbol = Symbol.Custom,
+                ForeColor = textColor,
+                IconSize = new SizeF(0.25F, 0.25F),
+                //W = 0.75F,
+                //H = 0.75F,
+                Name = "0",
+            };
+            icons.Add(zero);
+            foreach (char c in "xyz")
+            {
+                Vectors.Vector3 axis;
+                switch (c)
+                {
+                    case 'x': axis = Vectors.Vector3.UnitX; break;
+                    case 'y': axis = Vectors.Vector3.UnitY; break;
+                    case 'z': axis = Vectors.Vector3.UnitZ; break;
+                    default:
+                        throw new NotImplementedException("another dimension");
+                }
+                for (int z = 1; z < 4; z++)
+                {
+                    IconView icon = new IconView
+                    {
+                        Vector = z * axis,
+                        EdgeColor = Color.White,
+                        BackColor = Color.LightGray,
+                        HoverColor = Color.White,
+                        Symbol = Symbol.Custom,
+                        ForeColor = textColor,
+                        IconSize = new SizeF(1F, 0.25F),
+                        //W = 0.75F,
+                        //H = 0.75F,
+                        Name = c + "=" + z,// "0",
+                    };
+                    icons.Add(icon);
+                }
+            }
             // 
             // buttonView1
             // 
