@@ -10,6 +10,7 @@ namespace Sample
     public class IconView : Pvax.UI.Views.View
     {
         protected Vectors.Vector3 _vector;
+        protected SizeF _size = SizeF.Empty;
 
         public Vectors.Vector3 Vector
         {
@@ -22,6 +23,27 @@ namespace Sample
                 if (_vector.Equals(value))
                     return;
                 _vector = value;
+                SpaceView parent = Parent.Control as SpaceView;
+                if (parent != null)
+                    parent.UpdateLayout(this);
+            }
+        }
+        
+        public SizeF IconSize
+        {
+            get
+            {
+                if (!_size.IsEmpty)
+                    return _size;
+                return new SizeF(2 * Width / SpaceView.Dpi.X, 2 * Height / SpaceView.Dpi.Y);
+            }
+            set
+            {
+                if (_size.Equals(value))
+                    return;
+                _size = value;
+                Width = (int)(_size.Width * SpaceView.Dpi.X / 2);
+                Height = (int)(_size.Height * SpaceView.Dpi.Y / 2);
                 SpaceView parent = Parent.Control as SpaceView;
                 if (parent != null)
                     parent.UpdateLayout(this);

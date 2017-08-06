@@ -68,8 +68,15 @@ namespace Sample
         {
             // camera transform
             Vector3 d = worldRotation.Rotate(v - worldOrigin);
+            double x = (d.X + d.Z / 2) * deviceScale.X + deviceOrigin.X;
+            double y = (d.Y + d.Z / 2) * deviceScale.Y + deviceOrigin.Y;
             // Use https://en.wikipedia.org/wiki/Camera_matrix, stupid!!!
-            throw new NotImplementedException();
+            Point result = new Point
+            {
+                X = (int) x,
+                Y = (int) y,
+            };
+            return result;
         }
 
         protected override void OnMouseMove(System.Windows.Forms.MouseEventArgs e)
@@ -94,8 +101,8 @@ namespace Sample
         {
             icon.Invalidate();
             Point place = WorldToDevice(icon.Vector);
-            icon.Left = place.X - icon.Width;
-            icon.Top = place.Y - icon.Height;
+            icon.Left = place.X - icon.Width/2;
+            icon.Top = place.Y - icon.Height/2;
             // todo!
             icon.Invalidate();
         }
