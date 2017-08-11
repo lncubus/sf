@@ -678,17 +678,17 @@ namespace Vectors
 
             Matrix4x4 result;
 
-            result.M11 = xx + ca * (1.0f - xx);
+            result.M11 = xx + ca * (1.0 - xx);
             result.M12 = xy - ca * xy + sa * z;
             result.M13 = xz - ca * xz - sa * y;
             result.M14 = 0.0;
             result.M21 = xy - ca * xy - sa * z;
-            result.M22 = yy + ca * (1.0f - yy);
+            result.M22 = yy + ca * (1.0 - yy);
             result.M23 = yz - ca * yz + sa * x;
             result.M24 = 0.0;
             result.M31 = xz - ca * xz + sa * y;
             result.M32 = yz - ca * yz - sa * x;
-            result.M33 = zz + ca * (1.0f - zz);
+            result.M33 = zz + ca * (1.0 - zz);
             result.M34 = 0.0;
             result.M41 = 0.0;
             result.M42 = 0.0;
@@ -708,19 +708,19 @@ namespace Vectors
         /// <returns>The perspective projection matrix.</returns>
         public static Matrix4x4 CreatePerspectiveFieldOfView(double fieldOfView, double aspectRatio, double nearPlaneDistance, double farPlaneDistance)
         {
-            if (fieldOfView <= 0.0f || fieldOfView >= Math.PI)
+            if (fieldOfView <= 0.0 || fieldOfView >= Math.PI)
                 throw new ArgumentOutOfRangeException(nameof(fieldOfView));
 
-            if (nearPlaneDistance <= 0.0f)
+            if (nearPlaneDistance <= 0.0)
                 throw new ArgumentOutOfRangeException(nameof(nearPlaneDistance));
 
-            if (farPlaneDistance <= 0.0f)
+            if (farPlaneDistance <= 0.0)
                 throw new ArgumentOutOfRangeException(nameof(farPlaneDistance));
 
             if (nearPlaneDistance >= farPlaneDistance)
                 throw new ArgumentOutOfRangeException(nameof(nearPlaneDistance));
 
-            double yScale = 1.0f / Math.Tan(fieldOfView * 0.5f);
+            double yScale = 1.0 / Math.Tan(fieldOfView * 0.5f);
             double xScale = yScale / aspectRatio;
 
             Matrix4x4 result;
@@ -732,7 +732,7 @@ namespace Vectors
             result.M21 = result.M23 = result.M24 = 0.0;
 
             result.M31 = result.M32 = 0.0;
-            var negFarRange = double.IsPositiveInfinity(farPlaneDistance) ? -1.0f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
+            var negFarRange = double.IsPositiveInfinity(farPlaneDistance) ? -1.0 : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
             result.M33 = negFarRange;
             result.M34 = -1.0;
 
@@ -752,10 +752,10 @@ namespace Vectors
         /// <returns>The perspective projection matrix.</returns>
         public static Matrix4x4 CreatePerspective(double width, double height, double nearPlaneDistance, double farPlaneDistance)
         {
-            if (nearPlaneDistance <= 0.0f)
+            if (nearPlaneDistance <= 0.0)
                 throw new ArgumentOutOfRangeException(nameof(nearPlaneDistance));
 
-            if (farPlaneDistance <= 0.0f)
+            if (farPlaneDistance <= 0.0)
                 throw new ArgumentOutOfRangeException(nameof(farPlaneDistance));
 
             if (nearPlaneDistance >= farPlaneDistance)
@@ -763,13 +763,13 @@ namespace Vectors
 
             Matrix4x4 result;
 
-            result.M11 = 2.0f * nearPlaneDistance / width;
+            result.M11 = 2.0 * nearPlaneDistance / width;
             result.M12 = result.M13 = result.M14 = 0.0;
 
-            result.M22 = 2.0f * nearPlaneDistance / height;
+            result.M22 = 2.0 * nearPlaneDistance / height;
             result.M21 = result.M23 = result.M24 = 0.0;
 
-            var negFarRange = double.IsPositiveInfinity(farPlaneDistance) ? -1.0f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
+            var negFarRange = double.IsPositiveInfinity(farPlaneDistance) ? -1.0 : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
             result.M33 = negFarRange;
             result.M31 = result.M32 = 0.0;
             result.M34 = -1.0;
@@ -792,10 +792,10 @@ namespace Vectors
         /// <returns>The perspective projection matrix.</returns>
         public static Matrix4x4 CreatePerspectiveOffCenter(double left, double right, double bottom, double top, double nearPlaneDistance, double farPlaneDistance)
         {
-            if (nearPlaneDistance <= 0.0f)
+            if (nearPlaneDistance <= 0.0)
                 throw new ArgumentOutOfRangeException(nameof(nearPlaneDistance));
 
-            if (farPlaneDistance <= 0.0f)
+            if (farPlaneDistance <= 0.0)
                 throw new ArgumentOutOfRangeException(nameof(farPlaneDistance));
 
             if (nearPlaneDistance >= farPlaneDistance)
@@ -803,15 +803,15 @@ namespace Vectors
 
             Matrix4x4 result;
 
-            result.M11 = 2.0f * nearPlaneDistance / (right - left);
+            result.M11 = 2.0 * nearPlaneDistance / (right - left);
             result.M12 = result.M13 = result.M14 = 0.0;
 
-            result.M22 = 2.0f * nearPlaneDistance / (top - bottom);
+            result.M22 = 2.0 * nearPlaneDistance / (top - bottom);
             result.M21 = result.M23 = result.M24 = 0.0;
 
             result.M31 = (left + right) / (right - left);
             result.M32 = (top + bottom) / (top - bottom);
-            var negFarRange = double.IsPositiveInfinity(farPlaneDistance) ? -1.0f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
+            var negFarRange = double.IsPositiveInfinity(farPlaneDistance) ? -1.0 : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
             result.M33 = negFarRange;
             result.M34 = -1.0;
 
@@ -833,13 +833,13 @@ namespace Vectors
         {
             Matrix4x4 result;
 
-            result.M11 = 2.0f / width;
+            result.M11 = 2.0 / width;
             result.M12 = result.M13 = result.M14 = 0.0;
 
-            result.M22 = 2.0f / height;
+            result.M22 = 2.0 / height;
             result.M21 = result.M23 = result.M24 = 0.0;
 
-            result.M33 = 1.0f / (zNearPlane - zFarPlane);
+            result.M33 = 1.0 / (zNearPlane - zFarPlane);
             result.M31 = result.M32 = result.M34 = 0.0;
 
             result.M41 = result.M42 = 0.0;
@@ -863,13 +863,13 @@ namespace Vectors
         {
             Matrix4x4 result;
 
-            result.M11 = 2.0f / (right - left);
+            result.M11 = 2.0 / (right - left);
             result.M12 = result.M13 = result.M14 = 0.0;
 
-            result.M22 = 2.0f / (top - bottom);
+            result.M22 = 2.0 / (top - bottom);
             result.M21 = result.M23 = result.M24 = 0.0;
 
-            result.M33 = 1.0f / (zNearPlane - zFarPlane);
+            result.M33 = 1.0 / (zNearPlane - zFarPlane);
             result.M31 = result.M32 = result.M34 = 0.0;
 
             result.M41 = (left + right) / (left - right);
@@ -970,17 +970,17 @@ namespace Vectors
             double yz = quaternion.Y * quaternion.Z;
             double wx = quaternion.X * quaternion.W;
 
-            result.M11 = 1.0f - 2.0f * (yy + zz);
-            result.M12 = 2.0f * (xy + wz);
-            result.M13 = 2.0f * (xz - wy);
+            result.M11 = 1.0 - 2.0 * (yy + zz);
+            result.M12 = 2.0 * (xy + wz);
+            result.M13 = 2.0 * (xz - wy);
             result.M14 = 0.0;
-            result.M21 = 2.0f * (xy - wz);
-            result.M22 = 1.0f - 2.0f * (zz + xx);
-            result.M23 = 2.0f * (yz + wx);
+            result.M21 = 2.0 * (xy - wz);
+            result.M22 = 1.0 - 2.0 * (zz + xx);
+            result.M23 = 2.0 * (yz + wx);
             result.M24 = 0.0;
-            result.M31 = 2.0f * (xz + wy);
-            result.M32 = 2.0f * (yz - wx);
-            result.M33 = 1.0f - 2.0f * (yy + xx);
+            result.M31 = 2.0 * (xz + wy);
+            result.M32 = 2.0 * (yz - wx);
+            result.M33 = 1.0 - 2.0 * (yy + xx);
             result.M34 = 0.0;
             result.M41 = 0.0;
             result.M42 = 0.0;
@@ -1183,7 +1183,7 @@ namespace Vectors
                 return false;
             }
 
-            double invDet = 1.0f / det;
+            double invDet = 1.0 / det;
 
             result.M11 = a11 * invDet;
             result.M21 = a12 * invDet;
@@ -1245,17 +1245,17 @@ namespace Vectors
             double yz2 = rotation.Y * z2;
             double zz2 = rotation.Z * z2;
 
-            double q11 = 1.0f - yy2 - zz2;
+            double q11 = 1.0 - yy2 - zz2;
             double q21 = xy2 - wz2;
             double q31 = xz2 + wy2;
 
             double q12 = xy2 + wz2;
-            double q22 = 1.0f - xx2 - zz2;
+            double q22 = 1.0 - xx2 - zz2;
             double q32 = yz2 - wx2;
 
             double q13 = xz2 - wy2;
             double q23 = yz2 + wx2;
-            double q33 = 1.0f - xx2 - yy2;
+            double q33 = 1.0 - xx2 - yy2;
 
             Matrix4x4 result;
 
