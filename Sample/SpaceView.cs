@@ -10,8 +10,7 @@ namespace Sample
         protected PointF deviceScale = new PointF(Dpi.X, Dpi.Y);
         protected Point deviceOrigin = new Point(0, 0);
 
-        protected Vector3 worldOrigin = Vector3.Zero;
-        protected Quaternion worldRotation = Quaternion.Identity;
+        protected Matrix4x4 worldMatrix = Matrix4x4.Identity;
 
         public static readonly Point Dpi;
 
@@ -59,28 +58,15 @@ namespace Sample
             }
         }
 
-        public Vector3 WorldOrigin
+        public Matrix4x4 WorldMatrix
         {
             get
             {
-                return worldOrigin;
+                return worldMatrix;
             }
             set
             {
-                worldOrigin = value;
-                UpdateLayout();
-            }
-        }
-
-        public Quaternion WorldRotation
-        {
-            get
-            {
-                return worldRotation;
-            }
-            set
-            {
-                worldRotation = value;
+                worldMatrix = value;
                 UpdateLayout();
             }
         }
@@ -92,15 +78,16 @@ namespace Sample
         /// <returns></returns>
         protected virtual Point WorldToDevice(Vector3 v)
         {
+            var q = new Quaternion(v, 1);
             // camera transform
-            Vector3 d = worldRotation.Rotate(v - worldOrigin);
-            double x = (d.X - d.Z / 2) * deviceScale.X + deviceOrigin.X;
-            double y = (-d.Y + d.Z / 2) * deviceScale.Y + deviceOrigin.Y;
+            q = WorldMatrix * q;
+            double x = (q.X - q.Z / 2) * deviceScale.X + deviceOrigin.X;
+            double y = (-q.Y + q.Z / 2) * deviceScale.Y + deviceOrigin.Y;
             // Use https://en.wikipedia.org/wiki/Camera_matrix, stupid!!!
             Point result = new Point
             {
-                X = (int) x,
-                Y = (int) y,
+                X = (int)x,
+                Y = (int)y,
             };
             return result;
         }

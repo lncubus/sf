@@ -351,9 +351,9 @@ namespace Sample
             };
             ellipticButtonView1.Click += (object sender, EventArgs e) =>
                 {
-                    spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
-                    Vectors.Vector3 axis = Vectors.Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
-                    spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
+                    //spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
+                    //Vectors.Vector3 axis = Vectors.Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
+                    //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
                 };
             IconView zero = new IconView
             {
