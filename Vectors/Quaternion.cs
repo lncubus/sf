@@ -53,6 +53,16 @@ namespace Vectors
             this.W = w;
         }
 
+        public Vector3 GetXYZ()
+        {
+            return new Vector3
+            {
+                X = this.X,
+                Y = this.Y,
+                Z = this.Z
+            };
+        }
+
         /// <summary>
         /// Constructs a Quaternion from the given components.
         /// </summary>

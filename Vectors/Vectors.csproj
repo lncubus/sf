@@ -39,7 +39,6 @@
     <Compile Include="Vector3.cs" />
     <Compile Include="Vector3_Intrinsics.cs" />
     <Compile Include="Quaternion.cs" />
-    <Compile Include="VectorExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

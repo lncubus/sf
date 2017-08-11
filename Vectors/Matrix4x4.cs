@@ -1509,6 +1509,31 @@ namespace Vectors
         }
 
         /// <summary>
+        /// Multiplies a matrix by a quaternion.
+        /// </summary>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="quaternion">The quaternion.</param>
+        /// <returns>The transformed quaternion.</returns>
+        public static Quaternion operator *(Matrix4x4 matrix, Quaternion quaternion)
+        {
+            Quaternion r;
+
+            // First row
+            r.X = matrix.M11 * quaternion.X + matrix.M12 * quaternion.Y + matrix.M13 * quaternion.Z + matrix.M14 * quaternion.W;
+
+            // Second row
+            r.Y = matrix.M21 * quaternion.X + matrix.M22 * quaternion.Y + matrix.M23 * quaternion.Z + matrix.M24 * quaternion.W;
+
+            // Third row
+            r.Z = matrix.M31 * quaternion.X + matrix.M32 * quaternion.Y + matrix.M33 * quaternion.Z + matrix.M34 * quaternion.W;
+
+            // Fourth row
+            r.W = matrix.M41 * quaternion.X + matrix.M42 * quaternion.Y + matrix.M43 * quaternion.Z + matrix.M44 * quaternion.W;
+
+            return r;
+        }
+
+        /// <summary>
         /// Returns a boolean indicating whether the given two matrices are equal.
         /// </summary>
         /// <param name="value1">The first matrix to compare.</param>
