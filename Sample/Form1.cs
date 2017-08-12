@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 
+using Vectors;
+
 namespace Sample
 {
     public partial class Form1 : Form
@@ -22,14 +24,13 @@ namespace Sample
         private Pvax.UI.Views.ButtonView ellipticButtonView1;
         private SpaceView spaceView;
       //  private TextBox textBox1;
-        private Timer timer;
         private Random random = new Random();
-        Dictionary<IconView, Vectors.Vector3> velocity = new Dictionary<IconView, Vectors.Vector3>();
+        Dictionary<IconView, Vector3> velocity = new Dictionary<IconView, Vector3>();
         List<IconView> icons;
 
-        Vectors.Vector3 RandomVector(double a = 1)
+        Vector3 RandomVector(double a = 1)
         {
-            return new Vectors.Vector3
+            return new Vector3
             {
                 X = a * (random.NextDouble() - 0.5),
                 Y = a * (random.NextDouble() - 0.5),
@@ -43,7 +44,7 @@ namespace Sample
                 spaceView.BeginUpdate();
                 foreach (IconView icon in icons)
                 {
-                    Vectors.Vector3 v;
+                    Vector3 v;
                     if (!velocity.TryGetValue(icon, out v))
                         continue;
                     v += RandomVector(0.01);
@@ -52,11 +53,10 @@ namespace Sample
                         icon.Left + icon.Width > spaceView.ClientSize.Width ||
                         icon.Top + icon.Height > spaceView.ClientSize.Height)
                     {
-                        v = -v;
-                        k = 3;
+                        v = -v*0.5 - Vector3.Normalize(icon.Vector)*random.NextDouble()*0.1;
                     }
                     if (Math.Abs(w) > 0.1)
-                        v *= k*w;
+                        v *= w;
                     velocity[icon] = v;
                     icon.Vector += v;
                 }
@@ -68,7 +68,6 @@ namespace Sample
         public Form1()
         {
             InitializeComponent();
-
             // 
             // viewContainer1
             // 
@@ -333,14 +332,8 @@ namespace Sample
                 velocity.Add(icon, RandomVector(0.1));
             }
 
-            timer = new Timer(this.components)
-            {
-                Interval = 100,
-                Enabled = true,
-            };
-
             timer.Tick += (object sender, EventArgs e) => MoveShips();
-
+            timer.Enabled = true;
 
             ellipticButtonView1 = new Pvax.UI.Views.ButtonView(155, 15, 150, 50)
             {
@@ -352,21 +345,18 @@ namespace Sample
             ellipticButtonView1.Click += (object sender, EventArgs e) =>
                 {
                     //spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
-                    //Vectors.Vector3 axis = Vectors.Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
+                    //Vector3 axis = Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
                     //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
                 };
-            IconView zero = new IconView
+            LabelIconView zero = new LabelIconView
             {
                 Vector = Vectors.Vector3.Zero,
                 EdgeColor = Color.White,
                 BackColor = Color.LightGray,
                 HoverColor = Color.White,
-                Symbol = Symbol.Custom,
                 ForeColor = textColor,
                 IconSize = new SizeF(0.25F, 0.25F),
-                //W = 0.75F,
-                //H = 0.75F,
-                Name = "0",
+                Text = "0",
             };
             icons.Add(zero);
             foreach (char c in "xyz")
@@ -382,18 +372,15 @@ namespace Sample
                 }
                 for (int z = 1; z < 4; z++)
                 {
-                    IconView icon = new IconView
+                    LabelIconView icon = new LabelIconView
                     {
                         Vector = z * axis,
                         EdgeColor = Color.White,
                         BackColor = Color.LightGray,
                         HoverColor = Color.White,
-                        Symbol = Symbol.Custom,
                         ForeColor = textColor,
-                        IconSize = new SizeF(1F, 0.25F),
-                        //W = 0.75F,
-                        //H = 0.75F,
-                        Name = c + "=" + z,// "0",
+                        Text = c + "=" + z,// "0",
+                        IconSize = new SizeF(1.0F, 0.5F),
                     };
                     icons.Add(icon);
                 }
