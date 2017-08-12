@@ -9,6 +9,7 @@ namespace Sample
 {
     public enum Symbol
     {
+        Text,
         Custom,
         Rectangle,
         Ellipse,
@@ -23,7 +24,6 @@ namespace Sample
         Pentagram,
         Star,
         Asterisk,
-        //Text
     };
 
     public struct ArcF

@@ -12,7 +12,7 @@ namespace Sample
         protected Vectors.Vector3 _vector;
         protected SizeF _size = SizeF.Empty;
 
-        public Vectors.Vector3 Vector
+        public virtual Vectors.Vector3 Vector
         {
             get
             {
@@ -29,7 +29,7 @@ namespace Sample
             }
         }
         
-        public SizeF IconSize
+        public virtual SizeF IconSize
         {
             get
             {
@@ -115,38 +115,6 @@ namespace Sample
             }
         }
 
-/*
-        public virtual void UpdateLayout()
-        {
-            PointF origin;
-            PointF scale;
-            if (Parent is SpaceView)
-            {
-                origin = ((SpaceView)Parent).WorldOrigin;
-                scale = ((SpaceView)Parent).WorldScale;
-            }
-            else
-            {
-                origin = new PointF(0, 0);
-                scale = SpaceView.Dpi;
-            }
-            float left = origin.X + (X - Math.Abs(W)/2F)*scale.X;
-            float top = origin.Y + (Y - Math.Abs(H)/2F)*scale.Y;
-
-            Size oldSize = this.Size;
-            Width = (int)(Math.Ceiling(W*scale.X));
-            Height = (int)(Math.Ceiling(H*scale.Y));
-            Left = (int)(Math.Round(left));
-            Top = (int)(Math.Round(top));
-
-            if (Size != oldSize && cachedCustomSymbol != null)
-            {
-                cachedCustomSymbol.Dispose();
-                cachedCustomSymbol = null;
-            }
-        }
-*/
-
         private void BuildCustomSymbol()
         {
             if (customSymbol == null)
@@ -191,6 +159,8 @@ namespace Sample
             layout.Inflate(-2, -2);
             switch (Symbol)
             {
+                case Symbol.Text:
+                    throw new NotImplementedException(Symbol.ToString());
                 case Symbol.Rectangle:
                     g.FillRectangle(brush, layout);
                     g.DrawRectangle(pen, layout);
