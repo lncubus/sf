@@ -48,7 +48,6 @@ namespace Sample
                     if (!velocity.TryGetValue(icon, out v))
                         continue;
                     v += RandomVector(0.01);
-                    int k = 1;
                     if (icon.Left < 0 || icon.Top < 0 ||
                         icon.Left + icon.Width > spaceView.ClientSize.Width ||
                         icon.Top + icon.Height > spaceView.ClientSize.Height)
@@ -351,11 +350,11 @@ namespace Sample
             LabelIconView zero = new LabelIconView
             {
                 Vector = Vectors.Vector3.Zero,
-                EdgeColor = Color.White,
-                BackColor = Color.LightGray,
-                HoverColor = Color.White,
-                ForeColor = textColor,
-                IconSize = new SizeF(0.25F, 0.25F),
+				EdgeColor = Color.White,
+				BackColor = Color.LightGray,
+				HoverColor = Color.White,
+				ForeColor = textColor,
+                IconSize = new SizeF(0.5F, 0.5F),
                 Text = "0",
             };
             icons.Add(zero);
