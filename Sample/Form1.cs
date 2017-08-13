@@ -28,6 +28,8 @@ namespace Sample
         Dictionary<IconView, Vector3> velocity = new Dictionary<IconView, Vector3>();
         List<IconView> icons;
 
+		private double shift = 0;
+
         Vector3 RandomVector(double a = 1)
         {
             return new Vector3
@@ -342,11 +344,19 @@ namespace Sample
                 HoverColor = Color.Red,
             };
             ellipticButtonView1.Click += (object sender, EventArgs e) =>
-                {
+            {
+				Vector3 position = Vector3.Zero;
+				shift += Math.PI / 180;
+				Vector3 forward = new Vector3(0, Math.Sin(shift), Math.Cos(shift));
+				Vector3 up =  new Vector3(0, Math.Cos(shift), Math.Sin(shift));
+				Matrix4x4 world = Matrix4x4.CreateWorld(position, forward, up);
+				spaceView.WorldMatrix = world;
+
+				Debug.WriteLine(world.ToString());
                     //spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
                     //Vector3 axis = Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
                     //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
-                };
+             };
             LabelIconView zero = new LabelIconView
             {
                 Vector = Vectors.Vector3.Zero,
