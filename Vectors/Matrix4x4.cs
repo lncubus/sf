@@ -1600,7 +1600,12 @@ namespace Vectors
             return ToString("G", CultureInfo.CurrentCulture);
         }
 
-        public string ToString(string f, IFormatProvider ci)
+		public string ToString(string f)
+		{
+			return ToString(f, CultureInfo.CurrentCulture);
+		}
+
+		public string ToString(string f, IFormatProvider ci)
         {
             return String.Format(ci, "{{ {{M11:{0} M12:{1} M13:{2} M14:{3}}} {{M21:{4} M22:{5} M23:{6} M24:{7}}} {{M31:{8} M32:{9} M33:{10} M34:{11}}} {{M41:{12} M42:{13} M43:{14} M44:{15}}} }}",
                                  M11.ToString(f, ci), M12.ToString(f, ci), M13.ToString(f, ci), M14.ToString(f, ci),
