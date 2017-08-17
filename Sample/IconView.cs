@@ -11,6 +11,23 @@ namespace Sample
     {
         protected Vectors.Vector3 _vector;
         protected SizeF _size = SizeF.Empty;
+        protected int _z;
+
+        public virtual int Z
+        {
+            get
+            {
+                return _z;
+            }
+            set
+            {
+                if (_z == value)
+                    return;
+                SpaceView parent = Parent.Control as SpaceView;
+                if (parent != null)
+                    Invalidate();
+            }
+        }
 
         public virtual Vectors.Vector3 Vector
         {

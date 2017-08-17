@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Pvax.UI.Views;
 using Vectors;
 
 namespace Sample
@@ -71,24 +73,33 @@ namespace Sample
             }
         }
 
+        protected virtual int GetZIndex(IView view)
+        {
+            var icon = view as IconView;
+            return (icon == null) ? 0 : icon.Z;
+        }
+
+        protected override IEnumerable<IView> GetDrawingViews()
+        {
+            return base.GetDrawingViews().OrderBy(GetZIndex);
+        }
+
         /// <summary>
         /// https://en.wikipedia.org/wiki/3D_projection        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
-        protected virtual Point WorldToDevice(Vector3 v)
+        protected virtual Tuple<int, int, int> WorldToDevice(Vector3 v)
         {
             var q = new Quaternion(v, 1);
             // camera transform
             q = WorldMatrix * q;
-            double x = (q.X - q.Z / 2) * deviceScale.X + deviceOrigin.X;
-            double y = (-q.Y + q.Z / 2) * deviceScale.Y + deviceOrigin.Y;
+            double x = (q.X) * deviceScale.X + deviceOrigin.X; //  - q.Z / 2)
+            double y = (-q.Y) * deviceScale.Y + deviceOrigin.Y; //  + q.Z / 2
+            double z = q.Z * deviceScale.X;
+
             // Use https://en.wikipedia.org/wiki/Camera_matrix, stupid!!!
-            Point result = new Point
-            {
-                X = (int)x,
-                Y = (int)y,
-            };
+            var result = new Tuple<int, int, int>((int)x, (int)y, (int)z);
             return result;
         }
 
@@ -113,9 +124,10 @@ namespace Sample
         public void UpdateLayout(IconView icon)
         {
             icon.Invalidate();
-            Point place = WorldToDevice(icon.Vector);
-            icon.Left = place.X - icon.Width/2;
-            icon.Top = place.Y - icon.Height/2;
+            var place = WorldToDevice(icon.Vector);
+            icon.Left = place.Item1 - icon.Width/2;
+            icon.Top = place.Item2 - icon.Height/2;
+            icon.Z = place.Item3;
             // todo!
             icon.Invalidate();
         }
