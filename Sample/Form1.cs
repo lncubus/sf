@@ -29,6 +29,8 @@ namespace Sample
         List<IconView> icons;
 
 		private double shift = 0;
+        private double speed = 0.01;
+        private double drift = 0.001;
 
         Vector3 RandomVector(double a = 1)
         {
@@ -40,27 +42,33 @@ namespace Sample
             };
         }
 
-        void MoveShips(float w = 0)
+        void MoveShips()
         {
             {
                 spaceView.BeginUpdate();
-                foreach (IconView icon in icons)
-                {
-                    Vector3 v;
-                    if (!velocity.TryGetValue(icon, out v))
-                        continue;
-                    v += RandomVector(0.01);
-                    if (icon.Left < 0 || icon.Top < 0 ||
-                        icon.Left + icon.Width > spaceView.ClientSize.Width ||
-                        icon.Top + icon.Height > spaceView.ClientSize.Height)
-                    {
-                        v = -v*0.5 - Vector3.Normalize(icon.Vector)*random.NextDouble()*0.1;
-                    }
-                    if (Math.Abs(w) > 0.1)
-                        v *= w;
-                    velocity[icon] = v;
-                    icon.Vector += v;
-                }
+                //foreach (IconView icon in icons)
+                //{
+                //    Vector3 v;
+                //    if (!velocity.TryGetValue(icon, out v))
+                //        continue;
+                //    v += RandomVector(drift);
+                //    if (icon.Left < 0 || icon.Top < 0 ||
+                //        icon.Left + icon.Width > spaceView.ClientSize.Width ||
+                //        icon.Top + icon.Height > spaceView.ClientSize.Height)
+                //    {
+                //        v = -v * 0.75;
+                //    }
+                //    velocity[icon] = v;
+                //    icon.Vector += v;
+                //}
+
+                Vector3 position = Vector3.Zero;
+                Vector3 up = Vector3.UnitY;
+                shift += Math.PI / 180;
+                Vector3 forward = new Vector3(Math.Sin(shift), 0, -Math.Cos(shift));
+                Matrix4x4 world = Matrix4x4.CreateWorld(position, forward, up);
+                //Tl.LogObjects(Tl.Reflect(world));
+                spaceView.WorldMatrix = world;
                 spaceView.EndUpdate();
             };
 
@@ -330,7 +338,7 @@ namespace Sample
 
             foreach (IconView icon in icons)
             {
-                velocity.Add(icon, RandomVector(0.1));
+                velocity.Add(icon, RandomVector(0.01));
             }
 
             timer.Tick += (object sender, EventArgs e) => MoveShips();
@@ -345,14 +353,6 @@ namespace Sample
             };
             ellipticButtonView1.Click += (object sender, EventArgs e) =>
             {
-				Vector3 position = Vector3.Zero;
-				shift += Math.PI / 180;
-				Vector3 forward = new Vector3(0, Math.Sin(shift), Math.Cos(shift));
-				Vector3 up =  new Vector3(0, Math.Cos(shift), Math.Sin(shift));
-				Matrix4x4 world = Matrix4x4.CreateWorld(position, forward, up);
-				spaceView.WorldMatrix = world;
-
-				Debug.WriteLine(world.ToString());
                     //spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
                     //Vector3 axis = Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
                     //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
