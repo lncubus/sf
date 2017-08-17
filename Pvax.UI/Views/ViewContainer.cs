@@ -128,7 +128,7 @@ namespace Pvax.UI.Views
 		
 		IView currentTrackingView;
 		
-		bool updating;
+		int updating;
 		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ViewContainer"/>
@@ -217,7 +217,7 @@ namespace Pvax.UI.Views
 		{
 			get
 			{
-				return updating;
+				return updating > 0;
 			}
 		}
 		
@@ -226,7 +226,7 @@ namespace Pvax.UI.Views
 		/// </summary>
 		public void BeginUpdate()
 		{
-			updating = true;
+			updating++;
 		}
 		
 		/// <summary>
@@ -234,9 +234,15 @@ namespace Pvax.UI.Views
 		/// </summary>
 		public void EndUpdate()
 		{
-			updating = false;
-			CalcExtent();
-			Invalidate();
+            if (updating <= 0)
+                throw new InvalidOperationException(
+                    nameof(EndUpdate) + " without " + nameof(BeginUpdate));
+			updating--;
+            if (!Updating)
+            {
+                CalcExtent();
+                Invalidate();
+            }
 		}
 		
 		/// <summary>
@@ -317,6 +323,11 @@ namespace Pvax.UI.Views
 			return client.IntersectsWith(viewBounds);
 		}
 		
+        protected virtual IEnumerable<IView> GetDrawingViews()
+        {
+            return Views;
+        }
+
 		/// <summary>
 		/// Perfoms the control painting.
 		/// </summary>
@@ -341,7 +352,7 @@ namespace Pvax.UI.Views
 			g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
 			Rectangle bounds = new Rectangle();
-			foreach(IView view in views)
+			foreach(IView view in GetDrawingViews())
 			{
 				if(view.Visible)
 				{
