@@ -65,7 +65,7 @@ namespace Sample
                 Vector3 position = Vector3.Zero;
                 Vector3 up = Vector3.UnitY;
                 shift += Math.PI / 180;
-                Vector3 forward = new Vector3(Math.Sin(shift), 0, -Math.Cos(shift));
+                Vector3 forward = new Vector3(Math.Sin(shift), Math.Cos(shift), -1);
                 Matrix4x4 world = Matrix4x4.CreateWorld(position, forward, up);
                 //Tl.LogObjects(Tl.Reflect(world));
                 spaceView.WorldMatrix = world;
@@ -103,14 +103,14 @@ namespace Sample
 		//	viewContainer1.Views.Add(imageView1);
 
 //            spaceView = new SpaceView(0, 0, 1200, 700);
-            Color textColor = Color.FromArgb(192, Color.White);
+            Color textColor = Color.White;
             GraphicsPath teapot = new GraphicsPath();
             icons = new List<IconView>()
             {
                 new IconView
                 {
                     EdgeColor = Color.White,
-                    BackColor = Color.FromArgb(128, Color.White),
+                    BackColor = Color.LightGray,
                     HoverColor = Color.White,
                     ForeColor = textColor,
                     Symbol = Symbol.Pentagram,
@@ -121,7 +121,7 @@ namespace Sample
                 new IconView
                 {
                     EdgeColor = Color.White,
-                    BackColor = Color.FromArgb(128, Color.White),
+                    BackColor = Color.LightGray,
                     HoverColor = Color.White,
                     ForeColor = textColor,
                     Symbol = Symbol.Star,
@@ -132,7 +132,7 @@ namespace Sample
                 new IconView
                 {
                     EdgeColor = Color.Gold,
-                    BackColor = Color.FromArgb(128, Color.Gold),
+                    BackColor = Color.LightYellow,
                     HoverColor = Color.Gold,
                     ForeColor = textColor,
                     Symbol = Symbol.Asterisk,
@@ -143,7 +143,7 @@ namespace Sample
                 new IconView
                 {
                     EdgeColor = Color.White,
-                    BackColor = Color.FromArgb(128, Color.White),
+                    BackColor = Color.LightGray,
                     HoverColor = Color.White,
                     ForeColor = textColor,
                     Symbol = Symbol.Ellipse,
@@ -156,7 +156,7 @@ namespace Sample
                 new IconView
                 {
                     EdgeColor = Color.White,
-                    BackColor = Color.FromArgb(128, Color.Aqua),
+                    BackColor = Color.Aqua,
                     HoverColor = Color.White,
                     ForeColor = textColor,
                     Symbol = Symbol.Cross,
