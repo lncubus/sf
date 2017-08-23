@@ -46,21 +46,21 @@ namespace Sample
         {
             {
                 spaceView.BeginUpdate();
-                //foreach (IconView icon in icons)
-                //{
-                //    Vector3 v;
-                //    if (!velocity.TryGetValue(icon, out v))
-                //        continue;
-                //    v += RandomVector(drift);
-                //    if (icon.Left < 0 || icon.Top < 0 ||
-                //        icon.Left + icon.Width > spaceView.ClientSize.Width ||
-                //        icon.Top + icon.Height > spaceView.ClientSize.Height)
-                //    {
-                //        v = -v * 0.75;
-                //    }
-                //    velocity[icon] = v;
-                //    icon.Vector += v;
-                //}
+                foreach (IconView icon in icons)
+                {
+                    Vector3 v;
+                    if (!velocity.TryGetValue(icon, out v))
+                        continue;
+//                    v += RandomVector(drift);
+                    if (icon.Left < 0 || icon.Top < 0 ||
+                        icon.Left + icon.Width > spaceView.ClientSize.Width ||
+                        icon.Top + icon.Height > spaceView.ClientSize.Height)
+                    {
+                        v = -v;
+                    }
+                    velocity[icon] = v;
+                    icon.Vector += v;
+                }
 
                 Vector3 position = Vector3.Zero;
                 Vector3 up = Vector3.UnitY;
