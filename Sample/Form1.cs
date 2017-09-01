@@ -28,10 +28,6 @@ namespace Sample
         Dictionary<IconView, Vector3> velocity = new Dictionary<IconView, Vector3>();
         List<IconView> icons;
 
-		private double shift = 0;
-        private double speed = 0.01;
-        private double drift = 0.001;
-
         Vector3 RandomVector(double a = 1)
         {
             return new Vector3
@@ -61,14 +57,6 @@ namespace Sample
                     velocity[icon] = v;
                     icon.Vector += v;
                 }
-
-                Vector3 position = Vector3.Zero;
-                Vector3 up = Vector3.UnitY;
-                shift += Math.PI / 180;
-                Vector3 forward = new Vector3(Math.Sin(shift), Math.Cos(shift), -1);
-                Matrix4x4 world = Matrix4x4.CreateWorld(position, forward, up);
-                //Tl.LogObjects(Tl.Reflect(world));
-                spaceView.WorldMatrix = world;
                 spaceView.EndUpdate();
             };
 
@@ -338,7 +326,7 @@ namespace Sample
 
             foreach (IconView icon in icons)
             {
-                velocity.Add(icon, RandomVector(0.01));
+                velocity.Add(icon, RandomVector(0.05));
             }
 
             timer.Tick += (object sender, EventArgs e) => MoveShips();
