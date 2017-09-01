@@ -26,9 +26,9 @@ namespace Server.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://localhost:8090")]
-        public string ServerUri {
+        public string Server {
             get {
-                return ((string)(this["ServerUri"]));
+                return ((string)(this["Server"]));
             }
         }
     }

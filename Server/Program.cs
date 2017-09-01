@@ -33,7 +33,7 @@ namespace Server
                     SendTimeout = new TimeSpan(0, 0, 2),
                     ListenBacklog = 50,
                 };
-            var address = new Uri (Properties.Settings.Default.ServerUri);
+            var address = new Uri (Properties.Settings.Default.Server);
             var host = new ServiceHost (typeof(SpaceConnection));
             host.AddServiceEndpoint
             (
