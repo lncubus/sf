@@ -23,17 +23,17 @@ namespace Server
         {
             var binding = new NetTcpBinding(SecurityMode.Transport, true)
                 {
-                    //                    MaxBufferPoolSize = 0x100000 Int32.MaxValue,
-                    //                    MaxBufferSize = Int32.MaxValue,
-                    //                    MaxConnections = Int32.MaxValue,
-                    //                    MaxReceivedMessageSize = Int32.MaxValue,
+                    MaxBufferPoolSize = Int32.MaxValue,
+                    MaxBufferSize = Int32.MaxValue,
+                    MaxConnections = Int32.MaxValue,
+                    MaxReceivedMessageSize = Int32.MaxValue,
                     CloseTimeout = new TimeSpan(0, 0, 1),
                     OpenTimeout = new TimeSpan(0, 0, 3),
                     ReceiveTimeout = new TimeSpan(0, 0, 2),
                     SendTimeout = new TimeSpan(0, 0, 2),
                     ListenBacklog = 50,
                 };
-            var address = new Uri ("net.tcp://localhost:8090");
+            var address = new Uri (Properties.Settings.Default.ServerUri);
             var host = new ServiceHost (typeof(SpaceConnection));
             host.AddServiceEndpoint
             (
