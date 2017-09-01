@@ -29,7 +29,7 @@ namespace Server
                     MaxReceivedMessageSize = Int32.MaxValue,
                     CloseTimeout = new TimeSpan(0, 0, 1),
                     OpenTimeout = new TimeSpan(0, 0, 3),
-                    ReceiveTimeout = new TimeSpan(0, 0, 2),
+                    ReceiveTimeout = new TimeSpan(0, 0, 10),
                     SendTimeout = new TimeSpan(0, 0, 2),
                     ListenBacklog = 50,
                 };
