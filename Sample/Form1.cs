@@ -16,10 +16,6 @@ namespace Sample
 {
     public partial class Form1 : Form
     {
-//        private Pvax.UI.Views.ButtonView buttonView1;
-  //      private Pvax.UI.Views.ButtonView buttonView2;
-	//	private Pvax.UI.Views.ImageView imageView1;
-	//	private Pvax.UI.Views.IView panelView1;
 
         private Pvax.UI.Views.ButtonView ellipticButtonView1;
         private SpaceView spaceView;
