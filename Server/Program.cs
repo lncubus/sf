@@ -10,30 +10,18 @@ namespace Server
 {
     class MainClass
     {
+        public static string ServerUri;
+
         public static void Pause()
         {
             Console.Error.WriteLine ("Press any key to stop...");
-            while (!Console.KeyAvailable)
-            {
-                Thread.Sleep(150);
-            }
+            Console.ReadKey(true);
         }
 
         public static ServiceHost CreateHost()
         {
-            var binding = new NetTcpBinding(SecurityMode.Transport, true)
-                {
-                    MaxBufferPoolSize = Int32.MaxValue,
-                    MaxBufferSize = Int32.MaxValue,
-                    MaxConnections = Int32.MaxValue,
-                    MaxReceivedMessageSize = Int32.MaxValue,
-                    CloseTimeout = new TimeSpan(0, 0, 1),
-                    OpenTimeout = new TimeSpan(0, 0, 3),
-                    ReceiveTimeout = new TimeSpan(0, 0, 10),
-                    SendTimeout = new TimeSpan(0, 0, 2),
-                    ListenBacklog = 50,
-                };
-            var address = new Uri (Properties.Settings.Default.Server);
+            var binding = new NetTcpBinding("netTcpBinding_Anonymous");
+            var address = new Uri (ServerUri);
             var host = new ServiceHost (typeof(SpaceConnection));
             host.AddServiceEndpoint
             (
@@ -46,20 +34,40 @@ namespace Server
 
         public static void Main(string[] args)
         {
+            using (var listener = new ConsoleTraceListener())
+            {
+                Debug.Listeners.Add(listener);
+                try
+                {
+                    if (args.Length > 0)
+                        ServerUri = args[0];
+                    else
+                        ServerUri = Properties.Settings.Default.Server;
+                    Run();
+                }
+                finally
+                {
+                    Debug.Listeners.Remove(listener);
+                }
+            }
+        }
+
+        private static void Run()
+        {
             try
             {
-                Trace.WriteLine("Starting...");
+                Debug.WriteLine("Starting...");
                 ServiceHost host = CreateHost();
                 host.Open();
-                Trace.WriteLine("Started.");
+                Debug.WriteLine("Started.");
                 Pause();
-                Trace.WriteLine("Stopping.");
+                Debug.WriteLine("Stopping.");
                 host.Close();
-                Trace.WriteLine("Stopped.");
+                Debug.WriteLine("Stopped.");
             }
             catch (Exception ex)
             {
-				Console.Error.WriteLine (ex);
+                Console.Error.WriteLine(ex);
             }
         }
     }
