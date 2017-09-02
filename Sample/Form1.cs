@@ -330,7 +330,7 @@ namespace Sample
             timer.Tick += (object sender, EventArgs e) => MoveShips();
             timer.Enabled = true;
 
-            ellipticButtonView1 = new Pvax.UI.Views.ButtonView(155, 15, 150, 50)
+            ellipticButtonView1 = new CustomButtonView(155, 15, 150, 50)
             {
                 Text = "ОГОНЬ",
                 ForeColor = Color.LightYellow,
