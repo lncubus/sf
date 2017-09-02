@@ -12,6 +12,30 @@ namespace Sample
         protected Vectors.Vector3 _vector;
         protected SizeF _size = SizeF.Empty;
         protected int _z;
+        protected string _text;
+
+        /// <summary>
+        /// Gets or sets the text associated with this view.
+        /// </summary>
+        /// <value>
+        /// The text associated with this view.
+        /// </value>
+        public virtual string Text
+        {
+            get
+            {
+                return _text;
+            }
+
+            set
+            {
+                if (_text != value)
+                {
+                    _text = value;
+                    Invalidate();
+                }
+            }
+        }
 
         public virtual int Z
         {
@@ -23,6 +47,7 @@ namespace Sample
             {
                 if (_z == value)
                     return;
+                _z = value;
                 SpaceView parent = Parent.Control as SpaceView;
                 if (parent != null)
                     Invalidate();
@@ -137,7 +162,7 @@ namespace Sample
             if (customSymbol == null)
             {
                 cachedCustomSymbol = new GraphicsPath();
-                cachedCustomSymbol.AddString(Name, Font.FontFamily, 0, 72,
+                cachedCustomSymbol.AddString(Text, Font.FontFamily, 0, 72,
                     Point.Empty, StringFormat.GenericTypographic);
             }
             else
@@ -177,7 +202,9 @@ namespace Sample
             switch (Symbol)
             {
                 case Symbol.Text:
-                    throw new NotImplementedException(Symbol.ToString());
+                    StringFormat format = DrawHelper.Instance.CreateTypographicStringFormat(ContentAlignment.MiddleCenter);
+                    g.DrawString(Text, Font, brush, layout, format);
+                    break;
                 case Symbol.Rectangle:
                     g.FillRectangle(brush, layout);
                     g.DrawRectangle(pen, layout);

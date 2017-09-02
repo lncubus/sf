@@ -213,7 +213,8 @@ namespace Sample
                     IconSize = new SizeF(1.5F, 1.5F),
                     //W = 0.75F,
                     //H = 0.75F,
-                    Name = "☕",
+                    Name = "кофе",
+                    Text = "☕",
                },
                 new IconView
                 {
@@ -225,6 +226,7 @@ namespace Sample
                     Vector = RandomVector(4),
                     IconSize = new SizeF(1.5F, 0.5F),
                     Name = "BANG!",
+                    Text = "BANG!",
                 },
                 new IconView
                 {
@@ -236,6 +238,7 @@ namespace Sample
                     CustomSymbol = teapot,
                     Vector = RandomVector(4),
                     IconSize = new SizeF(1.6F, 1),
+                    Name = "teapot",
                 },
             };
 
@@ -300,22 +303,21 @@ namespace Sample
                     283.38F, 72.12F, 296.15F, 78.51F, 295.24F, 97.67F,
                 },
             };
-                  
-
             teapot.AddBeziers(teapot_points);
 
             foreach (char c in "♛")
             {
                 IconView i = new IconView
                 {
-                        EdgeColor = Color.Chocolate,
-                        BackColor = Color.Gold,
-                        HoverColor = Color.Chocolate,
-                        Symbol = Symbol.Custom,
-                        ForeColor = textColor,
-                        Vector = RandomVector(4),
-                        IconSize = new SizeF(1, 1),
-                        Name = new string(c, 1),
+                    EdgeColor = Color.Chocolate,
+                    BackColor = Color.Gold,
+                    HoverColor = Color.Chocolate,
+                    Symbol = Symbol.Custom,
+                    ForeColor = textColor,
+                    Vector = RandomVector(4),
+                    IconSize = new SizeF(1, 1),
+                    Name = "chess",
+                    Text = new string(c, 1),
                 };
                 icons.Add(i);
             }
@@ -337,18 +339,23 @@ namespace Sample
             };
             ellipticButtonView1.Click += (object sender, EventArgs e) =>
             {
-                    //spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
-                    //Vector3 axis = Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
-                    //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
-             };
-            LabelIconView zero = new LabelIconView
+                ellipticButtonView1.Left = random.Next(spaceView.ClientSize.Width - ellipticButtonView1.Width);
+                ellipticButtonView1.Top = random.Next(spaceView.ClientSize.Height - ellipticButtonView1.Height);
+
+                //spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
+                //Vector3 axis = Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
+                //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
+            };
+            IconView zero = new IconView
             {
                 Vector = Vectors.Vector3.Zero,
-				EdgeColor = Color.White,
-				BackColor = Color.LightGray,
-				HoverColor = Color.White,
-				ForeColor = textColor,
+                EdgeColor = Color.White,
+                BackColor = Color.LightGray,
+                HoverColor = Color.White,
+                ForeColor = textColor,
                 IconSize = new SizeF(0.5F, 0.5F),
+                Symbol = Symbol.Text,
+                Name = "zero",
                 Text = "0",
             };
             icons.Add(zero);
@@ -365,13 +372,14 @@ namespace Sample
                 }
                 for (int z = 1; z < 4; z++)
                 {
-                    LabelIconView icon = new LabelIconView
+                    IconView icon = new IconView
                     {
                         Vector = z * axis,
                         EdgeColor = Color.White,
                         BackColor = Color.LightGray,
                         HoverColor = Color.White,
                         ForeColor = textColor,
+                        Symbol = Symbol.Text,
                         Text = c + "=" + z,// "0",
                         IconSize = new SizeF(1.0F, 0.5F),
                     };

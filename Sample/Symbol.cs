@@ -9,8 +9,9 @@ namespace Sample
 {
     public enum Symbol
     {
-        Text,
+        None,
         Custom,
+        Text,
         Rectangle,
         Ellipse,
         Diamond,
