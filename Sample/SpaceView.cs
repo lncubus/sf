@@ -81,7 +81,15 @@ namespace Sample
 
         protected override IEnumerable<IView> GetDrawingViews()
         {
-            return base.GetDrawingViews().OrderBy(GetZIndex);
+            List<IView> icons = new List<IView>();
+            List<IView> others = new List<IView>();
+            foreach (IView view in base.GetDrawingViews())
+                if (view is IconView)
+                    icons.Add(view);
+                else
+                    others.Add(view);
+            IEnumerable<IView> result = icons.OrderBy(GetZIndex).Concat(others);
+            return result;
         }
 
         /// <summary>
