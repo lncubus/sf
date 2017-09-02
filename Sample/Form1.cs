@@ -16,8 +16,8 @@ namespace Sample
 {
     public partial class Form1 : Form
     {
-
-        private Pvax.UI.Views.ButtonView ellipticButtonView1;
+        private Pvax.UI.Views.ButtonView rndRectButtonView1;
+        private Pvax.UI.Views.ButtonView cutRectButtonView1;
         private SpaceView spaceView;
       //  private TextBox textBox1;
         private Random random = new Random();
@@ -330,22 +330,25 @@ namespace Sample
             timer.Tick += (object sender, EventArgs e) => MoveShips();
             timer.Enabled = true;
 
-            ellipticButtonView1 = new CustomButtonView(155, 15, 150, 50)
+            rndRectButtonView1 = new CustomButtonView(CustomPaths.RoundRectangle, 155, 15, 150, 50, 10)
             {
                 Text = "ОГОНЬ",
                 ForeColor = Color.LightYellow,
                 BackColor = Color.Firebrick,
                 HoverColor = Color.Red,
             };
-            ellipticButtonView1.Click += (object sender, EventArgs e) =>
-            {
-                ellipticButtonView1.Left = random.Next(spaceView.ClientSize.Width - ellipticButtonView1.Width);
-                ellipticButtonView1.Top = random.Next(spaceView.ClientSize.Height - ellipticButtonView1.Height);
 
-                //spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
-                //Vector3 axis = Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
-                //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
+            cutRectButtonView1 = new CustomButtonView(CustomPaths.CutRectangle, 155, 105, 150, 50, 10)
+            {
+                Text = "ОГОНЬ",
+                ForeColor = Color.LightYellow,
+                BackColor = Color.MediumBlue,
+                HoverColor = Color.Blue,
             };
+
+            rndRectButtonView1.Click += RandomMove;
+            cutRectButtonView1.Click += RandomMove;
+
             IconView zero = new IconView
             {
                 Vector = Vectors.Vector3.Zero,
@@ -406,7 +409,8 @@ namespace Sample
 //            this.viewContainer1.Views.Add(this.buttonView2);
 //
             spaceView.Views.AddRange(icons);
-            spaceView.Views.Add(ellipticButtonView1);
+            spaceView.Views.Add(rndRectButtonView1);
+            spaceView.Views.Add(cutRectButtonView1);
 
             spaceView.SizeChanged += (object sender, EventArgs e) =>
                 {
@@ -433,6 +437,16 @@ namespace Sample
 //			buttonView2.Click += 
 //				(s, e) => textBox1.BorderStyle = (BorderStyle)(3 - textBox1.BorderStyle);
            this.WindowState = FormWindowState.Maximized;
+        }
+
+        void RandomMove(object sender, EventArgs e)
+        {
+            var v = (Pvax.UI.Views.IView)sender;
+            v.Left = random.Next(spaceView.ClientSize.Width - v.Width);
+            v.Top = random.Next(spaceView.ClientSize.Height - v.Height);
+            //spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
+            //Vector3 axis = Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
+            //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
         }
     }
 }
