@@ -79,11 +79,11 @@ namespace Sample
             return (icon == null) ? 0 : icon.Z;
         }
 
-        protected override IEnumerable<IView> GetDrawingViews()
+        protected override IEnumerable<IView> GetViews()
         {
             List<IView> icons = new List<IView>();
             List<IView> others = new List<IView>();
-            foreach (IView view in base.GetDrawingViews())
+            foreach (IView view in base.GetViews())
                 if (view is IconView)
                     icons.Add(view);
                 else
@@ -91,6 +91,15 @@ namespace Sample
             IEnumerable<IView> result = icons.OrderBy(GetZIndex).Concat(others);
             return result;
         }
+
+        protected override IView HitTest(int posX, int posY)
+        {
+            IView result = base.HitTest(posX, posY);
+            if (result == null || !(result is IconView))
+                return result;
+            var views = GetViews().ToList();
+            return HitTest(views, posX, posY).First();
+		}
 
         /// <summary>
         /// https://en.wikipedia.org/wiki/3D_projection        ///

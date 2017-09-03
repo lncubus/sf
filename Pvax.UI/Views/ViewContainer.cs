@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Pvax.UI.Views
@@ -294,27 +295,30 @@ namespace Pvax.UI.Views
 		/// </returns>
 		protected virtual IView HitTest(int posX, int posY)
 		{
-			for(int i = views.Count - 1; i >= 0; i--)
-			{
-				IView view = views[i];
-				if(view.Visible && view.HitTest(posX, posY))
-				{
-					return view;
-				}
-			}
-			
-			return null;
+			return HitTest(views, posX, posY).FirstOrDefault();
 		}
-		
-		/// <summary>
-		/// Checks if the view is in the current visible area of the control.
-		/// </summary>
-		/// <param name="view">The view to test visibil</param>
-		/// <returns>
-		/// <c>true</c> if the <paramref name="view"/> is visible in
-		/// the control; <c>flase</c> otherwise.
-		/// </returns>
-		protected bool IsViewVisible(IView view)
+
+        protected static IEnumerable<IView> HitTest(IList<IView> views, int posX, int posY)
+        {
+            for (int i = views.Count - 1; i >= 0; i--)
+            {
+                IView view = views[i];
+                if (view.Visible && view.HitTest(posX, posY))
+                {
+                    yield return view;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks if the view is in the current visible area of the control.
+        /// </summary>
+        /// <param name="view">The view to test visibil</param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="view"/> is visible in
+        /// the control; <c>flase</c> otherwise.
+        /// </returns>
+        protected bool IsViewVisible(IView view)
 		{
 			if(null == view)
 				return false;
@@ -323,7 +327,7 @@ namespace Pvax.UI.Views
 			return client.IntersectsWith(viewBounds);
 		}
 		
-        protected virtual IEnumerable<IView> GetDrawingViews()
+        protected virtual IEnumerable<IView> GetViews()
         {
             return Views;
         }
@@ -352,7 +356,7 @@ namespace Pvax.UI.Views
 			g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
 			Rectangle bounds = new Rectangle();
-			foreach(IView view in GetDrawingViews())
+			foreach(IView view in GetViews())
 			{
 				if(view.Visible)
 				{
