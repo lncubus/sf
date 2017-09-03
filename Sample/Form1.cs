@@ -60,6 +60,7 @@ namespace Sample
 
         public Form1()
         {
+            Font = new Font(Font.FontFamily, 2 * Font.Size);
             InitializeComponent();
             // 
             // viewContainer1
@@ -294,8 +295,15 @@ namespace Sample
             };
             teapot.AddBeziers(teapot_points);
 
-            foreach (char c in "♛")
+            int n = 0;
+            int buttonWidth = SpaceView.Dpi.X;
+            int buttonSpace = buttonWidth / 8;
+            int buttonShift = buttonWidth * 9 / 8;
+            int buttonHeight = buttonWidth * 5 / 8;
+
+            foreach (char c in "♚♛♜♝♞")
             {
+                int x = buttonSpace + buttonShift * n++;
                 IconView i = new IconView
                 {
                     EdgeColor = Color.Chocolate,
@@ -305,10 +313,27 @@ namespace Sample
                     ForeColor = textColor,
                     Vector = RandomVector(4),
                     IconSize = new SizeF(1, 1),
-                    Name = "chess",
+                    DisabledColor = Color.DarkGray,
+                    Name = "chessIcon",
                     Text = new string(c, 1),
                 };
                 icons.Add(i);
+                CustomButtonView b = new CustomButtonView(CustomPaths.RoundRectangle, x, buttonSpace, buttonWidth, buttonHeight, buttonSpace)
+                {
+                    BackColor = Color.Black,
+                    HoverColor = Color.Navy,
+                    DisabledColor = Color.DarkGray,
+                    ForeColor = Color.White,
+                    Name = "chess",
+                    Text = new string(c, 1),
+                };
+                spaceView.Views.Add(b);
+                b.Click += (object sender, EventArgs e) =>
+                {
+                    var button = (CustomButtonView)sender;
+                    var chess = icons.Find(icon => icon.Text == button.Text);
+                    chess.Visible = !chess.Visible;
+                };
             }
 
             foreach (IconView icon in icons)
@@ -375,7 +400,7 @@ namespace Sample
                         ForeColor = textColor,
                         Symbol = Symbol.Text,
                         Text = c + "=" + z,// "0",
-                        IconSize = new SizeF(1.0F, 0.5F),
+                        IconSize = new SizeF(1.0F, 0.75F),
                     };
                     icons.Add(icon);
                 }
