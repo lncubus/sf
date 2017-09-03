@@ -67,7 +67,7 @@ namespace Sample
 				LinearGradientMode.Vertical);
             GraphicsPath path = GetCachedShape();
             graphics.FillPath(brush, path);
-			Pen pen = DrawHelper.Instance.CreateColorPen(ForeColor, 2);
+			Pen pen = DrawHelper.Instance.CreateColorPen(ForeColor, 1);
 			graphics.DrawPath(pen, path);
         }
 
