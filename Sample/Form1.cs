@@ -76,17 +76,6 @@ namespace Sample
                 TabIndex = 0,
             };
             this.Controls.Add(spaceView);
-
-        //    Font = new Font(Font.FontFamily, Font.Size * 1.5F);
-
-		//	imageView1 = new Pvax.UI.Views.ImageView()
-		//	{
-		//		Image = Image.FromFile("sample.jpeg"),
-		//		SizeMode = Pvax.UI.Views.ImageViewSizeMode.AutoSize,
-		//	};
-		//	viewContainer1.Views.Add(imageView1);
-
-//            spaceView = new SpaceView(0, 0, 1200, 700);
             Color textColor = Color.White;
             GraphicsPath teapot = new GraphicsPath();
             icons = new List<IconView>()
@@ -330,7 +319,7 @@ namespace Sample
             timer.Tick += (object sender, EventArgs e) => MoveShips();
             timer.Enabled = true;
 
-            rndRectButtonView1 = new CustomButtonView(CustomPaths.RoundRectangle, 155, 15, 150, 50, 10)
+            rndRectButtonView1 = new CustomButtonView(CustomPaths.RoundRectangle, 155, 205, 150, 50, 10)
             {
                 Text = "ОГОНЬ",
                 ForeColor = Color.LightYellow,
@@ -391,25 +380,6 @@ namespace Sample
                     icons.Add(icon);
                 }
             }
-            // 
-            // buttonView1
-            // 
-//            this.buttonView1 = new Pvax.UI.Views.ButtonView(15, 15, 100, 25);
-//            this.buttonView1.Text = "Test button";
-//			this.buttonView1.ForeColor = Color.AliceBlue;
-//			this.buttonView1.BackColor = Color.FromArgb(16, Color.Cyan);
-//			this.buttonView1.HoverColor = Color.FromArgb(128, Color.Cyan);
-//            //this.buttonView1.Click = "Test button";
-//            this.viewContainer1.Views.Add(this.buttonView1);
-//
-//            this.buttonView2 = new Pvax.UI.Views.ButtonView(15, 115, 100, 25);
-//            this.buttonView2.Text = "Test button";
-//            this.buttonView2.ForeColor = Color.Yellow;
-//            this.buttonView2.BackColor = Color.Green;
-////            this.buttonView2.OwnerDraw = true;
-//            //this.buttonView1.Click = "Test button";
-//            this.viewContainer1.Views.Add(this.buttonView2);
-//
             spaceView.Views.AddRange(icons);
             spaceView.Views.Add(rndRectButtonView1);
             spaceView.Views.Add(cutRectButtonView1);
@@ -423,22 +393,7 @@ namespace Sample
                     };
                 };
 
-			//this.viewContainer1.BackColor = Color.Black;
-
-//			textBox1 = new TextBox
-//			{
-//				BackColor = Color.Black,
-//				ForeColor = Color.SpringGreen,
-//				Left = 115,
-//				Top = 130,
-//				
-//			};
-//			this.viewContainer1.Controls.Add(textBox1);
-//			this.viewContainer1.Views.Add(panelView1);
-//
-//			buttonView2.Click += 
-//				(s, e) => textBox1.BorderStyle = (BorderStyle)(3 - textBox1.BorderStyle);
-           this.WindowState = FormWindowState.Maximized;
+            this.WindowState = FormWindowState.Maximized;
         }
 
         void RandomMove(object sender, EventArgs e)
@@ -446,7 +401,7 @@ namespace Sample
             var v = (Pvax.UI.Views.IView)sender;
             v.Left = random.Next(spaceView.ClientSize.Width - v.Width);
             v.Top = random.Next(spaceView.ClientSize.Height - v.Height);
-            v.Enabled = false;
+            //v.Enabled = false;
             //spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
             //Vector3 axis = Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
             //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
