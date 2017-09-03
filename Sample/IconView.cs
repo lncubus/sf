@@ -172,6 +172,19 @@ namespace Sample
             RectangleF customBounds = cachedCustomSymbol.GetBounds();
             RectangleF viewBounds = Bounds;
             viewBounds.Inflate(-2, -2);
+            float widthRatio = viewBounds.Width / customBounds.Width;
+            float heightRatio = viewBounds.Height / customBounds.Height;
+            if (widthRatio > heightRatio)
+            {
+                float delta = (viewBounds.Width - customBounds.Width * heightRatio) / 2;
+                viewBounds.Inflate(-delta, 0);
+            }
+            else if (widthRatio < heightRatio)
+            {
+                float delta = (viewBounds.Height - customBounds.Height * widthRatio) / 2;
+                viewBounds.Inflate(0, -delta);
+            }
+
             PointF topRight = new PointF
             {
                 X = viewBounds.Right,
