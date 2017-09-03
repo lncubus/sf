@@ -194,7 +194,7 @@ namespace Sample
         /// object to paint on.</param>
         protected override void Draw(Graphics g)
         {
-            Color color = Tracking ? HoverColor : BackColor;
+            Color color = !Enabled ? DisabledColor : (Tracking ? HoverColor : BackColor);
             Brush brush = DrawHelper.Instance.CreateSolidBrush(color);
             Pen pen = DrawHelper.Instance.CreateColorPen(EdgeColor, 1.2F);
             Rectangle layout = Bounds;

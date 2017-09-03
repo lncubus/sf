@@ -336,6 +336,7 @@ namespace Sample
                 ForeColor = Color.LightYellow,
                 BackColor = Color.Firebrick,
                 HoverColor = Color.Red,
+                DisabledColor = Color.Pink,
             };
 
             cutRectButtonView1 = new CustomButtonView(CustomPaths.CutRectangle, 155, 105, 150, 50, 10)
@@ -344,6 +345,7 @@ namespace Sample
                 ForeColor = Color.LightYellow,
                 BackColor = Color.MediumBlue,
                 HoverColor = Color.Blue,
+                DisabledColor = Color.Cyan,
             };
 
             rndRectButtonView1.Click += RandomMove;
@@ -444,6 +446,7 @@ namespace Sample
             var v = (Pvax.UI.Views.IView)sender;
             v.Left = random.Next(spaceView.ClientSize.Width - v.Width);
             v.Top = random.Next(spaceView.ClientSize.Height - v.Height);
+            v.Enabled = false;
             //spaceView.DeviceScale = new PointF(spaceView.DeviceScale.X*1.03F, spaceView.DeviceScale.Y*1.03F);
             //Vector3 axis = Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
             //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);

@@ -59,7 +59,7 @@ namespace Sample
         {
             //base.DrawButton(graphics, rect, state);
             rect.Inflate(-2, -2);
-			Color color = Tracking ? HoverColor : BackColor;
+			Color color = !Enabled ? DisabledColor : (Tracking ? HoverColor : BackColor);
 			Color light = ControlPaint.Light(color);
 			Color dark = ControlPaint.Dark(color);
 			Brush brush = DrawHelper.Instance.CreateLinearGradientBrush(

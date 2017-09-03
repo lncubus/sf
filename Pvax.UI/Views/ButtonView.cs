@@ -127,7 +127,7 @@ namespace Pvax.UI.Views
 
         protected virtual void DrawButton(Graphics graphics, Rectangle rect, ButtonState state)
         {
-			Color color = Tracking ? HoverColor : BackColor;
+			Color color = !Enabled ? DisabledColor : (Tracking ? HoverColor : BackColor);
 			Brush brush = DrawHelper.Instance.CreateSolidBrush(color);
 			rect.Width--; rect.Height--;
             graphics.FillRectangle(brush, rect);

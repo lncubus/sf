@@ -85,6 +85,11 @@ namespace Pvax.UI.Views
         /// Background Color
         /// </summary>
         private Color backColor = Color.Empty;
+        
+        /// <summary>
+        /// Disabled Color
+        /// </summary>
+        private Color disabledColor = Color.Empty;
 
 		/// <summary>
 		/// Hovering Color.
@@ -236,7 +241,28 @@ namespace Pvax.UI.Views
 			}
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Gets or sets the disabled background color of the view.
+        /// </summary>
+        public virtual Color DisabledColor
+        {
+            get
+            {
+                if (disabledColor != Color.Empty)
+                    return disabledColor;
+                return BackColor;
+            }
+            set
+            {
+                if (disabledColor != value)
+                {
+                    disabledColor = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        /// <summary>
         /// Enables or disables the view.
         /// </summary>
         public bool Enabled
