@@ -44,6 +44,8 @@ namespace Sample
 
         protected virtual GraphicsPath GetCachedShape()
         {
+            if (ShapeBuilder == null)
+                return null;
             if (_cachedShape != null && Width == _cachedWidth && Height == _cachedHeight && Cut == _cachedCut)
                 return _cachedShape;
             if (_cachedShape != null)
@@ -58,22 +60,37 @@ namespace Sample
         protected override void DrawButton(Graphics graphics, Rectangle rect, ButtonState state)
         {
             //base.DrawButton(graphics, rect, state);
+            Color color = !Enabled ? DisabledColor : (Tracking ? HoverColor : BackColor);
+            Color light = ControlPaint.Light(color);
+            Color dark = ControlPaint.Dark(color);
+            Brush brush = DrawHelper.Instance.CreateLinearGradientBrush(
+                rect, Pressed ? dark : light, Pressed ? light : dark,
+                LinearGradientMode.Vertical);
+            Pen pen = DrawHelper.Instance.CreateColorPen(ForeColor, 1);
             rect.Inflate(-2, -2);
-			Color color = !Enabled ? DisabledColor : (Tracking ? HoverColor : BackColor);
-			Color light = ControlPaint.Light(color);
-			Color dark = ControlPaint.Dark(color);
-			Brush brush = DrawHelper.Instance.CreateLinearGradientBrush(
-		        rect, Pressed ? dark : light, Pressed ? light : dark,
-				LinearGradientMode.Vertical);
             GraphicsPath path = GetCachedShape();
-            graphics.FillPath(brush, path);
-			Pen pen = DrawHelper.Instance.CreateColorPen(ForeColor, 1);
-			graphics.DrawPath(pen, path);
+            if (path != null)
+            {
+                graphics.FillPath(brush, path);
+                graphics.DrawPath(pen, path);
+            }
+            else
+            {
+                graphics.FillRectangle(brush, rect);
+                graphics.DrawRectangle(pen, rect);
+            }
         }
 
         protected override bool HitTest(int posX, int posY)
         {
-            return base.HitTest(posX, posY) && GetCachedShape().IsVisible(posX - Left, posY - Top);
+            bool hit = base.HitTest(posX, posY);
+            if (hit)
+            {
+                var shape = GetCachedShape();
+                if (shape != null)
+                    hit = shape.IsVisible(posX - Left, posY - Top);
+            }
+            return hit;
         }
     }
 }

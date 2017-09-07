@@ -25,6 +25,21 @@ namespace Sample
             result.CloseFigure();
             return result;
         }
+
+        public static GraphicsPath Diamond(int width, int height, int cut)
+        {
+            var result = new GraphicsPath();
+            Point[] points = new[]
+            {
+                new Point(width/2, Delta),
+                new Point(width - Delta, height/2),
+                new Point(width/2, height - Delta),
+                new Point(Delta, height/2),
+            };
+            result.AddPolygon(points);
+            return result;
+        }
+
         public static GraphicsPath CutRectangle(int width, int height, int cut)
         {
             var result = new GraphicsPath();

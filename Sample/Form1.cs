@@ -318,7 +318,16 @@ namespace Sample
                     Text = new string(c, 1),
                 };
                 icons.Add(i);
-                CustomButtonView b = new CustomButtonView(CustomPaths.RoundRectangle, x, buttonSpace, buttonWidth, buttonHeight, buttonSpace)
+                Func<int, int, int, GraphicsPath> shape;
+                switch (n)
+                {
+                    case 1: shape = CustomPaths.Ellipse; break;
+                    case 2: shape = CustomPaths.RoundRectangle; break;
+                    case 3: shape = CustomPaths.CutRectangle; break;
+                    case 4: shape = CustomPaths.Diamond; break;
+                    default: shape = null; break;
+                }
+                CustomButtonView b = new CustomButtonView(shape, x, buttonSpace, buttonWidth, buttonHeight, buttonSpace)
                 {
                     BackColor = Color.Black,
                     HoverColor = Color.Navy,
@@ -333,6 +342,27 @@ namespace Sample
                     var button = (CustomButtonView)sender;
                     var chess = icons.Find(icon => icon.Text == button.Text);
                     chess.Visible = !chess.Visible;
+                };
+            }
+
+            foreach (string f in new[] { "", "", "" })
+            {
+                int x = buttonSpace + buttonShift * n++;
+                Func<int, int, int, GraphicsPath> shape = null;
+                if (n % 2 == 0)
+                    shape = CustomPaths.RoundRectangle;
+                CustomButtonView b = new CustomButtonView(shape, x, buttonSpace, buttonWidth, buttonHeight, buttonSpace)
+                {
+                    BackColor = Color.FromArgb(39, 39, 39),
+                    HoverColor = Color.FromArgb(54, 54, 54),
+                    DisabledColor = Color.DarkGray,
+                    ForeColor = Color.White,
+                    Name = "action",
+                    Text = f,
+                };
+                spaceView.Views.Add(b);
+                b.Click += (object sender, EventArgs e) =>
+                {
                 };
             }
 
