@@ -76,6 +76,9 @@ namespace Sample
                 Size = new System.Drawing.Size(292, 272),
                 TabIndex = 0,
             };
+            spaceView.MouseDown += spaceView_MouseDown;
+            spaceView.MouseUp += spaceView_MouseUp;
+            spaceView.MouseMove += spaceView_MouseMove;
             this.Controls.Add(spaceView);
             Color textColor = Color.White;
             GraphicsPath teapot = new GraphicsPath();
@@ -461,5 +464,42 @@ namespace Sample
             //Vector3 axis = Vector3.Normalize(new Vectors.Vector3(1, 1, 1));
             //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
         }
+
+        Point origin;
+
+        private void spaceView_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+            origin = spaceView.PointToScreen(e.Location);
+            Text = "Down: " + origin.X + "," + origin.Y;
+            spaceView.Cursor = Cursors.NoMove2D;
+        }
+
+        private void spaceView_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                spaceView.Cursor = Cursors.Default;
+                return;
+            }
+            Point current = spaceView.PointToScreen(e.Location);
+            Point delta = new Point
+            {
+                X = current.X - origin.X,
+                Y = current.Y - origin.Y,
+            };
+            Text = "Move: " + current.X + "," + current.Y;
+            //            if (PerformScroll(panelClient.HorizontalScroll, delta.X))
+            //                origin.X = current.X;
+            //            if (PerformScroll(panelClient.VerticalScroll, delta.Y))
+            //                origin.Y = current.Y;
+        }
+
+        private void spaceView_MouseUp(object sender, MouseEventArgs e)
+        {
+            spaceView.Cursor = Cursors.Default;
+        }
+
     }
 }

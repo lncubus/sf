@@ -388,7 +388,8 @@ namespace Pvax.UI.Views
 		/// </remarks>
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			int x = e.X - AutoScrollPosition.X;
+            base.OnMouseDown(e);
+            int x = e.X - AutoScrollPosition.X;
 			int y = e.Y - AutoScrollPosition.Y;
 			IView view = HitTest(x, y);
 			if(null == view)
@@ -415,10 +416,11 @@ namespace Pvax.UI.Views
 		/// </remarks>
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
-			IView view;
+            base.OnMouseUp(e);
+            IView view;
 			if(null == capturingView)
 				return;
-			view = capturingView;
+            view = capturingView;
 			int x = e.X - AutoScrollPosition.X;
 			int y = e.Y - AutoScrollPosition.Y;
 			if(view.Enabled)
@@ -442,14 +444,15 @@ namespace Pvax.UI.Views
 		/// </remarks>
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
-			int x = e.X - AutoScrollPosition.X;
+            base.OnMouseMove(e);
+            int x = e.X - AutoScrollPosition.X;
 			int y = e.Y - AutoScrollPosition.Y;
 			IView view = HitTest(x, y);
 			if(view == currentTrackingView)
 			{
 				if(null != view)
 					view.OnMouseHover(x - view.Left, y - view.Top);
-				return;
+                return;
 			}
 			if(null != currentTrackingView && currentTrackingView.Enabled)
 			{
@@ -476,14 +479,15 @@ namespace Pvax.UI.Views
 		/// </remarks>
 		protected override void OnMouseLeave(System.EventArgs e)
 		{
-			if(null != currentTrackingView)
-			{
-				if(currentTrackingView.Enabled)
-				{
-					currentTrackingView.OnMouseLeave(0, 0);
-				}
-				currentTrackingView = null;
-			}
+            base.OnMouseLeave(e);
+            if (null != currentTrackingView)
+            {
+                if (currentTrackingView.Enabled)
+                {
+                    currentTrackingView.OnMouseLeave(0, 0);
+                }
+                currentTrackingView = null;
+            }
 		}
 		
 		/// <summary>
@@ -498,35 +502,41 @@ namespace Pvax.UI.Views
 		/// the propert event.
 		/// </remarks>
 		protected override void OnMouseEnter(System.EventArgs e)
-		{}
-		
-		/// <summary>
-		/// Should raise <see cref="System.Windows.Forms.Control.MouseHover"/>
-		/// event.
-		/// </summary>
-		/// <param name="e">
-		/// An EventArgs that contains the event data.
-		/// </param>
-		/// <remarks>
-		/// This class performs custom mouse processing and does not raise
-		/// the propert event.
-		/// </remarks>
-		protected override void OnMouseHover(System.EventArgs e)
-		{}
-		
-		/// <summary>
-		/// Should raise the
-		/// <see cref="System.Windows.Forms.Control.MouseWheel"/> event.
-		/// </summary>
-		/// <param name="e">
-		/// A <see cref="MouseEventArgs"/> that contains the event data.
-		/// </param>
-		/// <remarks>
-		/// This class performs custom mouse processing and does not raise
-		/// the propert event.
-		/// </remarks>
-		protected override void OnMouseWheel(System.Windows.Forms.MouseEventArgs e)
-		{}
+		{
+            base.OnMouseEnter(e);
+        }
+
+        /// <summary>
+        /// Should raise <see cref="System.Windows.Forms.Control.MouseHover"/>
+        /// event.
+        /// </summary>
+        /// <param name="e">
+        /// An EventArgs that contains the event data.
+        /// </param>
+        /// <remarks>
+        /// This class performs custom mouse processing and does not raise
+        /// the propert event.
+        /// </remarks>
+        protected override void OnMouseHover(System.EventArgs e)
+		{
+            base.OnMouseHover(e);
+        }
+
+        /// <summary>
+        /// Should raise the
+        /// <see cref="System.Windows.Forms.Control.MouseWheel"/> event.
+        /// </summary>
+        /// <param name="e">
+        /// A <see cref="MouseEventArgs"/> that contains the event data.
+        /// </param>
+        /// <remarks>
+        /// This class performs custom mouse processing and does not raise
+        /// the propert event.
+        /// </remarks>
+        protected override void OnMouseWheel(System.Windows.Forms.MouseEventArgs e)
+		{
+            base.OnMouseWheel(e);
+        }
 		
 		static bool Between(int value, int minimum, int maximum)
 		{
