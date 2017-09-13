@@ -442,6 +442,8 @@ namespace Sample
             spaceView.Views.Add(rndRectButtonView1);
             spaceView.Views.Add(cutRectButtonView1);
 
+            spaceView.WorldMatrix = Matrix4x4.CreateLookAt(Vector3.Zero, -Vector3.UnitZ, Vector3.UnitY);
+
             spaceView.SizeChanged += (object sender, EventArgs e) =>
                 {
                     spaceView.DeviceOrigin = new Point
