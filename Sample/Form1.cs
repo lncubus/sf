@@ -488,19 +488,10 @@ namespace Sample
             }
             Point current = spaceView.PointToScreen(e.Location);
             double height = Math.Min(SpaceView.Resolution.Width, SpaceView.Resolution.Height);
-            Vector3 camera = new Vector3
-            {
-                X = -(current.X - origin.X) / height,
-                Y = (current.Y - origin.Y) / height,
-                Z = -1,
-            };
-
-            spaceView.WorldMatrix = world * Matrix4x4.CreateLookAt(Vector3.Zero, camera, Vector3.UnitY);
-            //origin = current;
-            //            if (PerformScroll(panelClient.HorizontalScroll, delta.X))
-            //                origin.X = current.X;
-            //            if (PerformScroll(panelClient.VerticalScroll, delta.Y))
-            //                origin.Y = current.Y;
+            double x = -Math.PI * (current.X - origin.X) / height;
+            double y = Math.PI * (current.Y - origin.Y) / height;
+            spaceView.WorldMatrix = world *
+                Matrix4x4.CreateRotationX(y) * Matrix4x4.CreateRotationY(x);
         }
 
         private void spaceView_MouseUp(object sender, MouseEventArgs e)
