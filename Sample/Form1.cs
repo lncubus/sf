@@ -486,12 +486,16 @@ namespace Sample
                 return;
             }
             Point current = spaceView.PointToScreen(e.Location);
-            Point delta = new Point
+            double height = Math.Min(SpaceView.Resolution.Width, SpaceView.Resolution.Height);
+            Vector3 camera = new Vector3
             {
-                X = current.X - origin.X,
-                Y = current.Y - origin.Y,
+                X = -(current.X - origin.X) / height,
+                Y = (current.Y - origin.Y) / height,
+                Z = -1,
             };
-            Text = "Move: " + current.X + "," + current.Y;
+
+            spaceView.WorldMatrix *= Matrix4x4.CreateLookAt(Vector3.Zero, camera, Vector3.UnitY);
+            origin = current;
             //            if (PerformScroll(panelClient.HorizontalScroll, delta.X))
             //                origin.X = current.X;
             //            if (PerformScroll(panelClient.VerticalScroll, delta.Y))

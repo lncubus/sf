@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Screen = System.Windows.Forms.Screen;
 using Pvax.UI.Views;
 using Vectors;
 
@@ -15,6 +16,7 @@ namespace Sample
         protected Matrix4x4 worldMatrix = Matrix4x4.Identity;
 
         public static readonly Point Dpi;
+        public static readonly Size Resolution;
 
         static SpaceView()
         {
@@ -26,6 +28,7 @@ namespace Sample
                     Y = (int)graphics.DpiY,
                 };
             }
+            Resolution = Screen.PrimaryScreen.Bounds.Size;
         }
 
         public SpaceView() : base()
