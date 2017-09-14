@@ -55,7 +55,6 @@ namespace Sample
                 }
                 spaceView.EndUpdate();
             };
-
         }
 
         public Form1()
@@ -468,12 +467,14 @@ namespace Sample
         }
 
         Point origin;
+        Matrix4x4 world;
 
         private void spaceView_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
                 return;
             origin = spaceView.PointToScreen(e.Location);
+            world = spaceView.WorldMatrix;
             Text = "Down: " + origin.X + "," + origin.Y;
             spaceView.Cursor = Cursors.NoMove2D;
         }
@@ -494,8 +495,8 @@ namespace Sample
                 Z = -1,
             };
 
-            spaceView.WorldMatrix *= Matrix4x4.CreateLookAt(Vector3.Zero, camera, Vector3.UnitY);
-            origin = current;
+            spaceView.WorldMatrix = world * Matrix4x4.CreateLookAt(Vector3.Zero, camera, Vector3.UnitY);
+            //origin = current;
             //            if (PerformScroll(panelClient.HorizontalScroll, delta.X))
             //                origin.X = current.X;
             //            if (PerformScroll(panelClient.VerticalScroll, delta.Y))
