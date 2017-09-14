@@ -63,6 +63,9 @@ namespace Sample
             }
         }
 
+        /// <summary>
+        /// https://en.wikipedia.org/wiki/Camera_matrix
+        /// </summary>
         public Matrix4x4 WorldMatrix
         {
             get
@@ -114,11 +117,10 @@ namespace Sample
             var q = new Quaternion(v, 1);
             // camera transform
             q = WorldMatrix * q;
-            double x = (q.X) * deviceScale.X + deviceOrigin.X; //  - q.Z / 2)
-            double y = (-q.Y) * deviceScale.Y + deviceOrigin.Y; //  + q.Z / 2
-            double z = q.Z * deviceScale.X;
+            double x = (q.X) * DeviceScale.X + DeviceOrigin.X; //  - q.Z / 2)
+            double y = (-q.Y) * DeviceScale.Y + DeviceOrigin.Y; //  + q.Z / 2
+            double z = q.Z * DeviceScale.X;
 
-            // Use https://en.wikipedia.org/wiki/Camera_matrix, stupid!!!
             var result = new Tuple<int, int, int>((int)x, (int)y, (int)z);
             return result;
         }

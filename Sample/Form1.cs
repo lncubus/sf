@@ -466,22 +466,24 @@ namespace Sample
             //spaceView.WorldRotation *= new Vectors.Quaternion(axis, 0);
         }
 
+        bool rotating;
         Point origin;
-        Matrix4x4 world;
+        //Matrix4x4 world;
 
         private void spaceView_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
                 return;
             origin = spaceView.PointToScreen(e.Location);
-            world = spaceView.WorldMatrix;
+            //world = spaceView.WorldMatrix;
+            rotating = true;
             Text = "Down: " + origin.X + "," + origin.Y;
             spaceView.Cursor = Cursors.NoMove2D;
         }
 
         private void spaceView_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left)
+            if (e.Button != MouseButtons.Left || !rotating)
             {
                 spaceView.Cursor = Cursors.Default;
                 return;
@@ -490,12 +492,13 @@ namespace Sample
             double height = Math.Min(SpaceView.Resolution.Width, SpaceView.Resolution.Height);
             double x = -Math.PI * (current.X - origin.X) / height;
             double y = Math.PI * (current.Y - origin.Y) / height;
-            spaceView.WorldMatrix = world *
-                Matrix4x4.CreateRotationX(y) * Matrix4x4.CreateRotationY(x);
+            spaceView.WorldMatrix = spaceView.WorldMatrix * Matrix4x4.CreateRotationX(y)*Matrix4x4.CreateRotationY(x);
+            origin = current;
         }
 
         private void spaceView_MouseUp(object sender, MouseEventArgs e)
         {
+            rotating = false;
             spaceView.Cursor = Cursors.Default;
         }
 
