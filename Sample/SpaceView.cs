@@ -82,7 +82,7 @@ namespace Sample
         protected virtual int GetZIndex(IView view)
         {
             var icon = view as IconView;
-            return (icon == null) ? 0 : icon.Z;
+            return (icon == null) ? 0 : -icon.Z;
         }
 
         protected override IEnumerable<IView> GetViews()
@@ -98,6 +98,56 @@ namespace Sample
             return result;
         }
 
+		protected override void OnPaint (System.Windows.Forms.PaintEventArgs e)
+		{
+			try {
+				Form1.drawWatch.Start ();
+				base.OnPaint (e);
+			} finally {
+				Form1.drawWatch.Stop ();
+			}
+		}
+/*
+		static List<Tuple<Vector3, Vector3>> lines = null;
+
+		protected override void PaintBackground (Graphics g, Rectangle clip)
+		{
+			base.PaintBackground (g, clip);
+			Pen pen = Pvax.UI.DrawHelper.Instance.CreateColorPen (Color.White);
+			const int N = 3;
+			if (lines == null)
+			{
+				lines = new List<Tuple<Vector3, Vector3>> ();
+				for (int a = 0; a < N; a++)
+					for (int b = 0; b < N; b++)
+					{
+						Vector3 begin = new Vector3 (a, b, 0);
+						Vector3 end = new Vector3 (a, b, N);
+						lines.Add (new Tuple<Vector3, Vector3> (begin, end));
+						begin = new Vector3 (a, 0, b);
+						end = new Vector3 (a, N, b);
+						lines.Add (new Tuple<Vector3, Vector3> (begin, end));
+						begin = new Vector3 (0, a, b);
+						end = new Vector3 (N, a, b);
+						lines.Add (new Tuple<Vector3, Vector3> (begin, end));
+					}
+			}
+			foreach (var line in lines)
+			{
+				var begin = WorldToDevice (line.Item1);
+				var end = WorldToDevice (line.Item2);
+				Rectangle rect = new Rectangle
+				{
+					X = Math.Min(begin.Item1, end.Item1),
+					Y = Math.Min(begin.Item2, end.Item2),
+					Width = Math.Abs(begin.Item1 - end.Item1),
+					Height = Math.Abs(begin.Item2 - end.Item2),
+				};
+				if (clip.IntersectsWith(rect))
+					g.DrawLine (pen, begin.Item1, begin.Item2, end.Item1, end.Item2);
+			}
+		} 
+*/
         protected override IView HitTest(int posX, int posY)
         {
             IView result = base.HitTest(posX, posY);

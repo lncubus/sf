@@ -352,8 +352,8 @@ namespace Pvax.UI.Views
 			g.FillRectangle(DrawHelper.Instance.CreateSolidBrush(BackColor), clip);
 			Rectangle clipRect = new Rectangle(clip.X - AutoScrollPosition.X, clip.Y - AutoScrollPosition.Y, clip.Width + 1, clip.Height + 1);
 			g.SmoothingMode = SmoothingMode.AntiAlias;
-			g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-			g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+			g.InterpolationMode = InterpolationMode.Bilinear;// HighQualityBicubic;
+			g.PixelOffsetMode = PixelOffsetMode.HighSpeed;// HighQuality;
 
 			Rectangle bounds = new Rectangle();
 			foreach(IView view in GetViews())

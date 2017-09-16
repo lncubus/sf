@@ -24,6 +24,9 @@ namespace Sample
         Dictionary<IconView, Vector3> velocity = new Dictionary<IconView, Vector3>();
         List<IconView> icons;
 
+		public static readonly Stopwatch mainWatch = Stopwatch.StartNew();
+		public static readonly Stopwatch drawWatch = new Stopwatch();
+
         Vector3 RandomVector(double a = 1)
         {
             return new Vector3
@@ -54,13 +57,16 @@ namespace Sample
                     icon.Vector += v;
                 }
                 spaceView.EndUpdate();
+				Text = drawWatch.Elapsed.TotalSeconds.ToString ("N2") + " " + mainWatch.Elapsed.TotalSeconds.ToString ("N2") +
+					" " + (drawWatch.Elapsed.TotalSeconds/mainWatch.Elapsed.TotalSeconds).ToString("P");
             };
         }
 
         public Form1()
         {
-            Font = new Font(Font.FontFamily, 2 * Font.Size);
+            Font = new Font(Font.FontFamily, 1.5F * Font.Size);
             InitializeComponent();
+
             // 
             // viewContainer1
             // 
@@ -347,7 +353,7 @@ namespace Sample
                 };
             }
 
-            foreach (string f in new[] { "", "", "" })
+            foreach (string f in new[] { "1", "3", "2" })
             {
                 int x = buttonSpace + buttonShift * n++;
                 Func<int, int, int, GraphicsPath> shape = null;
@@ -410,38 +416,17 @@ namespace Sample
                 Text = "0",
             };
             icons.Add(zero);
-            foreach (char c in "xyz")
-            {
-                Vectors.Vector3 axis;
-                switch (c)
-                {
-                    case 'x': axis = Vectors.Vector3.UnitX; break;
-                    case 'y': axis = Vectors.Vector3.UnitY; break;
-                    case 'z': axis = Vectors.Vector3.UnitZ; break;
-                    default:
-                        throw new NotImplementedException("another dimension");
-                }
-                for (int z = 1; z < 4; z++)
-                {
-                    IconView icon = new IconView
-                    {
-                        Vector = z * axis,
-                        EdgeColor = Color.White,
-                        BackColor = Color.LightGray,
-                        HoverColor = Color.White,
-                        ForeColor = textColor,
-                        Symbol = Symbol.Text,
-                        Text = c + "=" + z,// "0",
-                        IconSize = new SizeF(1.0F, 0.75F),
-                    };
-                    icons.Add(icon);
-                }
-            }
+
             spaceView.Views.AddRange(icons);
             spaceView.Views.Add(rndRectButtonView1);
             spaceView.Views.Add(cutRectButtonView1);
 
-            spaceView.WorldMatrix = Matrix4x4.CreateLookAt(Vector3.Zero, -Vector3.UnitZ, Vector3.UnitY);
+			//double w = SpaceView.Resolution.Width / SpaceView.Dpi.X;
+			//double h = SpaceView.Resolution.Height / SpaceView.Dpi.Y;
+
+			spaceView.WorldMatrix = Matrix4x4.CreatePerspective(1, 1, 0.5, 3);
+				
+				//CreateLookAt(Vector3.Zero, -Vector3.UnitZ, Vector3.UnitY);
 
             spaceView.SizeChanged += (object sender, EventArgs e) =>
                 {
@@ -468,16 +453,15 @@ namespace Sample
 
         bool rotating;
         Point origin;
-        //Matrix4x4 world;
+        Matrix4x4 world;
 
         private void spaceView_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
                 return;
             origin = spaceView.PointToScreen(e.Location);
-            //world = spaceView.WorldMatrix;
+            world = spaceView.WorldMatrix;
             rotating = true;
-            Text = "Down: " + origin.X + "," + origin.Y;
             spaceView.Cursor = Cursors.NoMove2D;
         }
 
@@ -492,8 +476,7 @@ namespace Sample
             double height = Math.Min(SpaceView.Resolution.Width, SpaceView.Resolution.Height);
             double x = -Math.PI * (current.X - origin.X) / height;
             double y = Math.PI * (current.Y - origin.Y) / height;
-            spaceView.WorldMatrix = spaceView.WorldMatrix * Matrix4x4.CreateRotationX(y)*Matrix4x4.CreateRotationY(x);
-            origin = current;
+            spaceView.WorldMatrix = world * Matrix4x4.CreateRotationX(y)*Matrix4x4.CreateRotationY(x);
         }
 
         private void spaceView_MouseUp(object sender, MouseEventArgs e)
