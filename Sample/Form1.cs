@@ -400,8 +400,14 @@ namespace Sample
                 DisabledColor = Color.Cyan,
             };
 
-            rndRectButtonView1.Click += RandomMove;
-            cutRectButtonView1.Click += RandomMove;
+			rndRectButtonView1.Click += (object sender, EventArgs e) =>
+			{
+				spaceView.HideNegative = !spaceView.HideNegative;
+			};
+			cutRectButtonView1.Click += (object sender, EventArgs e) =>
+			{
+				spaceView.PerspectiveProjection = !spaceView.PerspectiveProjection;
+			};
 
             IconView zero = new IconView
             {
@@ -474,9 +480,18 @@ namespace Sample
             }
             Point current = spaceView.PointToScreen(e.Location);
             double height = Math.Min(SpaceView.Resolution.Width, SpaceView.Resolution.Height);
-            double x = -Math.PI * (current.X - origin.X) / height;
-            double y = Math.PI * (current.Y - origin.Y) / height;
-            spaceView.WorldMatrix = world * Matrix4x4.CreateRotationX(y)*Matrix4x4.CreateRotationY(x);
+			Vector3 axis = new Vector3
+			{
+				X = (current.Y - origin.Y) / height,
+				Y = (current.X - origin.X) / height,
+				Z = 0,
+			};
+			double angle = axis.Length();
+			if (angle * height < 3)
+				return;
+			axis /= angle;
+			var rotation = Matrix4x4.CreateFromAxisAngle (axis, Math.PI * angle);
+			spaceView.WorldMatrix = rotation * world;
         }
 
         private void spaceView_MouseUp(object sender, MouseEventArgs e)

@@ -14,6 +14,8 @@ namespace Sample
         protected Point deviceOrigin = new Point(0, 0);
 
         protected Matrix4x4 worldMatrix = Matrix4x4.Identity;
+		protected bool hideNegative = false;
+		protected bool perspectiveProjection = false;
 
         public static readonly Point Dpi;
         public static readonly Size Resolution;
@@ -79,6 +81,32 @@ namespace Sample
             }
         }
 
+		public bool HideNegative
+		{
+			get
+			{
+				return hideNegative;
+			}
+			set
+			{
+				hideNegative = value;
+				UpdateLayout();
+			}
+		}
+
+		public bool PerspectiveProjection
+		{
+			get
+			{
+				return perspectiveProjection;
+			}
+			set
+			{
+				perspectiveProjection = value;
+				UpdateLayout();
+			}
+		}
+
         protected virtual int GetZIndex(IView view)
         {
             var icon = view as IconView;
@@ -89,9 +117,12 @@ namespace Sample
         {
             List<IView> icons = new List<IView>();
             List<IView> others = new List<IView>();
-            foreach (IView view in base.GetViews())
-                if (view is IconView)
-                    icons.Add(view);
+			foreach (IView view in base.GetViews())
+				if (view is IconView)
+				{
+					if (!HideNegative || ((IconView)view).Vector.Z > 0)
+						icons.Add (view);
+				}
                 else
                     others.Add(view);
             IEnumerable<IView> result = icons.OrderBy(GetZIndex).Concat(others);
