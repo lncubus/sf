@@ -120,7 +120,7 @@ namespace Sample
 			foreach (IView view in base.GetViews())
 				if (view is IconView)
 				{
-					if (!HideNegative || ((IconView)view).Vector.Z > 0)
+					if (!HideNegative || ((IconView)view).Z > 0)
 						icons.Add (view);
 				}
                 else
@@ -185,7 +185,7 @@ namespace Sample
             if (result == null || !(result is IconView))
                 return result;
             var views = GetViews().ToList();
-            return HitTest(views, posX, posY).First();
+            return HitTest(views, posX, posY).FirstOrDefault();
 		}
 
         /// <summary>
