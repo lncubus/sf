@@ -227,7 +227,7 @@ namespace Pvax.UI.Views
 		/// </summary>
 		public void BeginUpdate()
 		{
-			updating++;
+			//updating++;
 		}
 		
 		/// <summary>
@@ -235,15 +235,15 @@ namespace Pvax.UI.Views
 		/// </summary>
 		public void EndUpdate()
 		{
-            if (updating <= 0)
-                throw new InvalidOperationException(
-                    nameof(EndUpdate) + " without " + nameof(BeginUpdate));
-			updating--;
-            if (!Updating)
-            {
-                CalcExtent();
-                Invalidate();
-            }
+   //         if (updating < 0)
+     //           throw new InvalidOperationException(
+       //             nameof(EndUpdate) + " without " + nameof(BeginUpdate));
+		//	updating--;
+          //  if (!Updating)
+            //{
+              //  CalcExtent();
+   //             Invalidate();
+     //       }
 		}
 		
 		/// <summary>
@@ -351,9 +351,9 @@ namespace Pvax.UI.Views
 			// NB: here I paint the background
 			g.FillRectangle(DrawHelper.Instance.CreateSolidBrush(BackColor), clip);
 			Rectangle clipRect = new Rectangle(clip.X - AutoScrollPosition.X, clip.Y - AutoScrollPosition.Y, clip.Width + 1, clip.Height + 1);
-			g.SmoothingMode = SmoothingMode.AntiAlias;
-			g.InterpolationMode = InterpolationMode.Bilinear;// HighQualityBicubic;
-			g.PixelOffsetMode = PixelOffsetMode.HighSpeed;// HighQuality;
+			g.SmoothingMode = SmoothingMode.None;
+            g.InterpolationMode = InterpolationMode.Low;// Bilinear;// HighQualityBicubic;
+            g.PixelOffsetMode = PixelOffsetMode.None; // HighSpeed;// HighQuality;
 
 			Rectangle bounds = new Rectangle();
 			foreach(IView view in GetViews())
