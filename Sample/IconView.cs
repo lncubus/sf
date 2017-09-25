@@ -7,12 +7,42 @@ using System.Drawing.Drawing2D;
 
 namespace Sample
 {
-    public class IconView : Pvax.UI.Views.View
+	public class IconView : Pvax.UI.Views.View, IDisposable
     {
         protected Vectors.Vector3 _vector;
         protected SizeF _size = SizeF.Empty;
         protected int _z;
         protected string _text;
+		private Bitmap _cached = null;
+		private int _cachedWidth = -1;
+		private int _cachedHeight = -1;
+		private Color _cachedFillColor = Color.Empty;
+		private Color _cachedEdgeColor = Color.Empty;
+
+		public void Dispose()
+		{
+			ClearCache();
+		}
+
+		protected void ClearCache()
+		{
+			_cachedHeight = -1;
+			_cachedWidth = -1;
+			_cachedFillColor = Color.Empty;
+			_cachedEdgeColor = Color.Empty;
+			if (_cached != null)
+			{
+				_cached.Dispose ();
+				_cached = null;
+			}
+		}
+
+		protected bool IsCacheOkay(Color fill, Color edge)
+		{
+			return _cached != null &&
+				_cachedHeight == Height && _cachedWidth == Width &&
+				_cachedFillColor == fill && _cachedEdgeColor == edge;
+		}
 
         /// <summary>
         /// Gets or sets the text associated with this view.
@@ -200,6 +230,81 @@ namespace Sample
             cachedCustomSymbol.Transform(transform);
         }
 
+		protected virtual void DrawCache(Color fill, Color edge)
+		{
+			ClearCache();
+			int width = Width;
+			int height = Height;
+			Bitmap cache = new Bitmap(width, height);
+			Brush brush = DrawHelper.Instance.CreateSolidBrush(fill);
+			Pen pen = DrawHelper.Instance.CreateColorPen(edge, 1.2F);
+			Rectangle layout = new Rectangle(0, 0, width, height);
+			layout.Inflate(-2, -2);
+			using (Graphics g = Graphics.FromImage(cache))
+			{
+				g.SmoothingMode = SmoothingMode.AntiAlias;
+				switch (Symbol)
+				{
+				case Symbol.Text:
+					StringFormat format = DrawHelper.Instance.CreateTypographicStringFormat(ContentAlignment.MiddleCenter);
+					g.DrawString(Text, Font, brush, layout, format);
+					break;
+				case Symbol.Rectangle:
+					g.FillRectangle(brush, layout);
+					g.DrawRectangle(pen, layout);
+					break;
+				case Symbol.Ellipse:
+					g.FillEllipse(brush, layout);
+					g.DrawEllipse(pen, layout);
+					break;
+				case Symbol.Custom:
+					//g.DrawRectangle(pen, layout);
+					if (cachedCustomSymbol == null)
+						BuildCustomSymbol();
+					g.FillPath(brush, cachedCustomSymbol);
+					g.DrawPath(pen, cachedCustomSymbol);
+					break;
+				case Symbol.Quatrefoil:
+					ArcF[] arcs = SymbolHelper.Flowers[Symbol].ToArray();
+					using (GraphicsPath flower = new GraphicsPath())
+					{
+						for (int i = 0; i < arcs.Length; i++)
+						{
+							ArcF a = arcs[i];
+							a.X = layout.Left + a.X * layout.Width;
+							a.Y = layout.Top + a.Y * layout.Height;
+							a.Width *= layout.Width;
+							a.Height *= layout.Height;
+							flower.AddArc(a.X, a.Y, a.Width, a.Height, a.StartAngle, a.SweepAngle);
+						}
+						g.FillPath(brush, flower);
+						g.DrawPath(pen, flower);
+					}
+					break;
+				default :
+					if (!SymbolHelper.Polygons.ContainsKey(Symbol))
+						throw new NotImplementedException(Symbol.ToString());
+					PointF[] points = SymbolHelper.Polygons[Symbol].ToArray();
+					for (int i = 0; i < points.Length; i++)
+					{
+						PointF p = points[i];
+						p.X = layout.Left + p.X * layout.Width;
+						p.Y = layout.Top + p.Y * layout.Height;
+						points[i] = p;
+					}
+					g.FillPolygon(brush, points, FillMode.Winding);
+					g.DrawPolygon(pen, points);
+					break;
+				}
+			}
+			Tl.Log(string.Format("Rendered {0} {1}x{2} {3} {4}", Name, width, height, fill, edge));
+			_cached = cache;
+			_cachedEdgeColor = edge;
+			_cachedFillColor = fill;
+			_cachedWidth = width;
+			_cachedHeight = height;
+		}
+
         /// <summary>
         /// Paint the symbol.
         /// </summary>
@@ -208,63 +313,13 @@ namespace Sample
         protected override void Draw(Graphics g)
         {
             Color color = !Enabled ? DisabledColor : (Tracking ? HoverColor : BackColor);
-            Brush brush = DrawHelper.Instance.CreateSolidBrush(color);
-            Pen pen = DrawHelper.Instance.CreateColorPen(EdgeColor, 1.2F);
-            Rectangle layout = Bounds;
-            layout.Inflate(-2, -2);
-            switch (Symbol)
-            {
-                case Symbol.Text:
-                    StringFormat format = DrawHelper.Instance.CreateTypographicStringFormat(ContentAlignment.MiddleCenter);
-                    g.DrawString(Text, Font, brush, layout, format);
-                    break;
-                case Symbol.Rectangle:
-                    g.FillRectangle(brush, layout);
-                    g.DrawRectangle(pen, layout);
-                    break;
-                case Symbol.Ellipse:
-                    g.FillEllipse(brush, layout);
-                    g.DrawEllipse(pen, layout);
-                    break;
-                case Symbol.Custom:
-                    //g.DrawRectangle(pen, layout);
-                    if (cachedCustomSymbol == null)
-                        BuildCustomSymbol();
-                    g.FillPath(brush, cachedCustomSymbol);
-                    g.DrawPath(pen, cachedCustomSymbol);
-                    break;
-                case Symbol.Quatrefoil:
-                    ArcF[] arcs = SymbolHelper.Flowers[Symbol].ToArray();
-                    using (GraphicsPath flower = new GraphicsPath())
-                    {
-                        for (int i = 0; i < arcs.Length; i++)
-                        {
-                            ArcF a = arcs[i];
-                            a.X = layout.Left + a.X * layout.Width;
-                            a.Y = layout.Top + a.Y * layout.Height;
-                            a.Width *= layout.Width;
-                            a.Height *= layout.Height;
-                            flower.AddArc(a.X, a.Y, a.Width, a.Height, a.StartAngle, a.SweepAngle);
-                        }
-                        g.FillPath(brush, flower);
-                        g.DrawPath(pen, flower);
-                    }
-                    break;
-                default :
-                    if (!SymbolHelper.Polygons.ContainsKey(Symbol))
-                        throw new NotImplementedException(Symbol.ToString());
-                    PointF[] points = SymbolHelper.Polygons[Symbol].ToArray();
-                    for (int i = 0; i < points.Length; i++)
-                    {
-                        PointF p = points[i];
-                        p.X = layout.Left + p.X * layout.Width;
-                        p.Y = layout.Top + p.Y * layout.Height;
-                        points[i] = p;
-                    }
-                    g.FillPolygon(brush, points, FillMode.Winding);
-                    g.DrawPolygon(pen, points);
-                    break;
-            }
+			bool isOkay = IsCacheOkay (color, EdgeColor);
+			if (!isOkay)
+			{
+				ClearCache();
+				DrawCache(color, EdgeColor);
+			}
+			g.DrawImageUnscaled (_cached, Bounds);
         }
     }
 }
