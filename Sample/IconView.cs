@@ -183,6 +183,7 @@ namespace Sample
                 if (cachedCustomSymbol != null)
                     cachedCustomSymbol.Dispose();
                 cachedCustomSymbol = null;
+                _cached = null;
                 Invalidate();
             }
         }

@@ -44,6 +44,8 @@ namespace Pvax.UI.Views
 	[Designer(typeof(ViewContainerDesigner))]
 	public class ViewContainer: Panel, IControlService
 	{
+        public static bool UseUpdate = false;
+
 		#region ViewsCollection class
 		class ViewsCollection: ViewCollection
 		{
@@ -59,8 +61,8 @@ namespace Pvax.UI.Views
 				base.Add(view);
 				view.Parent = owner;
 				owner.CalcExtent();
-				owner.Invalidate();
-			}
+                view.Invalidate(0, 0, view.Width, view.Height);
+            }
 
             public override void AddRange(IEnumerable<IView> views)
             {
@@ -95,11 +97,10 @@ namespace Pvax.UI.Views
 				base.Insert(index, view);
 				view.Parent = owner;
 				owner.CalcExtent();
-				//owner.Invalidate();
-				view.Invalidate(0, 0, view.Width, view.Height);
-			}
-			
-			public override bool Remove(IView view)
+                view.Invalidate(0, 0, view.Width, view.Height);
+            }
+
+            public override bool Remove(IView view)
 			{
 				bool result = base.Remove(view);
                 if (!result)
@@ -218,7 +219,7 @@ namespace Pvax.UI.Views
 		{
 			get
 			{
-				return updating > 0;
+				return UseUpdate && updating > 0;
 			}
 		}
 		
@@ -227,7 +228,8 @@ namespace Pvax.UI.Views
 		/// </summary>
 		public void BeginUpdate()
 		{
-			//updating++;
+            if (UseUpdate)
+                updating++;
 		}
 		
 		/// <summary>
@@ -235,22 +237,24 @@ namespace Pvax.UI.Views
 		/// </summary>
 		public void EndUpdate()
 		{
-   //         if (updating < 0)
-     //           throw new InvalidOperationException(
-       //             nameof(EndUpdate) + " without " + nameof(BeginUpdate));
-		//	updating--;
-          //  if (!Updating)
-            //{
-              //  CalcExtent();
-   //             Invalidate();
-     //       }
-		}
-		
-		/// <summary>
-		/// Calculates the extent (the size of the rectangle that bounds all
-		/// the views held by the <see cref="ViewContainer"/> control.
-		/// </summary>
-		protected virtual void CalcExtent()
+            if (!UseUpdate)
+                return;
+            if (updating < 0)
+                throw new InvalidOperationException(
+                  nameof(EndUpdate) + " without " + nameof(BeginUpdate));
+            updating--;
+            if (!Updating)
+            {
+                CalcExtent();
+                Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Calculates the extent (the size of the rectangle that bounds all
+        /// the views held by the <see cref="ViewContainer"/> control.
+        /// </summary>
+        protected virtual void CalcExtent()
 		{
             if(Updating || !AutoScroll)
 				return;

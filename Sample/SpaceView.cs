@@ -226,13 +226,11 @@ namespace Sample
 
         public void UpdateLayout(IconView icon)
         {
-            icon.Invalidate();
+            //icon.Invalidate(); will be invalidated if coordinates changed
             var place = WorldToDevice(icon.Vector);
             icon.Left = place.Item1 - icon.Width/2;
             icon.Top = place.Item2 - icon.Height/2;
             icon.Z = place.Item3;
-            // todo!
-            icon.Invalidate();
         }
     }
 }
