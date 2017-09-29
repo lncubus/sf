@@ -79,3 +79,4 @@ _TeamCity*
 .*crunch*.local.xml
 
 .vs/
+*.diagsession
