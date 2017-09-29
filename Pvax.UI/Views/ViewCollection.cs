@@ -55,18 +55,6 @@ namespace Pvax.UI.Views
 		{
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ViewCollection"/>
-		/// class with <paramref name="views"/>
-		/// </summary>
-		/// <param name="views">
-		/// An array of <see cref="IView"/> objects to take the contents from.
-		/// </param>
-		public ViewCollection (IEnumerable<IView> views) : this()
-		{
-			AddRange(views);
-		}
-
 		public virtual IView this [int index]
 		{
 			get

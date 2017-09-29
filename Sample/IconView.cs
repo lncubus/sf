@@ -9,24 +9,23 @@ namespace Sample
 {
 	public class IconView : Pvax.UI.Views.View, IDisposable
     {
+        public const bool UseCachedImage = false;
+
         protected Vectors.Vector3 _vector;
         protected SizeF _size = SizeF.Empty;
         protected int _z;
         protected string _text;
-		private Bitmap _cached = null;
-		private int _cachedWidth = -1;
+/*
+        private Bitmap _cached = null;
+
+        private int _cachedWidth = -1;
 		private int _cachedHeight = -1;
 		private Color _cachedFillColor = Color.Empty;
 		private Color _cachedEdgeColor = Color.Empty;
 
-		public void Dispose()
-		{
-			ClearCache();
-		}
-
 		protected void ClearCache()
 		{
-			_cachedHeight = -1;
+            _cachedHeight = -1;
 			_cachedWidth = -1;
 			_cachedFillColor = Color.Empty;
 			_cachedEdgeColor = Color.Empty;
@@ -37,12 +36,13 @@ namespace Sample
 			}
 		}
 
-		protected bool IsCacheOkay(Color fill, Color edge)
+        protected bool IsCacheOkay(Color fill, Color edge)
 		{
 			return _cached != null &&
 				_cachedHeight == Height && _cachedWidth == Width &&
 				_cachedFillColor == fill && _cachedEdgeColor == edge;
 		}
+*/
 
         /// <summary>
         /// Gets or sets the text associated with this view.
@@ -167,7 +167,7 @@ namespace Sample
         }
 
         private GraphicsPath customSymbol;
-        private GraphicsPath cachedCustomSymbol;
+        private GraphicsPath _cachedCustomSymbol;
 
         public virtual GraphicsPath CustomSymbol
         {
@@ -180,10 +180,9 @@ namespace Sample
                 if (ReferenceEquals(customSymbol, value))
                     return;
                 customSymbol = value;
-                if (cachedCustomSymbol != null)
-                    cachedCustomSymbol.Dispose();
-                cachedCustomSymbol = null;
-                _cached = null;
+                if (_cachedCustomSymbol != null)
+                    _cachedCustomSymbol.Dispose();
+                _cachedCustomSymbol = null;
                 Invalidate();
             }
         }
@@ -192,15 +191,15 @@ namespace Sample
         {
             if (customSymbol == null)
             {
-                cachedCustomSymbol = new GraphicsPath();
-                cachedCustomSymbol.AddString(Text, Font.FontFamily, 0, 72,
+                _cachedCustomSymbol = new GraphicsPath();
+                _cachedCustomSymbol.AddString(Text, Font.FontFamily, 0, 72,
                     Point.Empty, StringFormat.GenericTypographic);
             }
             else
             {
-                cachedCustomSymbol = (GraphicsPath)customSymbol.Clone();
+                _cachedCustomSymbol = (GraphicsPath)customSymbol.Clone();
             }
-            RectangleF customBounds = cachedCustomSymbol.GetBounds();
+            RectangleF customBounds = _cachedCustomSymbol.GetBounds();
             RectangleF viewBounds = Bounds;
             viewBounds.Inflate(-2, -2);
             float widthRatio = viewBounds.Width / customBounds.Width;
@@ -228,83 +227,8 @@ namespace Sample
             };
             Matrix transform = new Matrix(customBounds,
                 new[] { viewBounds.Location, topRight, bottomLeft});
-            cachedCustomSymbol.Transform(transform);
+            _cachedCustomSymbol.Transform(transform);
         }
-
-		protected virtual void DrawCache(Color fill, Color edge)
-		{
-			ClearCache();
-			int width = Width;
-			int height = Height;
-			Bitmap cache = new Bitmap(width, height);
-			Brush brush = DrawHelper.Instance.CreateSolidBrush(fill);
-			Pen pen = DrawHelper.Instance.CreateColorPen(edge, 1.2F);
-			Rectangle layout = new Rectangle(0, 0, width, height);
-			layout.Inflate(-2, -2);
-			using (Graphics g = Graphics.FromImage(cache))
-			{
-				g.SmoothingMode = SmoothingMode.AntiAlias;
-				switch (Symbol)
-				{
-				case Symbol.Text:
-					StringFormat format = DrawHelper.Instance.CreateTypographicStringFormat(ContentAlignment.MiddleCenter);
-					g.DrawString(Text, Font, brush, layout, format);
-					break;
-				case Symbol.Rectangle:
-					g.FillRectangle(brush, layout);
-					g.DrawRectangle(pen, layout);
-					break;
-				case Symbol.Ellipse:
-					g.FillEllipse(brush, layout);
-					g.DrawEllipse(pen, layout);
-					break;
-				case Symbol.Custom:
-					//g.DrawRectangle(pen, layout);
-					if (cachedCustomSymbol == null)
-						BuildCustomSymbol();
-					g.FillPath(brush, cachedCustomSymbol);
-					g.DrawPath(pen, cachedCustomSymbol);
-					break;
-				case Symbol.Quatrefoil:
-					ArcF[] arcs = SymbolHelper.Flowers[Symbol].ToArray();
-					using (GraphicsPath flower = new GraphicsPath())
-					{
-						for (int i = 0; i < arcs.Length; i++)
-						{
-							ArcF a = arcs[i];
-							a.X = layout.Left + a.X * layout.Width;
-							a.Y = layout.Top + a.Y * layout.Height;
-							a.Width *= layout.Width;
-							a.Height *= layout.Height;
-							flower.AddArc(a.X, a.Y, a.Width, a.Height, a.StartAngle, a.SweepAngle);
-						}
-						g.FillPath(brush, flower);
-						g.DrawPath(pen, flower);
-					}
-					break;
-				default :
-					if (!SymbolHelper.Polygons.ContainsKey(Symbol))
-						throw new NotImplementedException(Symbol.ToString());
-					PointF[] points = SymbolHelper.Polygons[Symbol].ToArray();
-					for (int i = 0; i < points.Length; i++)
-					{
-						PointF p = points[i];
-						p.X = layout.Left + p.X * layout.Width;
-						p.Y = layout.Top + p.Y * layout.Height;
-						points[i] = p;
-					}
-					g.FillPolygon(brush, points, FillMode.Winding);
-					g.DrawPolygon(pen, points);
-					break;
-				}
-			}
-			Tl.Log(string.Format("Rendered {0} {1}x{2} {3} {4}", Name, width, height, fill, edge));
-			_cached = cache;
-			_cachedEdgeColor = edge;
-			_cachedFillColor = fill;
-			_cachedWidth = width;
-			_cachedHeight = height;
-		}
 
         /// <summary>
         /// Paint the symbol.
@@ -313,15 +237,99 @@ namespace Sample
         /// object to paint on.</param>
         protected override void Draw(Graphics g)
         {
-            Color color = !Enabled ? DisabledColor : (Tracking ? HoverColor : BackColor);
-			bool isOkay = IsCacheOkay (color, EdgeColor);
-			if (!isOkay)
-			{
-				ClearCache();
-				DrawCache(color, EdgeColor);
-			}
-			g.DrawImageUnscaled (_cached, Bounds);
+            Color fill = !Enabled ? DisabledColor : (Tracking ? HoverColor : BackColor);
+            Color edge = EdgeColor;
+            Brush brush = DrawHelper.Instance.CreateSolidBrush(fill);
+            Pen pen = DrawHelper.Instance.CreateColorPen(edge);//, 1.2F);
+            Rectangle layout = Bounds;
+            layout.Inflate(-2, -2);
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            switch (Symbol)
+            {
+                case Symbol.Text:
+                    StringFormat format = DrawHelper.Instance.CreateTypographicStringFormat(ContentAlignment.MiddleCenter);
+                    g.DrawString(Text, Font, brush, layout, format);
+                    break;
+                case Symbol.Rectangle:
+                    g.FillRectangle(brush, layout);
+                    g.DrawRectangle(pen, layout);
+                    break;
+                case Symbol.Ellipse:
+                    g.FillEllipse(brush, layout);
+                    g.DrawEllipse(pen, layout);
+                    break;
+                case Symbol.Custom:
+                    g.DrawRectangle(pen, layout);
+                    //if (_cachedCustomSymbol == null)
+                    //    BuildCustomSymbol();
+                    //g.FillPath(brush, _cachedCustomSymbol);
+                    //g.DrawPath(pen, _cachedCustomSymbol);
+                    break;
+                case Symbol.Quatrefoil:
+                    ArcF[] arcs = SymbolHelper.Flowers[Symbol].ToArray();
+                    using (GraphicsPath flower = new GraphicsPath())
+                    {
+                        for (int i = 0; i < arcs.Length; i++)
+                        {
+                            ArcF a = arcs[i];
+                            a.X = layout.Left + a.X * layout.Width;
+                            a.Y = layout.Top + a.Y * layout.Height;
+                            a.Width *= layout.Width;
+                            a.Height *= layout.Height;
+                            flower.AddArc(a.X, a.Y, a.Width, a.Height, a.StartAngle, a.SweepAngle);
+                        }
+                        g.FillPath(brush, flower);
+                        g.DrawPath(pen, flower);
+                    }
+                    break;
+                default:
+                    if (!SymbolHelper.Polygons.ContainsKey(Symbol))
+                        throw new NotImplementedException(Symbol.ToString());
+                    PointF[] points = SymbolHelper.Polygons[Symbol].ToArray();
+                    for (int i = 0; i < points.Length; i++)
+                    {
+                        PointF p = points[i];
+                        p.X = layout.Left + p.X * layout.Width;
+                        p.Y = layout.Top + p.Y * layout.Height;
+                        points[i] = p;
+                    }
+                    g.FillPolygon(brush, points, FillMode.Winding);
+                    g.DrawPolygon(pen, points);
+                    break;
+            }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    //if (_cached != null)
+                    //    _cached.Dispose();
+                    if (_cachedCustomSymbol != null)
+                        _cachedCustomSymbol.Dispose();
+                    // TODO: dispose managed state (managed objects).
+                }
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+
+                // TODO: set large fields to null.
+                //_cached = null;
+                _cachedCustomSymbol = null;
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+        }
+#endregion
     }
 }
 

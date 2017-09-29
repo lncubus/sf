@@ -353,10 +353,10 @@ namespace Pvax.UI.Views
 			// Cache some frequently accessed properties
 			Graphics g = e.Graphics;
 			// NB: here I paint the background
-			g.FillRectangle(DrawHelper.Instance.CreateSolidBrush(BackColor), clip);
+			//g.FillRectangle(DrawHelper.Instance.CreateSolidBrush(BackColor), clip);
 			Rectangle clipRect = new Rectangle(clip.X - AutoScrollPosition.X, clip.Y - AutoScrollPosition.Y, clip.Width + 1, clip.Height + 1);
 			g.SmoothingMode = SmoothingMode.None;
-            g.InterpolationMode = InterpolationMode.Low;// Bilinear;// HighQualityBicubic;
+            g.InterpolationMode = InterpolationMode.NearestNeighbor;// Bilinear;// HighQualityBicubic;
             g.PixelOffsetMode = PixelOffsetMode.None; // HighSpeed;// HighQuality;
 
 			Rectangle bounds = new Rectangle();
@@ -376,21 +376,21 @@ namespace Pvax.UI.Views
 					}
 				}
 			}
-		}
-		
-		/// <summary>
-		/// Translates the mouse down event to <see cref="IView.OnMouseDown"/>
-		/// call.
-		/// </summary>
-		/// <param name="e">
-		/// A <see cref="MouseEventArgs"/> object that contains the event data.
-		/// </param>
-		/// <remarks>
-		/// Be aware that the <see cref="ViewContainer"/> does not raise
-		/// the <see cref="System.Windows.Forms.Control.MouseDown"/> event but
-		/// performs all mouse processing on it's own.
-		/// </remarks>
-		protected override void OnMouseDown(MouseEventArgs e)
+        }
+
+        /// <summary>
+        /// Translates the mouse down event to <see cref="IView.OnMouseDown"/>
+        /// call.
+        /// </summary>
+        /// <param name="e">
+        /// A <see cref="MouseEventArgs"/> object that contains the event data.
+        /// </param>
+        /// <remarks>
+        /// Be aware that the <see cref="ViewContainer"/> does not raise
+        /// the <see cref="System.Windows.Forms.Control.MouseDown"/> event but
+        /// performs all mouse processing on it's own.
+        /// </remarks>
+        protected override void OnMouseDown(MouseEventArgs e)
 		{
             base.OnMouseDown(e);
             int x = e.X - AutoScrollPosition.X;
