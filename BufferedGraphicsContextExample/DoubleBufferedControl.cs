@@ -51,7 +51,7 @@ namespace BufferedGraphicsContextExample
             yp = random.NextDouble();
             RecreateBuffers();
 
-            Redraw();
+            //Redraw();
 
             #region Redraw Logic
             timer = new Timer();
@@ -63,6 +63,8 @@ namespace BufferedGraphicsContextExample
 
         private void timer_Tick(object sender, EventArgs e)
         {
+            drawingGraphics.DrawLine(Pens.Red, random.Next(Width), random.Next(Height), random.Next(Width), random.Next(Height));
+
             Redraw();
         }
 
