@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectors", "Vectors\Vectors.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BufferedGraphicsContextExample", "BufferedGraphicsContextExample\BufferedGraphicsContextExample.csproj", "{6F8ACEC8-96DC-4B93-952A-CA3C3DB5776A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "colors", "colors\colors.csproj", "{16CB1B00-4143-43CA-8CD3-6A003A44C879}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6F8ACEC8-96DC-4B93-952A-CA3C3DB5776A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F8ACEC8-96DC-4B93-952A-CA3C3DB5776A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F8ACEC8-96DC-4B93-952A-CA3C3DB5776A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16CB1B00-4143-43CA-8CD3-6A003A44C879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CB1B00-4143-43CA-8CD3-6A003A44C879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16CB1B00-4143-43CA-8CD3-6A003A44C879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16CB1B00-4143-43CA-8CD3-6A003A44C879}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

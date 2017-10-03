@@ -1,0 +1,19 @@
+DoubleBufferedControl
+ + - MainViewControl
+       [] - Views
+
+View = (state, Draw)
+state = (ControlState, Width, Height ...), GetHashCode(), IsEquatable(state)
+
+При любом изменении View.state MainViewControl об этом узнает
+
+для некоторых, сложно рисуемых элементов стоит сохранять cached bitmap
+bitmap = Draw(graphics, state) 
+определять необходимость сохранения по времени рисования (автоматически?)
+
+в этом случае MainViewControl хранит словарь (state -> bitmap)
+это позволяет вообще не обращаться к методам View (?)
+
+
+ 
+     
