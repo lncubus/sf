@@ -39,6 +39,7 @@
             this.doubleBufferedControl1.Name = "doubleBufferedControl1";
             this.doubleBufferedControl1.Size = new System.Drawing.Size(379, 322);
             this.doubleBufferedControl1.TabIndex = 0;
+			this.doubleBufferedControl1.BackColor = System.Drawing.Color.Black;
             // 
             // Form1
             // 
