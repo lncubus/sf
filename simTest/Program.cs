@@ -413,32 +413,81 @@ namespace simTest
 		}
 
 		public static void Main (string[] args)
-		{
-			var app = new MainClass();
-			//app.RunPlus();
-			app.RunSolarSystem(10);
-			app.RunSolarSystem(25);
-			app.RunSolarSystem(50);
-			app.RunSolarSystem(100);
-			app.RunSolarSystem(200);
-//			app.RunSolarSystem(250);
-			app.RunSolarSystem(300);
-//			app.RunSolarSystem(325);
-//			app.RunSolarSystem(350);
-//			app.RunSolarSystem(375);
-//			app.RunSolarSystem(400);
-			app.RunSolarSystem(500);
-			app.RunSolarSystem(1000, false);
-			app.RunSolarSystem(5000, false);
-//			app.RunSolarSystem(10000, false);
-//			app.RunSolarSystem(30000, false);
-//			app.RunSolarSystem(100000, false);
-//			app.RunSolarSystem(300000, false);
-//			app.RunSolarSystem(1000000, false);
-//			app.RunSolarSystem(3000000, false);
-			//app.RunSolvers();
-			// System.Numerics.Quaternion q;
+        {
+            //RunSolvers3();
+            var things = new[]
+            {
+                new Something
+                {
+                    Color = Something.SomeColor.Black,
+                    Name = "černé",
+                    Uid = Guid.NewGuid(),
+                    Number = 3,
+                    Value = Math.PI,
+                    Coordinates = Complex.FromPolarCoordinates(1, 1),
+                },
+                new Something
+                {
+                    Color = Something.SomeColor.Octarine,
+                    Name = "Octarine",
+                    Uid = Guid.Empty,
+                    Number = 8,
+                    Value = 1E88,
+                    Coordinates = new Complex(0, 8),
+                },
+            };
+            string xml = Xml.SerializeCollection(things);
+            var thingz = Xml.DeserializeCollection<Something>(xml);
+            if (things.Length != thingz.Length)
+                Console.WriteLine("Length is different, source {0} target {1}", things.Length, thingz.Length);
+            for(int i = 0; i < things.Length && i < thingz.Length; i++)
+            {
+                if (things[i].Equals(thingz[i]))
+                    Console.WriteLine("okay");
+                else
+                    Console.WriteLine("NOT OKAY!");
+            }
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(things, Newtonsoft.Json.Formatting.Indented);
+            Console.WriteLine(json);
+            //Newtonsoft.Json.JsonConvert.DefaultSettings = () => new Newtonsoft.Json.JsonSerializerSettings() { };
+            thingz = Newtonsoft.Json.JsonConvert.DeserializeObject<Something[]>(json);
+            if (things.Length != thingz.Length)
+                Console.WriteLine("Length is different, source {0} target {1}", things.Length, thingz.Length);
+            for (int i = 0; i < things.Length && i < thingz.Length; i++)
+            {
+                if (things[i].Equals(thingz[i]))
+                    Console.WriteLine("okay");
+                else
+                    Console.WriteLine("NOT OKAY!");
+            }
+        }
 
-		}
-	}
+        private static void RunSolvers3()
+        {
+            var app = new MainClass();
+            //app.RunPlus();
+            app.RunSolarSystem(10);
+            app.RunSolarSystem(25);
+            app.RunSolarSystem(50);
+            app.RunSolarSystem(100);
+            app.RunSolarSystem(200);
+            //			app.RunSolarSystem(250);
+            app.RunSolarSystem(300);
+            //			app.RunSolarSystem(325);
+            //			app.RunSolarSystem(350);
+            //			app.RunSolarSystem(375);
+            //			app.RunSolarSystem(400);
+            app.RunSolarSystem(500);
+            app.RunSolarSystem(1000, false);
+            app.RunSolarSystem(5000, false);
+            //			app.RunSolarSystem(10000, false);
+            //			app.RunSolarSystem(30000, false);
+            //			app.RunSolarSystem(100000, false);
+            //			app.RunSolarSystem(300000, false);
+            //			app.RunSolarSystem(1000000, false);
+            //			app.RunSolarSystem(3000000, false);
+            //app.RunSolvers();
+            // System.Numerics.Quaternion q;
+        }
+    }
 }
