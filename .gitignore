@@ -80,3 +80,4 @@ _TeamCity*
 
 .vs/
 *.diagsession
+packages/
