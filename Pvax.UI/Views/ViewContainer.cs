@@ -354,6 +354,7 @@ namespace Pvax.UI.Views
 			Graphics g = e.Graphics;
 			// NB: here I paint the background
 			//g.FillRectangle(DrawHelper.Instance.CreateSolidBrush(BackColor), clip);
+			g.Clear(BackColor);
 			Rectangle clipRect = new Rectangle(clip.X - AutoScrollPosition.X, clip.Y - AutoScrollPosition.Y, clip.Width + 1, clip.Height + 1);
 			g.SmoothingMode = SmoothingMode.None;
             g.InterpolationMode = InterpolationMode.NearestNeighbor;// Bilinear;// HighQualityBicubic;
