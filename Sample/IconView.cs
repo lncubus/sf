@@ -259,11 +259,11 @@ namespace Sample
                     g.DrawEllipse(pen, layout);
                     break;
                 case Symbol.Custom:
-                    g.DrawRectangle(pen, layout);
-                    //if (_cachedCustomSymbol == null)
-                    //    BuildCustomSymbol();
-                    //g.FillPath(brush, _cachedCustomSymbol);
-                    //g.DrawPath(pen, _cachedCustomSymbol);
+                    //g.DrawRectangle(pen, layout);
+                    if (_cachedCustomSymbol == null)
+                        BuildCustomSymbol();
+                    g.FillPath(brush, _cachedCustomSymbol);
+                    g.DrawPath(pen, _cachedCustomSymbol);
                     break;
                 case Symbol.Quatrefoil:
                     ArcF[] arcs = SymbolHelper.Flowers[Symbol].ToArray();

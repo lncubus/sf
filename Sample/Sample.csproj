@@ -94,7 +94,7 @@
       <Name>Pvax.UI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Vectors\Vectors.csproj">
-      <Project>{43345d2d-5ad7-4489-b720-994df9a9f361}</Project>
+      <Project>{43345D2D-5AD7-4489-B720-994DF9A9F361}</Project>
       <Name>Vectors</Name>
     </ProjectReference>
   </ItemGroup>
