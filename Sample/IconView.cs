@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-
-using Pvax.UI;
 using System.Drawing.Drawing2D;
+
+using Stopwatch = System.Diagnostics.Stopwatch;
+using StringBuilder = System.Text.StringBuilder;
+using Pvax.UI;
 
 namespace Sample
 {
@@ -169,6 +171,45 @@ namespace Sample
         private GraphicsPath customSymbol;
         private GraphicsPath _cachedCustomSymbol;
 
+
+        private static System.Collections.Generic.Dictionary<Symbol, Stopwatch> _watches =
+            new System.Collections.Generic.Dictionary<Symbol, Stopwatch>();
+        private static System.Collections.Generic.Dictionary<Symbol, int> _counts =
+            new System.Collections.Generic.Dictionary<Symbol, int>();
+
+        private void StartWatch()
+        {
+            Stopwatch watch;
+            if (_watches.TryGetValue(Symbol, out watch))
+            {
+                watch.Start();
+                _counts[Symbol] += 1;
+            }
+            else
+            {
+                _watches.Add(Symbol, Stopwatch.StartNew());
+                _counts.Add(Symbol, 1);
+            }
+        }
+
+        private void StopWatch()
+        {
+            _watches[Symbol].Stop();
+        }
+
+        public static string Report()
+        {
+            StringBuilder result = new StringBuilder();
+            foreach (var pair in _watches)
+            {
+                long elapsed = pair.Value.ElapsedMilliseconds;
+                int count = _counts[pair.Key];
+                long elapsedAverage = count <= 0 ? 0 : (1000 * elapsed) / count;
+                result.AppendFormat("{0}    {1}    {2}  μs   {3}  μs\n", pair.Key, count, elapsedAverage, elapsed);
+            }
+            return result.ToString();
+        }
+
         public virtual GraphicsPath CustomSymbol
         {
             get
@@ -237,6 +278,7 @@ namespace Sample
         /// object to paint on.</param>
         protected override void Draw(Graphics g)
         {
+            StartWatch();
             Color fill = !Enabled ? DisabledColor : (Tracking ? HoverColor : BackColor);
             Color edge = EdgeColor;
             Brush brush = DrawHelper.Instance.CreateSolidBrush(fill);
@@ -297,6 +339,7 @@ namespace Sample
                     g.DrawPolygon(pen, points);
                     break;
             }
+            StopWatch();
         }
 
         #region IDisposable Support

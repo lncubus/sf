@@ -503,5 +503,9 @@ namespace Sample
 			spaceView.Cursor = Cursors.Default;
 		}
 
-	}
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Tl.Log(IconView.Report());
+        }
+    }
 }
