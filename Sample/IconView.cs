@@ -205,7 +205,7 @@ namespace Sample
                 long elapsed = pair.Value.ElapsedMilliseconds;
                 int count = _counts[pair.Key];
                 long elapsedAverage = count <= 0 ? 0 : (1000 * elapsed) / count;
-                result.AppendFormat("{0}\t{1}\t{2} μs\t{3} ms\n", pair.Key, count, elapsedAverage, elapsed);
+                result.AppendFormat("{0}\t{1}\t{2} μs\n", pair.Key, count, elapsedAverage);
             }
             return result.ToString();
         }
