@@ -11,17 +11,21 @@ using Vectors;
 
 namespace Sample
 {
-    public partial class SpaceView : UserControl
+    public partial class SpaceView : DoubleBufferedControl
     {
-        protected PointF deviceScale = new PointF(Dpi.X, Dpi.Y);
-        protected Point deviceOrigin = new Point(0, 0);
-
-        protected Matrix4x4 worldMatrix = Matrix4x4.Identity;
         protected bool hideNegative = false;
-        protected bool perspectiveProjection = false;
 
+        public const float Epsilon = 0.00001F;
         public static readonly Point Dpi;
         public static readonly Size Resolution;
+
+        public bool PerspectiveProjection = true;
+        public PointF DeviceScale = new PointF(Dpi.X, Dpi.Y);
+
+        /// <summary>
+        /// https://en.wikipedia.org/wiki/Camera_matrix
+        /// </summary>
+        public Matrix4x4 WorldMatrix = Matrix4x4.Identity;
 
         public SpaceView() : base()
         {
@@ -42,52 +46,51 @@ namespace Sample
             Resolution = Screen.PrimaryScreen.Bounds.Size;
         }
 
-        public Point DeviceOrigin
-        {
-            get
-            {
-                return deviceOrigin;
-            }
-            set
-            {
-                deviceOrigin = value;
-                UpdateLayout();
-            }
-        }
-
-        public PointF DeviceScale
-        {
-            get
-            {
-                return deviceScale;
-            }
-            set
-            {
-                deviceScale = value;
-                UpdateLayout();
-            }
-        }
-
         /// <summary>
-        /// https://en.wikipedia.org/wiki/Camera_matrix
+        /// https://en.wikipedia.org/wiki/3D_projection        ///
         /// </summary>
-        public Matrix4x4 WorldMatrix
+        /// <param name="v"></param>
+        /// <returns></returns>
+        protected virtual Tuple<float, float, float> WorldToDevice(Vector3 v)
         {
-            get
+            var q = new Quaternion(v, 1);
+            // camera transform
+            q = WorldMatrix * q;
+            if (PerspectiveProjection)
             {
-                return worldMatrix;
+                double depth = Math.Max(Resolution.Width/DeviceScale.X, Resolution.Height / DeviceScale.Y);
+                double k = 1 + q.Z / depth;
+                if (k > Epsilon)
+                {
+                    q.X /= k;
+                    q.Y /= k;
+                }
             }
-            set
+            double x = (q.X) * DeviceScale.X + ClientSize.Width / 2; //  - q.Z / 2)
+            double y = (-q.Y) * DeviceScale.Y + ClientSize.Height / 2; //  + q.Z / 2
+            double z = q.Z * DeviceScale.X;
+            return new Tuple<float, float, float>((float)x, (float)y, (float)z);
+        }
+
+        protected override void PerformRedraw(Graphics graphics)
+        {
+            const int N = 3;
+            base.PerformRedraw(graphics);
+            for(int x = 0; x <= N; x++)
+                for (int y = 0; y <= N; y++)
+                    for (int z = 0; z <= N; z++)
+                    {
+                        Vector3 v = new Vector3(x, y, z);
+                        var p = WorldToDevice(v);
+                        graphics.DrawEllipse(Pens.White, p.Item1 - Dpi.X / 8, p.Item2 - Dpi.Y / 8, Dpi.X / 4, Dpi.Y / 4);
+                    }
+            if (total_watch.ElapsedMilliseconds > 1000)
             {
-                worldMatrix = value;
-                UpdateLayout();
+                var fps = (drawCount*1000 / total_watch.ElapsedMilliseconds).ToString("0.#") + "\n" +
+                    (internal_watch.ElapsedMilliseconds*100 / total_watch.ElapsedMilliseconds).ToString("0.#") + "%";
+                graphics.DrawString(fps, Font, Brushes.White, 0, 0);
             }
         }
 
-        private void UpdateLayout()
-        {
-            // TODO: IMPLEMENT
-            // throw new NotImplementedException();
-        }
     }
 }

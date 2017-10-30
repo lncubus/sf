@@ -53,18 +53,6 @@ namespace Sample
 			this.Controls.Add (spaceView);
 			spaceView.BringToFront ();
 
-//			spaceView.WorldMatrix = Matrix4x4.CreatePerspective (1, 1, 0.5, 3);
-				
-			//CreateLookAt(Vector3.Zero, -Vector3.UnitZ, Vector3.UnitY);
-
-			spaceView.SizeChanged += (object sender, EventArgs e) =>
-			{
-				spaceView.DeviceOrigin = new Point {
-					X = spaceView.ClientSize.Width / 2,
-					Y = spaceView.ClientSize.Height / 2
-				};
-			};
-
 			this.WindowState = FormWindowState.Maximized;
 		}
 
