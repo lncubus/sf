@@ -80,8 +80,8 @@ namespace Sample
 			Point current = spaceView.PointToScreen (e.Location);
 			double height = Math.Min (SpaceView.Resolution.Width, SpaceView.Resolution.Height);
 			Vector3 axis = new Vector3 {
-				X = (current.Y - origin.Y) / height,
-				Y = (current.X - origin.X) / height,
+				X = (origin.Y - current.Y) / height,
+				Y = (origin.X - current.X) / height,
 				Z = 0,
 			};
 			double angle = axis.Length ();
