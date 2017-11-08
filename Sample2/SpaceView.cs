@@ -76,9 +76,9 @@ namespace Sample
         {
             const int N = 3;
             base.PerformRedraw(graphics);
-            for(int x = 0; x <= N; x++)
-                for (int y = 0; y <= N; y++)
-                    for (int z = 0; z <= N; z++)
+            for(int x = -N; x <= N; x++)
+                for (int y = -N; y <= N; y++)
+                    for (int z = -N; z <= N; z++)
                     {
                         Vector3 v = new Vector3(x, y, z);
                         var p = WorldToDevice(v);
