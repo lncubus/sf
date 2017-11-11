@@ -51,15 +51,16 @@ namespace Sample
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
-        protected virtual Tuple<float, float, float> WorldToDevice(Vector3 v)
+        protected virtual Tuple<float, float, float, float> WorldToDevice(Vector3 v)
         {
             var q = new Quaternion(v, 1);
             // camera transform
             q = WorldMatrix * q;
+			double k = 1;
             if (PerspectiveProjection)
             {
                 double depth = Math.Max(Resolution.Width/DeviceScale.X, Resolution.Height / DeviceScale.Y);
-                double k = 1 + q.Z / depth;
+                k = 1 + q.Z / depth;
                 if (k > Epsilon)
                 {
                     q.X /= k;
@@ -69,7 +70,7 @@ namespace Sample
             double x = (q.X) * DeviceScale.X + ClientSize.Width / 2; //  - q.Z / 2)
             double y = (-q.Y) * DeviceScale.Y + ClientSize.Height / 2; //  + q.Z / 2
             double z = q.Z * DeviceScale.X;
-            return new Tuple<float, float, float>((float)x, (float)y, (float)z);
+			return new Tuple<float, float, float, float>((float)x, (float)y, (float)z, (float)k);
         }
 
         protected override void PerformRedraw(Graphics graphics)
@@ -82,7 +83,8 @@ namespace Sample
                     {
                         Vector3 v = new Vector3(x, y, z);
                         var p = WorldToDevice(v);
-                        graphics.DrawEllipse(Pens.White, p.Item1 - Dpi.X / 8, p.Item2 - Dpi.Y / 8, Dpi.X / 4, Dpi.Y / 4);
+						float radius = (Dpi.X / 8) / p.Item4;
+						graphics.DrawEllipse(Pens.White, p.Item1 - radius, p.Item2 - radius, 2*radius, 2*radius);
                     }
             if (total_watch.ElapsedMilliseconds > 1000)
             {
