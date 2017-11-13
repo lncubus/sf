@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BufferedGraphicsContextExam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2", "Sample2\Sample2.csproj", "{C6D46E08-EB9E-4C81-9C41-930D2DE2623F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleOpenTK", "Sample3\SampleOpenTK.csproj", "{B36B8AAB-D6B4-4B2F-B47F-8AE0F27FC8FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{C6D46E08-EB9E-4C81-9C41-930D2DE2623F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6D46E08-EB9E-4C81-9C41-930D2DE2623F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6D46E08-EB9E-4C81-9C41-930D2DE2623F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B36B8AAB-D6B4-4B2F-B47F-8AE0F27FC8FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B36B8AAB-D6B4-4B2F-B47F-8AE0F27FC8FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B36B8AAB-D6B4-4B2F-B47F-8AE0F27FC8FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B36B8AAB-D6B4-4B2F-B47F-8AE0F27FC8FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
