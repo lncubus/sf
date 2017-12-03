@@ -16,30 +16,31 @@ namespace Sample
 	{
 		private Random random = new Random ();
 
+        GeometryView spaceView;
 
 		public Form1 ()
 		{
 			Font = new Font (Font.FontFamily, 1.5F * Font.Size);
 			InitializeComponent ();
 
-			// 
-			// viewContainer1
-			// 
-			//this.spaceView = new SpaceView () {
-			//	BackColor = System.Drawing.Color.Black,
-			//	BorderStyle = System.Windows.Forms.BorderStyle.None,
-			//	Dock = System.Windows.Forms.DockStyle.Fill,
-			//	ForeColor = System.Drawing.Color.White,
-			//	Location = new System.Drawing.Point (0, 0),
-			//	Name = "space",
-			//	Size = new System.Drawing.Size (292, 272),
-			//	TabIndex = 0,
-			//};
-			//spaceView.MouseDown += spaceView_MouseDown;
-			//spaceView.MouseUp += spaceView_MouseUp;
-			//spaceView.MouseMove += spaceView_MouseMove;
-			//this.Controls.Add (spaceView);
-			//spaceView.BringToFront ();
+            spaceView = new GeometryView()
+            {
+                BackColor = Color.Black,
+                BorderStyle = BorderStyle.None,
+                Dock = DockStyle.Fill,
+                ForeColor = Color.White,
+                Location = new Point(0, 0),
+                Name = "space",
+                Size = new Size(640, 480),
+                TabIndex = 0,
+            };
+
+            //spaceView.MouseDown += spaceView_MouseDown;
+            //spaceView.MouseUp += spaceView_MouseUp;
+            //spaceView.MouseMove += spaceView_MouseMove;
+
+            this.Controls.Add (spaceView);
+			spaceView.BringToFront ();
 
 			this.WindowState = FormWindowState.Maximized;
 		}
