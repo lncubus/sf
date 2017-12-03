@@ -16,17 +16,17 @@ namespace Sample
 	{
 		private Random random = new Random ();
 
-        GeometryView spaceView;
+        UserControl spaceView;
 
 		public Form1 ()
 		{
 			Font = new Font (Font.FontFamily, 1.5F * Font.Size);
 			InitializeComponent ();
 
-            spaceView = new GeometryView()
+            spaceView = new GLSample()
             {
                 BackColor = Color.Black,
-                BorderStyle = BorderStyle.None,
+                BorderStyle = BorderStyle.Fixed3D,
                 Dock = DockStyle.Fill,
                 ForeColor = Color.White,
                 Location = new Point(0, 0),
@@ -42,7 +42,7 @@ namespace Sample
             this.Controls.Add (spaceView);
 			spaceView.BringToFront ();
 
-			this.WindowState = FormWindowState.Maximized;
+			//this.WindowState = FormWindowState.Maximized;
 		}
 
 		bool rotating;
