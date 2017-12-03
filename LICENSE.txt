@@ -1,0 +1,20 @@
+This project is work in progress.
+Portions copyright by respective developers.
+
+.Net System.Numerics by .NET Foundation and Contributors
+MIT License
+https://github.com/dotnet/corefx/
+
+GL GDI+ by @dmbreaker
+New BSD License
+https://code.google.com/archive/p/glgdiplus/
+https://habrahabr.ru/post/104152/
+https://github.com/dmbreaker/glgdiplus
+
+Pvax.UI by @Alexey-A-Popov
+BSD-like license
+https://www.codeproject.com/Articles/14175/Extending-Windows-Forms-lightweight-views
+
+OpenTK
+MIT/X11 license
+https://github.com/opentk/opentk
