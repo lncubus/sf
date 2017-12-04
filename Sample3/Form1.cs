@@ -16,31 +16,20 @@ namespace Sample
 	{
 		private Random random = new Random ();
 
-        UserControl spaceView;
+        //UserControl spaceView;
 
 		public Form1 ()
 		{
 			Font = new Font (Font.FontFamily, 1.5F * Font.Size);
 			InitializeComponent ();
 
-            spaceView = new GLSample()
-            {
-                BackColor = Color.Black,
-                BorderStyle = BorderStyle.Fixed3D,
-                Dock = DockStyle.Fill,
-                ForeColor = Color.White,
-                Location = new Point(0, 0),
-                Name = "space",
-                Size = new Size(640, 480),
-                TabIndex = 0,
-            };
 
             //spaceView.MouseDown += spaceView_MouseDown;
             //spaceView.MouseUp += spaceView_MouseUp;
             //spaceView.MouseMove += spaceView_MouseMove;
 
-            this.Controls.Add (spaceView);
-			spaceView.BringToFront ();
+//            this.Controls.Add (spaceView);
+	//		spaceView.BringToFront ();
 
 			//this.WindowState = FormWindowState.Maximized;
 		}

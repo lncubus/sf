@@ -305,13 +305,12 @@ namespace GLGDIPlus
 			GL.Enable(EnableCap.Blend);
 			GL.Color4(c);
 
-			GL.Begin(BeginMode.LineStrip);
+			GL.Begin(BeginMode.LineLoop);
 
 			GL.Vertex2((double)x, (double)y);
 			GL.Vertex2((double)x + w, (double)y);
 			GL.Vertex2((double)x + w, (double)y + h);
 			GL.Vertex2((double)x, (double)y + h);
-			GL.Vertex2((double)x, (double)y);
 
 			GL.End();
 

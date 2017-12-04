@@ -38,13 +38,18 @@ namespace Sample
 			MakeCurrent();
 
 			g.Reset();
-			//g.Clear();
-
+            g.Resize(ClientRectangle.Width, ClientRectangle.Height);
             //g.FillRectangle(Color.Gray, (Width - 60) / 2, (Height - 40) / 2, 60, 40);
-            g.DrawRectangle(Color.Green, 0, 0, ClientSize.Width, ClientSize.Height);
-            g.DrawLine(Color.Green, 0, 0, Width, Height);
+            g.DrawRectangle(Color.ForestGreen, 0, 0, ClientSize.Width, ClientSize.Height);
+            g.DrawRectangle(Color.Red, 1, 1, ClientSize.Width-1, ClientSize.Height-1);
+            g.DrawLine(Color.ForestGreen, 0, 0, ClientSize.Width, ClientSize.Height);
+            //g.DrawLine(Color.Red, 0, 0, Width, Height);
+            g.DrawLine(Color.ForestGreen, ClientSize.Width, 0, 0, ClientSize.Height);
+            //g.DrawLine(Color.Red, Width, 0, 0, Height);
+            g.FillRectangle(Color.Red, 8, 8, 8, 8);
+            g.FillRectangle(Color.Red, ClientSize.Width - 18, ClientSize.Height - 18, 8, 8);
 
-			SwapBuffers();
+            SwapBuffers();
 		}
 		// ============================================================
 		private void GLSample_Load(object sender, EventArgs e)
@@ -67,8 +72,6 @@ namespace Sample
 				return;
 			}
 
-            g.Reset();
-            g.Resize(Width, Height);
             Invalidate();
 		}
 		// ============================================================
