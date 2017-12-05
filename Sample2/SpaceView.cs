@@ -14,6 +14,7 @@ namespace Sample
     public partial class SpaceView : DoubleBufferedControl
     {
         protected bool hideNegative = false;
+        public bool DemoRotating = true;
 
         public const float Epsilon = 0.00001F;
         public static readonly Point Dpi;
@@ -31,6 +32,18 @@ namespace Sample
         {
             AutoSize = false;
             AutoScroll = false;
+            timer.Tick += new EventHandler(timer_Tick);
+        }
+
+        private Vector3 axis = new Vector3(1, 1, 1) / Math.Sqrt(3);
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            if (DemoRotating)
+            {
+                var rotation = Matrix4x4.CreateFromAxisAngle(Vector3.UnitX, Math.PI/360);
+                WorldMatrix = rotation * WorldMatrix;
+            }
         }
 
         static SpaceView()
@@ -84,7 +97,8 @@ namespace Sample
                         Vector3 v = new Vector3(x, y, z);
                         var p = WorldToDevice(v);
 						float radius = (Dpi.X / 8) / p.Item4;
-						graphics.DrawEllipse(Pens.White, p.Item1 - radius, p.Item2 - radius, 2*radius, 2*radius);
+                        graphics.FillEllipse(Brushes.Blue, p.Item1 - radius, p.Item2 - radius, 2 * radius, 2 * radius);
+                        graphics.DrawEllipse(Pens.White, p.Item1 - radius, p.Item2 - radius, 2*radius, 2*radius);
                     }
             if (total_watch.ElapsedMilliseconds > 1000)
             {

@@ -67,6 +67,7 @@ namespace Sample
 			origin = spaceView.PointToScreen (e.Location);
 			world = spaceView.WorldMatrix;
 			rotating = true;
+            spaceView.DemoRotating = false;
 			spaceView.Cursor = Cursors.NoMove2D;
 		}
 
@@ -95,7 +96,8 @@ namespace Sample
 		private void spaceView_MouseUp (object sender, MouseEventArgs e)
 		{
 			rotating = false;
-			spaceView.Cursor = Cursors.Default;
+            spaceView.DemoRotating = true;
+            spaceView.Cursor = Cursors.Default;
 		}
     }
 }

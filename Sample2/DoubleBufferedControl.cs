@@ -14,7 +14,7 @@ namespace Sample
         private Graphics drawingGraphics;
 
         #region Fields for Redraw
-        private Timer timer;
+        protected Timer timer;
         protected System.Diagnostics.Stopwatch total_watch = System.Diagnostics.Stopwatch.StartNew();
         protected System.Diagnostics.Stopwatch internal_watch = new System.Diagnostics.Stopwatch();
 
