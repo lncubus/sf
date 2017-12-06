@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using OpenTK;
 using GLGDIPlus;
+using OpenTK.Graphics.OpenGL;
+//using GL = OpenTK.Graphics.;
 
 namespace Sample
 {
@@ -14,8 +16,18 @@ namespace Sample
 	{
 		// ============================================================
 		bool mIsLoaded = false;
+        private Random random = new Random();
+        Vector3 RandomVector(double a = 1)
+        {
+            return new Vector3
+            {
+                X = (float)(a * (random.NextDouble() - 0.5)),
+                Y = (float)(a * (random.NextDouble() - 0.5)),
+                Z = (float)(a * (random.NextDouble() - 0.5)),
+            };
+        }
 
-		GLGraphics g = new GLGraphics();
+        GLGraphics g = new GLGraphics();
 		// ============================================================
 		public GLSample()
 		{
@@ -48,6 +60,32 @@ namespace Sample
             //g.DrawLine(Color.Red, Width, 0, 0, Height);
             g.FillRectangle(Color.Red, 8, 8, 8, 8);
             g.FillRectangle(Color.Red, ClientSize.Width - 18, ClientSize.Height - 18, 8, 8);
+
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+
+            GL.Disable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.ColorArray);
+            GL.Enable(EnableCap.Blend);
+            GL.Color4(Color.SteelBlue);
+
+            GL.Begin(BeginMode.Quads);
+
+            GL.Vertex2(0.2, 0);
+            GL.Vertex2(0.4, 0.2);
+            GL.Vertex2(0.2, 0.4);
+            GL.Vertex2(0, 0.2);
+
+            GL.End();
+
+            GL.Disable(EnableCap.Blend);
+            GL.Disable(EnableCap.ColorArray);
+            GL.Enable(EnableCap.Texture2D);
+
+
 
             SwapBuffers();
 		}

@@ -75,5 +75,10 @@ namespace Sample
 			//rotating = false;
 			//spaceView.Cursor = Cursors.Default;
 		}
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            glSample1.Invalidate();
+        }
     }
 }

@@ -33,23 +33,31 @@
             this.glSample1 = new Sample.GLSample();
             this.SuspendLayout();
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 15;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
             // glSample1
             // 
             this.glSample1.BackColor = System.Drawing.Color.Black;
             this.glSample1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.glSample1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glSample1.Location = new System.Drawing.Point(0, 0);
+            this.glSample1.Margin = new System.Windows.Forms.Padding(5);
             this.glSample1.Name = "glSample1";
-            this.glSample1.Size = new System.Drawing.Size(292, 292);
+            this.glSample1.Size = new System.Drawing.Size(389, 359);
             this.glSample1.TabIndex = 0;
             this.glSample1.VSync = false;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(292, 292);
+            this.ClientSize = new System.Drawing.Size(389, 359);
             this.Controls.Add(this.glSample1);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);

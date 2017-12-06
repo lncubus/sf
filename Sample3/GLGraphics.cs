@@ -6,7 +6,7 @@ using OpenTK;
 //using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-using opengl = OpenTK.Graphics;
+//using opengl = OpenTK.Graphics;
 
 using System.Drawing;
 
@@ -46,13 +46,11 @@ namespace GLGDIPlus
             GL.GetInteger(GetPName.Viewport, viewPort);
 
             GL.MatrixMode(MatrixMode.Projection);
-            GL.PushMatrix();
             GL.LoadIdentity();
 
             GL.Ortho(viewPort[0], viewPort[0] + viewPort[2], viewPort[1] + viewPort[3], viewPort[1], -1, 1);
 
             GL.MatrixMode(MatrixMode.Modelview);
-            GL.PushMatrix();
             GL.LoadIdentity();
             //GL.Translate(0.375, 0.375, 0.0);
             GL.Translate(0.0, 0.0, 0.0);
@@ -457,9 +455,9 @@ namespace GLGDIPlus
 
 			img.SetBlending(255,255,255,255);
 		}
-
-		// ============================================================
-		private opengl.TextPrinter mTPrinterHigh = new opengl.TextPrinter(opengl.TextQuality.High);
+#if TEXT
+        // ============================================================
+        private opengl.TextPrinter mTPrinterHigh = new opengl.TextPrinter(opengl.TextQuality.High);
 		private opengl.TextPrinter mTPrinterMedium = new opengl.TextPrinter(opengl.TextQuality.Medium);
 		private opengl.TextPrinter mTPrinterLow = new opengl.TextPrinter(opengl.TextQuality.Low);
 
@@ -547,5 +545,6 @@ namespace GLGDIPlus
 		}
 
 		// ============================================================
+#endif
 	}
 }
