@@ -51,6 +51,7 @@ namespace Sample
 
 			g.Reset();
             g.Resize(ClientRectangle.Width, ClientRectangle.Height);
+			g.Clear();
             //g.FillRectangle(Color.Gray, (Width - 60) / 2, (Height - 40) / 2, 60, 40);
             g.DrawRectangle(Color.ForestGreen, 0, 0, ClientSize.Width, ClientSize.Height);
             g.DrawRectangle(Color.Red, 1, 1, ClientSize.Width-1, ClientSize.Height-1);
