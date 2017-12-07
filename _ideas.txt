@@ -15,5 +15,23 @@ bitmap = Draw(graphics, state)
 это позволяет вообще не обращаться к методам View (?)
 
 
- 
-     
+Beep. Beep. Beep.
+Sputnik-1
+
+Поехали!
+Poyekhali!
+Юрий Гагарин.
+
+"Touchdown confirmed. We're safe on Mars!" 
+a mission controller announced to deafening cheers here at NASA's Jet Propulsion Laboratory (JPL).
+Rover team members leapt to their feet to hug and high-five each other.
+
+"Uh, Houston, we've had a problem"
+Jack Swigert, Jim Lovell
+
+The Eagle has landed.
+That's one small step for [a] man, one giant leap for mankind.
+Neil Armstrong
+
+We will never forget them
+Ronald Reagan
