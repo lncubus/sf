@@ -71,7 +71,10 @@ namespace Sample
             GL.Disable(EnableCap.Texture2D);
             GL.Enable(EnableCap.ColorArray);
             GL.Enable(EnableCap.Blend);
-            GL.Color4(Color.SteelBlue);
+
+            GL.Enable(EnableCap.AlphaTest);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            GL.Color4(Color.FromArgb(0x80, Color.SteelBlue));
 
             GL.Begin(BeginMode.Quads);
 
@@ -82,11 +85,116 @@ namespace Sample
 
             GL.End();
 
+            GL.Disable(EnableCap.AlphaTest);
             GL.Disable(EnableCap.Blend);
             GL.Disable(EnableCap.ColorArray);
             GL.Enable(EnableCap.Texture2D);
 
+            // matrix for cube
 
+            GL.Enable(EnableCap.DepthTest);
+
+            Matrix4 p = Matrix4.CreatePerspectiveFieldOfView((float)(Math.PI / 3), 1, 20, 500);
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadMatrix(ref p);
+
+            Matrix4 modelview = Matrix4.LookAt(70, 70, 70, 0, 0, 0, 0, 1, 0);
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadMatrix(ref modelview);
+
+            // draw cube
+            float width = 20;
+            /*задняя*/
+            GL.Color3(Color.Red);
+            GL.Begin(BeginMode.Polygon);
+            GL.Vertex3(0, 0, 0);
+            GL.Vertex3(width, 0, 0);
+            GL.Vertex3(width, width, 0);
+            GL.Vertex3(0, width, 0);
+            GL.End();
+
+            /*левая*/
+            GL.Begin(BeginMode.Polygon);
+            GL.Vertex3(0, 0, 0);
+            GL.Vertex3(0, 0, width);
+            GL.Vertex3(0, width, width);
+            GL.Vertex3(0, width, 0);
+            GL.End();
+
+            /*нижняя*/
+            GL.Begin(BeginMode.Polygon);
+            GL.Vertex3(0, 0, 0);
+            GL.Vertex3(0, 0, width);
+            GL.Vertex3(width, 0, width);
+            GL.Vertex3(width, 0, 0);
+            GL.End();
+
+            /*верхняя*/
+            GL.Begin(BeginMode.Polygon);
+            GL.Vertex3(0, width, 0);
+            GL.Vertex3(0, width, width);
+            GL.Vertex3(width, width, width);
+            GL.Vertex3(width, width, 0);
+            GL.End();
+
+            /*передняя*/
+            GL.Begin(BeginMode.Polygon);
+            GL.Vertex3(0, 0, width);
+            GL.Vertex3(width, 0, width);
+            GL.Vertex3(width, width, width);
+            GL.Vertex3(0, width, width);
+            GL.End();
+
+            /*правая*/
+            GL.Begin(BeginMode.Polygon);
+            GL.Vertex3(width, 0, 0);
+            GL.Vertex3(width, 0, width);
+            GL.Vertex3(width, width, width);
+            GL.Vertex3(width, width, 0);
+            GL.End();
+
+            /*ребра*/
+            GL.Color3(Color.Black);
+            GL.Begin(BeginMode.LineLoop);
+            GL.Vertex3(0, 0, 0);
+            GL.Vertex3(0, width, 0);
+            GL.Vertex3(width, width, 0);
+            GL.Vertex3(width, 0, 0);
+            GL.End();
+
+            GL.Begin(BeginMode.LineLoop);
+            GL.Vertex3(width, 0, 0);
+            GL.Vertex3(width, 0, width);
+            GL.Vertex3(width, width, width);
+            GL.Vertex3(width, width, 0);
+            GL.End();
+
+            GL.Begin(BeginMode.LineLoop);
+            GL.Vertex3(0, 0, width);
+            GL.Vertex3(width, 0, width);
+            GL.Vertex3(width, width, width);
+            GL.Vertex3(0, width, width);
+            GL.End();
+
+            GL.Begin(BeginMode.LineLoop);
+            GL.Vertex3(0, 0, 0);
+            GL.Vertex3(0, 0, width);
+            GL.Vertex3(0, width, width);
+            GL.Vertex3(0, width, 0);
+            GL.End();
+
+            // axis
+            GL.Color3(Color.White);
+            GL.Begin(BeginMode.Lines);
+            GL.Vertex3(0, 0, 0);
+            GL.Vertex3(50, 0, 0);
+            GL.Vertex3(0, 0, 0);
+            GL.Vertex3(0, 50, 0);
+            GL.Vertex3(0, 0, 0);
+            GL.Vertex3(0, 0, 50);
+            GL.End();
+            var quad = OpenTK.Graphics.Glu.NewQuadric();
+            OpenTK.Graphics.Glu.Sphere(quad, width, 8, 8);
 
             SwapBuffers();
 		}
