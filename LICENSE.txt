@@ -18,3 +18,11 @@ https://www.codeproject.com/Articles/14175/Extending-Windows-Forms-lightweight-v
 OpenTK
 MIT/X11 license
 https://github.com/opentk/opentk
+
+Monogame
+Microsoft Public License (Ms-PL)
+http://www.monogame.net/
+
+3D model samples by RB Whitaker
+free
+http://rbwhitaker.wikidot.com/model-library
