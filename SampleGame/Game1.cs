@@ -26,12 +26,12 @@ namespace SampleGame
 
         double[] W =
         {
-            2657/7919,
-            1709/3517,
-            3847/7457,
-            5669/6029,
-            4127/4691,
-            3331/3343,
+            2657.0/7919,
+            1709.0/3517,
+            3847.0/7457,
+            5669.0/6029,
+            4127.0/4691,
+            3331.0/3343,
         };
 
         private Random random = new Random();
@@ -103,9 +103,9 @@ namespace SampleGame
             // TODO: Add your update logic here
 
             totalSeconds = gameTime.TotalGameTime.TotalSeconds;
-            var t = gameTime.TotalGameTime.TotalMinutes;
+            var t = gameTime.TotalGameTime.TotalSeconds;
 
-            var velocity = new Vector3
+            var position = 10*new Vector3
             {
                 X = (float)(Math.Sin(W[0] * t) + Math.Sin(W[3] * t)),
                 Y = (float)(Math.Sin(W[1] * t) + Math.Sin(W[4] * t)),
@@ -115,10 +115,9 @@ namespace SampleGame
             if (totalSeconds > 0.1)
                 cpu = gameTime.ElapsedGameTime.TotalSeconds / totalSeconds;
 
-            position += velocity;
-            position += RandomVector(0.1F);
+            //position += RandomVector(0.1F);
 
-            world = Matrix.CreateRotationX((float) totalSeconds / 10);
+            world = Matrix.CreateRotationX((float) totalSeconds / 10) * Matrix.CreateTranslation(position);
 
             base.Update(gameTime);
         }
@@ -151,7 +150,7 @@ namespace SampleGame
 
             spriteBatch.End();
 
-            Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 25), new Vector3(0, 0, 0), Vector3.UnitY);
+            Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 30), new Vector3(0, 0, 0), Vector3.UnitY);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), GraphicsDevice.Viewport.AspectRatio, 0.1f, 1000f);
 
             DrawModel(ship, world, view, projection);
