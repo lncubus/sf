@@ -15,7 +15,7 @@ namespace SampleGame
         SpriteBatch spriteBatch;
         SpriteFont font;
         Texture2D arrow; // noise
-        Model ship;
+        Model ship, destroyer;
         int count;
         double cpu;
         double totalSeconds;
@@ -79,6 +79,10 @@ namespace SampleGame
             font = Content.Load<SpriteFont>("arial");
             arrow = Content.Load<Texture2D>("arrow");
             ship = Content.Load<Model>("Ship2");
+            destroyer = Content.Load<Model>("Destroyer");
+
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         /// <summary>
@@ -130,7 +134,7 @@ namespace SampleGame
         {
             count++;
 
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.MidnightBlue);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
@@ -154,6 +158,7 @@ namespace SampleGame
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), GraphicsDevice.Viewport.AspectRatio, 0.1f, 1000f);
 
             DrawModel(ship, world, view, projection);
+            DrawModel(destroyer, world, view, projection);
 
             base.Draw(gameTime);
         }
@@ -164,6 +169,24 @@ namespace SampleGame
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
+                    effect.TextureEnabled = false;
+                    effect.LightingEnabled = true; // Turn on the lighting subsystem.
+
+                    effect.EnableDefaultLighting();
+
+                    //effect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.7f, 0.7f); // a reddish light
+                    //effect.DirectionalLight0.Direction = new Vector3(1, 0, 0);  // coming along the x-axis
+                    //effect.DirectionalLight0.SpecularColor = new Vector3(0, 1, 0); // with green highlights
+
+                    //effect.AmbientLightColor = new Vector3(0.2f, 0.2f, 0.2f); // Add some overall ambient light.
+                    //effect.EmissiveColor = new Vector3(1, 0, 0); // Sets some strange emmissive lighting.  This just looks weird.
+
+                    //effect.LightingEnabled = true; // turn on the lighting subsystem.
+                    //effect.AmbientLightColor = new Vector3(0.4F, 0.4F, 0.74F);
+                    //                    effect.DirectionalLight0.DiffuseColor = new Vector3(0.5f, 0, 0); // a red light
+                    //                  effect.DirectionalLight0.Direction = new Vector3(1, 0, 0);  // coming along the x-axis
+                    //                effect.DirectionalLight0.SpecularColor = new Vector3(0, 1, 0); // with green highlights
+
                     effect.World = world;
                     effect.View = view;
                     effect.Projection = projection;
