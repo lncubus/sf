@@ -26,3 +26,7 @@ http://www.monogame.net/
 3D model samples by RB Whitaker
 free
 http://rbwhitaker.wikidot.com/model-library
+
+robot model sample
+NO LICENSE!
+https://developer.xamarin.com/guides/cross-platform/game_development/monogame/3d/
