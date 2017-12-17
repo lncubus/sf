@@ -14,11 +14,14 @@ namespace SampleGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont font;
-        Model destroyer;
+        Model destroyer, robot;
         //Texture2D arrow; // noise
         int count;
         double cpu;
         double totalSeconds;
+
+        bool light = true;
+        bool show_destroyer = false;
 
         private Matrix world = Matrix.Identity;
         private Vector3 camera = new Vector3(0, 0, 25);
@@ -79,6 +82,7 @@ namespace SampleGame
             // TODO: use this.Content to load your game content here
             font = Content.Load<SpriteFont>("arial");
             destroyer = Content.Load<Model>("Destroyer");
+            robot = Content.Load<Model>("robot");
         }
 
         /// <summary>
@@ -112,6 +116,14 @@ namespace SampleGame
                 point.Z--;
             if (Keyboard.GetState().IsKeyDown(Keys.PageDown))
                 point.Z++;
+            if (Keyboard.GetState().IsKeyDown(Keys.L))
+                light = true;
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+                light = false;
+            if (Keyboard.GetState().IsKeyDown(Keys.R))
+                show_destroyer = false;
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+                show_destroyer = true;
 
             // TODO: Add your update logic here
 
@@ -152,7 +164,7 @@ namespace SampleGame
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
 
-            DrawModel(destroyer, world, view, projection);
+            DrawModel(show_destroyer ? destroyer : robot, world, view, projection);
 
             DrawSprites();
             base.Draw(gameTime);
@@ -178,7 +190,10 @@ namespace SampleGame
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.EnableDefaultLighting();
+                    effect.LightingEnabled = light;
+                    if (light)
+                        effect.EnableDefaultLighting();
+
                     //effect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.7f, 0.7f); // a reddish light
                     //effect.DirectionalLight0.Direction = new Vector3(1, 0, 0);  // coming along the x-axis
                     //effect.DirectionalLight0.SpecularColor = new Vector3(0, 1, 0); // with green highlights
