@@ -14,13 +14,16 @@ namespace SampleGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont font;
-        Model ship, destroyer;
+        Model destroyer;
         //Texture2D arrow; // noise
         int count;
         double cpu;
         double totalSeconds;
 
         private Matrix world = Matrix.Identity;
+        private Vector3 camera = new Vector3(0, 0, 25);
+        private Vector3 point = Vector3.Zero;
+
         double[] W =
         {
             2657.0/7919,
@@ -75,7 +78,6 @@ namespace SampleGame
 
             // TODO: use this.Content to load your game content here
             font = Content.Load<SpriteFont>("arial");
-            ship = Content.Load<Model>("Ship2");
             destroyer = Content.Load<Model>("Destroyer");
         }
 
@@ -97,6 +99,19 @@ namespace SampleGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                point.Y--;
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                point.Y++;
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                point.X++;
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                point.X--;
+            if (Keyboard.GetState().IsKeyDown(Keys.PageUp))
+                point.Z--;
+            if (Keyboard.GetState().IsKeyDown(Keys.PageDown))
+                point.Z++;
 
             // TODO: Add your update logic here
 
@@ -130,7 +145,7 @@ namespace SampleGame
             GraphicsDevice.Clear(Color.MidnightBlue);
 
             // TODO: Add your drawing code here
-            Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 20), new Vector3(0, 0, 0), Vector3.UnitY);
+            Matrix view = Matrix.CreateLookAt(camera + point, point, Vector3.UnitY);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI/6, GraphicsDevice.Viewport.AspectRatio, 0.1f, 1000f);
 
             GraphicsDevice.BlendState = BlendState.Opaque;
