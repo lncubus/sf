@@ -2,6 +2,7 @@
 
 namespace SampleGame
 {
+#if WINDOWS || LINUX
     /// <summary>
     /// The main class.
     /// </summary>
@@ -17,4 +18,5 @@ namespace SampleGame
                 game.Run();
         }
     }
+#endif
 }

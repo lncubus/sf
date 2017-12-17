@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2", "Sample2\Sample2.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleOpenTK", "Sample3\SampleOpenTK.csproj", "{B36B8AAB-D6B4-4B2F-B47F-8AE0F27FC8FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGame", "SampleGame\SampleGame.csproj", "{9CB7354A-E458-411B-BFC5-28ACBD2047DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGame", "SampleGame\SampleGame.csproj", "{50E08449-FFDC-4EA3-9A1D-D10C1B1FE758}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{B36B8AAB-D6B4-4B2F-B47F-8AE0F27FC8FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B36B8AAB-D6B4-4B2F-B47F-8AE0F27FC8FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B36B8AAB-D6B4-4B2F-B47F-8AE0F27FC8FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9CB7354A-E458-411B-BFC5-28ACBD2047DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CB7354A-E458-411B-BFC5-28ACBD2047DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CB7354A-E458-411B-BFC5-28ACBD2047DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CB7354A-E458-411B-BFC5-28ACBD2047DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50E08449-FFDC-4EA3-9A1D-D10C1B1FE758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E08449-FFDC-4EA3-9A1D-D10C1B1FE758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50E08449-FFDC-4EA3-9A1D-D10C1B1FE758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50E08449-FFDC-4EA3-9A1D-D10C1B1FE758}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

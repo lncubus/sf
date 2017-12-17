@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace SampleGame
 {
@@ -14,16 +14,13 @@ namespace SampleGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont font;
-        Texture2D arrow; // noise
         Model ship, destroyer;
+        //Texture2D arrow; // noise
         int count;
         double cpu;
         double totalSeconds;
 
-        Vector3 position = Vector3.Zero;
-
         private Matrix world = Matrix.Identity;
-
         double[] W =
         {
             2657.0/7919,
@@ -75,14 +72,11 @@ namespace SampleGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
             // TODO: use this.Content to load your game content here
             font = Content.Load<SpriteFont>("arial");
-            arrow = Content.Load<Texture2D>("arrow");
             ship = Content.Load<Model>("Ship2");
             destroyer = Content.Load<Model>("Destroyer");
-
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         /// <summary>
@@ -109,7 +103,7 @@ namespace SampleGame
             totalSeconds = gameTime.TotalGameTime.TotalSeconds;
             var t = gameTime.TotalGameTime.TotalSeconds;
 
-            var position = 10*new Vector3
+            var position = 6*new Vector3
             {
                 X = (float)(Math.Sin(W[0] * t) + Math.Sin(W[3] * t)),
                 Y = (float)(Math.Sin(W[1] * t) + Math.Sin(W[4] * t)),
@@ -121,7 +115,7 @@ namespace SampleGame
 
             //position += RandomVector(0.1F);
 
-            world = Matrix.CreateRotationX((float) totalSeconds / 10) * Matrix.CreateTranslation(position);
+            world = Matrix.CreateRotationY((float)t) * Matrix.CreateTranslation(position);
 
             base.Update(gameTime);
         }
@@ -133,10 +127,24 @@ namespace SampleGame
         protected override void Draw(GameTime gameTime)
         {
             count++;
-
             GraphicsDevice.Clear(Color.MidnightBlue);
 
             // TODO: Add your drawing code here
+            Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 20), new Vector3(0, 0, 0), Vector3.UnitY);
+            Matrix projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI/6, GraphicsDevice.Viewport.AspectRatio, 0.1f, 1000f);
+
+            GraphicsDevice.BlendState = BlendState.Opaque;
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+
+            DrawModel(destroyer, world, view, projection);
+
+            DrawSprites();
+            base.Draw(gameTime);
+        }
+
+        private void DrawSprites()
+        {
             spriteBatch.Begin();
             spriteBatch.DrawString(font, "Mad Twience", new Vector2(50, 50), Color.Purple);
 
@@ -146,21 +154,7 @@ namespace SampleGame
                 spriteBatch.DrawString(font, fps, new Vector2(0, 0), Color.White);
             }
 
-            Vector2 location = new Vector2(100, 100);
-            Rectangle sourceRectangle = new Rectangle(0, 0, arrow.Width, arrow.Height);
-            Vector2 origin = new Vector2(arrow.Width / 2, arrow.Height);
-
-            spriteBatch.Draw(arrow, location, sourceRectangle, Color.White, (float)totalSeconds, origin, 1.0f, SpriteEffects.None, 1);
-
             spriteBatch.End();
-
-            Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 30), new Vector3(0, 0, 0), Vector3.UnitY);
-            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), GraphicsDevice.Viewport.AspectRatio, 0.1f, 1000f);
-
-            DrawModel(ship, world, view, projection);
-            DrawModel(destroyer, world, view, projection);
-
-            base.Draw(gameTime);
         }
 
         private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
@@ -169,11 +163,7 @@ namespace SampleGame
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.TextureEnabled = false;
-                    effect.LightingEnabled = true; // Turn on the lighting subsystem.
-
                     effect.EnableDefaultLighting();
-
                     //effect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.7f, 0.7f); // a reddish light
                     //effect.DirectionalLight0.Direction = new Vector3(1, 0, 0);  // coming along the x-axis
                     //effect.DirectionalLight0.SpecularColor = new Vector3(0, 1, 0); // with green highlights
