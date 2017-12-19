@@ -21,6 +21,7 @@ https://github.com/opentk/opentk
 
 Monogame
 Microsoft Public License (Ms-PL)
+The MIT License (MIT)
 http://www.monogame.net/
 
 3D model samples by RB Whitaker
