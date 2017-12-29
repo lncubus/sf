@@ -1,0 +1,26 @@
+*** MonoGame ***
+Drawing 3D Graphics with Vertices in MonoGame
+https://developer.xamarin.com/guides/cross-platform/game_development/monogame/3d/part2/
+Using the Model Class
+https://developer.xamarin.com/guides/cross-platform/game_development/monogame/3d/part1/
+
+Using 3D Models
+http://rbwhitaker.wikidot.com/monogame-using-3d-models
+Using the BasicEffect Class
+http://rbwhitaker.wikidot.com/basic-effect
+BasicEffect Lighting
+http://rbwhitaker.wikidot.com/basic-effect-lighting
+Simple 3D Animation
+http://rbwhitaker.wikidot.com/monogame-simple-3d-animation
+
+glDrawElements
+https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glDrawElements.xhtml
+
+*** OpenTK ***
+Пишем эмулятор Кубика Рубика
+https://habrahabr.ru/post/173131/
+
+Sphere = gluSphere
+Cube = glutWireCube etc...
+
+btw... why not try OpenTK in monogame?
