@@ -4,6 +4,10 @@ https://developer.xamarin.com/guides/cross-platform/game_development/monogame/3d
 Using the Model Class
 https://developer.xamarin.com/guides/cross-platform/game_development/monogame/3d/part1/
 
+Drawing triangles
+http://rbwhitaker.wikidot.com/drawing-triangles
+
+
 Using 3D Models
 http://rbwhitaker.wikidot.com/monogame-using-3d-models
 Using the BasicEffect Class
