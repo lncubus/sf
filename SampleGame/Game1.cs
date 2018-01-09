@@ -13,6 +13,8 @@ namespace SampleGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        VertexBuffer vertexBuffer;
+        BasicEffect basicEffect;
         SpriteFont font;
         Model destroyer, robot;
         //Texture2D arrow; // noise
@@ -78,11 +80,20 @@ namespace SampleGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            basicEffect = new BasicEffect(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
             font = Content.Load<SpriteFont>("arial");
             destroyer = Content.Load<Model>("Destroyer");
             robot = Content.Load<Model>("robot");
+
+            VertexPositionColor[] vertices = new VertexPositionColor[3];
+            vertices[0] = new VertexPositionColor(new Vector3(0, 5, 0), Color.Red);
+            vertices[1] = new VertexPositionColor(new Vector3(5, -5, 0), Color.Green);
+            vertices[2] = new VertexPositionColor(new Vector3(-5, -5, 0), Color.Blue);
+
+            vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
+            vertexBuffer.SetData<VertexPositionColor>(vertices);
         }
 
         /// <summary>
@@ -154,7 +165,7 @@ namespace SampleGame
         protected override void Draw(GameTime gameTime)
         {
             count++;
-            GraphicsDevice.Clear(Color.MidnightBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             Matrix view = Matrix.CreateLookAt(camera + point, point, Vector3.UnitY);
@@ -166,8 +177,28 @@ namespace SampleGame
 
             DrawModel(show_destroyer ? destroyer : robot, world, view, projection);
 
+            basicEffect.World = world;
+            basicEffect.View = view;
+            basicEffect.Projection = projection;
+            basicEffect.VertexColorEnabled = true;
+            RasterizerState rasterizerState = new RasterizerState();
+            rasterizerState.CullMode = CullMode.None;
+            GraphicsDevice.RasterizerState = rasterizerState;
+
+            DrawSail();
+
             DrawSprites();
             base.Draw(gameTime);
+        }
+
+        private void DrawSail()
+        {
+            GraphicsDevice.SetVertexBuffer(vertexBuffer);
+            foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, vertexBuffer.VertexCount/3);
+            }
         }
 
         private void DrawSprites()
