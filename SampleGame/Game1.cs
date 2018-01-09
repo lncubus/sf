@@ -22,6 +22,13 @@ namespace SampleGame
         double cpu;
         double totalSeconds;
 
+        // red diamond 1.41F, 1.41F, Color.Red
+        VertexPositionColor[] enemy;
+        // blue rectangle 1.25F, 0.8F, Color.RoyalBlue
+        VertexPositionColor[] friend;
+        // green square 1.0F, 1.0F, Color.ForestGreen
+        VertexPositionColor[] neutral;
+
         bool light = true;
         bool show_destroyer = false;
 

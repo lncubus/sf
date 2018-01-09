@@ -1,4 +1,9 @@
+
 *** MonoGame ***
+rbwhitaker
+http://rbwhitaker.wikidot.com/xna-tutorials
+
+
 Drawing 3D Graphics with Vertices in MonoGame
 https://developer.xamarin.com/guides/cross-platform/game_development/monogame/3d/part2/
 Using the Model Class
