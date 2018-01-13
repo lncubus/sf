@@ -79,6 +79,29 @@ namespace SampleGame
             base.Initialize();
         }
 
+        Color previous = Color.Fuchsia;
+
+        private VertexPositionColor VPC(float x, float y, float z, Color color)
+        {
+            previous = color;
+            return new VertexPositionColor(new Vector3(x, y, z), color);
+        }
+
+        private VertexPositionColor VPC(float x, float y, float z)
+        {
+            return VPC(x, y, z, previous);
+        }
+
+        private VertexPositionColor VPC(float x, float y, Color color)
+        {
+            return VPC(x, y, 0, color);
+        }
+
+        private VertexPositionColor VPC(float x, float y)
+        {
+            return VPC(x, y, 0, previous);
+        }
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -95,9 +118,32 @@ namespace SampleGame
             robot = Content.Load<Model>("robot");
 
             VertexPositionColor[] vertices = new VertexPositionColor[3];
-            vertices[0] = new VertexPositionColor(new Vector3(0, 5, 0), Color.Red);
-            vertices[1] = new VertexPositionColor(new Vector3(5, -5, 0), Color.Green);
-            vertices[2] = new VertexPositionColor(new Vector3(-5, -5, 0), Color.Blue);
+            vertices[0] = VPC(0, 5, Color.Red);
+            vertices[1] = VPC(5, -5, Color.Green);
+            vertices[2] = VPC(-5, -5, Color.Blue);
+
+            const float sqrt2helf = 0.7071F;
+            const float half = 0.5F;
+
+            // red diamond 1.41F, 1.41F, Color.Red
+            enemy = new VertexPositionColor[]
+            {
+                VPC(sqrt2helf, 0, Color.Red),
+                VPC(0, sqrt2helf),
+                VPC(0, -sqrt2helf),
+                VPC(-sqrt2helf, 0),
+            };
+            // blue rectangle 1.25F, 0.8F, Color.RoyalBlue
+            // friend;
+            // green square 1.0F, 1.0F, Color.ForestGreen
+            neutral = new VertexPositionColor[]
+            {
+                VPC(half, half, Color.ForestGreen),
+                VPC(-half, half),
+                VPC(half, -half),
+                VPC(-half, -half),
+            };
+
 
             vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
             vertexBuffer.SetData<VertexPositionColor>(vertices);
@@ -160,7 +206,7 @@ namespace SampleGame
 
             //position += RandomVector(0.1F);
 
-            world = Matrix.CreateRotationY((float)t) * Matrix.CreateTranslation(position);
+            world = Matrix.CreateRotationY((float)t);// * Matrix.CreateTranslation(position);
 
             base.Update(gameTime);
         }
@@ -182,7 +228,7 @@ namespace SampleGame
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
 
-            DrawModel(show_destroyer ? destroyer : robot, world, view, projection);
+            //DrawModel(show_destroyer ? destroyer : robot, world, view, projection);
 
             basicEffect.World = world;
             basicEffect.View = view;
@@ -192,7 +238,10 @@ namespace SampleGame
             rasterizerState.CullMode = CullMode.None;
             GraphicsDevice.RasterizerState = rasterizerState;
 
-            DrawSail();
+            //DrawSail();
+
+            DrawTriangleStrip(enemy);
+            DrawTriangleStrip(neutral);
 
             DrawSprites();
             base.Draw(gameTime);
@@ -205,6 +254,15 @@ namespace SampleGame
             {
                 pass.Apply();
                 GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, vertexBuffer.VertexCount/3);
+            }
+        }
+
+        private void DrawTriangleStrip(VertexPositionColor[] vertexes)
+        {
+            foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertexes, 0, vertexes.Length - 2);
             }
         }
 
