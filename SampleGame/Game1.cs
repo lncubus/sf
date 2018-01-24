@@ -92,16 +92,6 @@ namespace SampleGame
             return VPC(x, y, z, previous);
         }
 
-        private VertexPositionColor VPC(float x, float y, Color color)
-        {
-            return VPC(x, y, 0, color);
-        }
-
-        private VertexPositionColor VPC(float x, float y)
-        {
-            return VPC(x, y, 0, previous);
-        }
-
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -118,30 +108,38 @@ namespace SampleGame
             robot = Content.Load<Model>("robot");
 
             VertexPositionColor[] vertices = new VertexPositionColor[3];
-            vertices[0] = VPC(0, 5, Color.Red);
-            vertices[1] = VPC(5, -5, Color.Green);
-            vertices[2] = VPC(-5, -5, Color.Blue);
+            vertices[0] = VPC(0, 5, 0, Color.Red);
+            vertices[1] = VPC(5, -5, 0, Color.Green);
+            vertices[2] = VPC(-5, -5, 0, Color.Blue);
 
-            const float sqrt2helf = 0.7071F;
-            const float half = 0.5F;
-
+            float sqrt2helf = (float)Math.Sqrt(2)/2;
+            float half = 0.5F;
+            double gold = (Math.Sqrt(5) + 1)/2;
+            float sqrtgold = (float)Math.Sqrt(gold);
+            float sqrtinvgold = (float)Math.Sqrt(gold-1);
             // red diamond 1.41F, 1.41F, Color.Red
             enemy = new VertexPositionColor[]
             {
-                VPC(sqrt2helf, 0, Color.Red),
-                VPC(0, sqrt2helf),
-                VPC(0, -sqrt2helf),
-                VPC(-sqrt2helf, 0),
+                VPC(sqrt2helf, 0, 1, Color.Red),
+                VPC(0, sqrt2helf, 1),
+                VPC(0, -sqrt2helf, 1),
+                VPC(-sqrt2helf, 0, 1),
             };
             // blue rectangle 1.25F, 0.8F, Color.RoyalBlue
-            // friend;
+            friend = new VertexPositionColor[]
+            {
+                VPC(sqrtgold/2, sqrtinvgold/2, 0, Color.RoyalBlue),
+                VPC(-sqrtgold/2, sqrtinvgold/2, 0),
+                VPC(sqrtgold/2, -sqrtinvgold/2, 0),
+                VPC(-sqrtgold/2, -sqrtinvgold/2, 0),
+            };
             // green square 1.0F, 1.0F, Color.ForestGreen
             neutral = new VertexPositionColor[]
             {
-                VPC(half, half, Color.ForestGreen),
-                VPC(-half, half),
-                VPC(half, -half),
-                VPC(-half, -half),
+                VPC(half, half, -1, Color.ForestGreen),
+                VPC(-half, half, -1),
+                VPC(half, -half, -1),
+                VPC(-half, -half, -1),
             };
 
 
@@ -240,6 +238,7 @@ namespace SampleGame
 
             //DrawSail();
 
+            DrawTriangleStrip(friend);
             DrawTriangleStrip(enemy);
             DrawTriangleStrip(neutral);
 
