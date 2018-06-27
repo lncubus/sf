@@ -78,8 +78,8 @@ namespace ClientTest
                 {
                     client = null;
                 }
-                Console.WriteLine("Hit any key...");
-                Console.ReadKey(true);
+                // Console.WriteLine("Hit any key...");
+                // Console.ReadKey(true);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,11 +30,13 @@ namespace SampleGame
         // green square 1.0F, 1.0F, Color.ForestGreen
         VertexPositionColor[] neutral;
 
+        List<VertexPositionColor[]> cells;
+
         bool light = true;
         bool show_destroyer = false;
 
         private Matrix world = Matrix.Identity;
-        private Vector3 camera = new Vector3(0, 0, 25);
+        private Vector3 camera = new Vector3(0, 4, 7);
         private Vector3 point = Vector3.Zero;
 
         double[] W =
@@ -76,6 +79,8 @@ namespace SampleGame
             IsFixedTimeStep = false;
             Window.AllowAltF4 = true;
             Window.AllowUserResizing = true;
+            //graphics.ToggleFullScreen();
+            //graphics.GraphicsDevice.DisplayMode
             base.Initialize();
         }
 
@@ -118,30 +123,47 @@ namespace SampleGame
             float sqrtgold = (float)Math.Sqrt(gold);
             float sqrtinvgold = (float)Math.Sqrt(gold-1);
             // red diamond 1.41F, 1.41F, Color.Red
+
+            int yshift = 5;
             enemy = new VertexPositionColor[]
             {
-                VPC(sqrt2helf, 0, 1, Color.Red),
-                VPC(0, sqrt2helf, 1),
-                VPC(0, -sqrt2helf, 1),
-                VPC(-sqrt2helf, 0, 1),
+                VPC(sqrt2helf, yshift+0, 1, Color.Red),
+                VPC(0, yshift+sqrt2helf, 1),
+                VPC(0, yshift-sqrt2helf, 1),
+                VPC(-sqrt2helf, yshift, 1),
             };
             // blue rectangle 1.25F, 0.8F, Color.RoyalBlue
             friend = new VertexPositionColor[]
             {
-                VPC(sqrtgold/2, sqrtinvgold/2, 0, Color.RoyalBlue),
-                VPC(-sqrtgold/2, sqrtinvgold/2, 0),
-                VPC(sqrtgold/2, -sqrtinvgold/2, 0),
-                VPC(-sqrtgold/2, -sqrtinvgold/2, 0),
+                VPC(sqrtgold/2, yshift+sqrtinvgold/2, 0, Color.RoyalBlue),
+                VPC(-sqrtgold/2, yshift+sqrtinvgold/2, 0),
+                VPC(sqrtgold/2, yshift-sqrtinvgold/2, 0),
+                VPC(-sqrtgold/2, yshift-sqrtinvgold/2, 0),
             };
             // green square 1.0F, 1.0F, Color.ForestGreen
             neutral = new VertexPositionColor[]
             {
-                VPC(half, half, -1, Color.ForestGreen),
-                VPC(-half, half, -1),
-                VPC(half, -half, -1),
-                VPC(-half, -half, -1),
+                VPC(half, yshift+half, -1, Color.ForestGreen),
+                VPC(-half, yshift+half, -1),
+                VPC(half, yshift-half, -1),
+                VPC(-half, yshift-half, -1),
             };
 
+            cells = new List<VertexPositionColor[]>();
+            var h = 0.05F;
+            var a = 0.5F;
+            for (int x = -2; x <= 2; x++)
+                for (int y = -2; y <= 2; y++)
+                {
+                    var cell = new[]
+                    {
+                        VPC((2*x + 1)*a - h, 0, (2*y+1)*a - h, Color.ForestGreen),
+                        VPC((2*x - 1)*a + h, 0, (2*y+1)*a - h),
+                        VPC((2*x + 1)*a - h, 0, (2*y-1)*a + h),
+                        VPC((2*x - 1)*a + h, 0, (2*y-1)*a + h),
+                    };
+                    cells.Add(cell);
+                }
 
             vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
             vertexBuffer.SetData<VertexPositionColor>(vertices);
@@ -204,7 +226,7 @@ namespace SampleGame
 
             //position += RandomVector(0.1F);
 
-            world = Matrix.CreateRotationY((float)t);// * Matrix.CreateTranslation(position);
+            //world = Matrix.CreateRotationY((float)t);// * Matrix.CreateTranslation(position);
 
             base.Update(gameTime);
         }
@@ -221,6 +243,8 @@ namespace SampleGame
             // TODO: Add your drawing code here
             Matrix view = Matrix.CreateLookAt(camera + point, point, Vector3.UnitY);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI/6, GraphicsDevice.Viewport.AspectRatio, 0.1f, 1000f);
+            Debug.WriteLine(string.Format("width = {0} height= {1} aspect = {2}",
+                GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, GraphicsDevice.Viewport.AspectRatio));
 
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -241,6 +265,9 @@ namespace SampleGame
             DrawTriangleStrip(friend);
             DrawTriangleStrip(enemy);
             DrawTriangleStrip(neutral);
+
+            foreach (var cell in cells)
+                DrawTriangleStrip(cell);
 
             DrawSprites();
             base.Draw(gameTime);

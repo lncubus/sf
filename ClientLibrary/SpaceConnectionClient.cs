@@ -5,17 +5,6 @@ using System.ServiceModel.Channels;
 
 namespace ClientLibrary
 {
-//    public class SpaceClient: IDisposable
-//    {
-//        public SpaceClient()
-//        {
-//        }
-//
-//        public void Dispose()
-//        {
-//        }
-//    }
-
     public class SpaceConnectionClient : ClientBase<ISpaceConnection>, ISpaceConnection
     {
         public SpaceConnectionClient (Binding binding, EndpointAddress address) : base (binding, address)
