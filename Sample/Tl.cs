@@ -35,15 +35,25 @@ public class Tl
         {
             return "\"" + thing + "\"";
         }
-        if (type.IsEnum || type.IsPrimitive || thing is DateTime)
+        if (type.IsEnum || type.IsPrimitive || thing is DateTime || thing is decimal)
         {
             return thing.ToString();
         }
-        if (visited.ContainsKey(thing))
+        bool hashFail = false;
+        try
+        {
+            thing.GetHashCode();
+        }
+        catch
+        {
+            hashFail = true;
+        }
+        if (!hashFail && visited.ContainsKey(thing))
         {
             return "(loop ref)";
         }
-        visited.Add(thing, null);
+        if (!hashFail)
+            visited.Add(thing, null);
         StringBuilder result = new StringBuilder();
         PropertyInfo[] properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
         FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
@@ -129,7 +139,8 @@ public class Tl
             }
             result.Append("]");
         }
-        visited.Remove(thing);
+        if (!hashFail)
+            visited.Remove(thing);
         return result.ToString();
     }
 
@@ -167,7 +178,7 @@ public class Tl
         string logFile = CombineThreads ?
             string.Format("{0}.{1}_{2}.log", home, process.ProcessName, process.Id) :
             string.Format("{0}.{1}_{2}_{3}.log", home, process.ProcessName, process.Id, thread.ManagedThreadId);
-        string dt = DateTime.Now.ToString("HH:mm:ss.ff");
+        string dt = DateTime.Now.ToString("HH:mm:ss.fff");
         message = (string.IsNullOrEmpty(message) ? string.Empty : " " + message) + "\n";
         string threadId = CombineThreads ? " [" + thread.ManagedThreadId.ToString() + "]" : string.Empty;
         message = dt + threadId + message;
