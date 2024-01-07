@@ -20,6 +20,10 @@
 [Bb]in/
 [Oo]bj/
 
+# Unity build
+[Ll]ibrary/
+[Ll]ogs/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*

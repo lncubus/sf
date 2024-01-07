@@ -1,3 +1,12 @@
+au = 149 597 870.700 km
+year = 365.25 days = 31 557 600 sec
+
+km
+second
+
+
+1 au/year = 4.74372 km/s (good!)
+
 DoubleBufferedControl
  + - MainViewControl
        [] - Views
